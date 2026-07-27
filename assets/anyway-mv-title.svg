@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_2" data-name="レイヤー 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1169.09 302.4">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: FoundersGrotesk-Regular, 'Founders Grotesk';
+        font-size: 300px;
+      }
+
+      .cls-2 {
+        letter-spacing: -.06em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.15em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: .06em;
+      }
+
+      .cls-7 {
+        letter-spacing: .03em;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_4" data-name="レイヤー 4">
+    <text class="cls-1" transform="translate(0 244.5)"><tspan class="cls-5" x="0" y="0">AN</tspan><tspan class="cls-6" x="382.19" y="0">Y</tspan><tspan class="cls-2" x="578.39" y="0">W</tspan><tspan class="cls-3" x="803.69" y="0">A</tspan><tspan class="cls-4" x="949.49" y="0">Y</tspan><tspan class="cls-7" x="1116.29" y="0">.</tspan></text>
+  </g>
+</svg>

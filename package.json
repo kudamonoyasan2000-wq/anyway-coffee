@@ -1,0 +1,10 @@
+{
+  "name": "hysd-safe-microcms",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Safe microCMS proxy for how's your day prototype",
+  "scripts": {
+    "start": "node server.js",
+    "preview": "PORT=8001 node server.js"
+  }
+}

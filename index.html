@@ -1,0 +1,3349 @@
+<!DOCTYPE html>
+<html lang="ja" class="page-index">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANYWAY — coffee for any mood</title>
+<meta name="description" content="ANYWAY. Any mood. Always coffee. 日常を豊かにする一杯のためのコーヒーブランド。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>
+  (() => {
+    const dir = sessionStorage.getItem("hysd-nav-direction");
+    if (dir) {
+      document.documentElement.classList.add(`vt-${dir}`);
+      sessionStorage.removeItem("hysd-nav-direction");
+    }
+
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    const resetScrollToHero = () => {
+      if (window.location.hash) return;
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => {
+          window.scrollTo(0, 0);
+        });
+      });
+    };
+
+    window.addEventListener("pageshow", resetScrollToHero);
+    window.addEventListener("load", resetScrollToHero);
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,700&display=swap" rel="stylesheet">
+
+<style>
+  @view-transition {
+    navigation: auto;
+  }
+  @supports (view-transition-name: root) {
+    html.vt-back ::view-transition-group(root) {
+      animation-duration: 0.82s;
+      animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+    html.vt-back ::view-transition-old(root) {
+      animation: indexBackOld 0.82s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      z-index: 2;
+      box-shadow:
+        -36px 0 100px rgba(0, 24, 41, 0.16),
+        -8px 0 24px rgba(0, 24, 41, 0.08);
+      transform-origin: left center;
+    }
+    html.vt-back ::view-transition-new(root) {
+      animation: indexBackNew 0.82s ease forwards;
+      z-index: 1;
+      transform-origin: left center;
+    }
+    @keyframes indexBackOld {
+      from {
+        clip-path: inset(0 0 0 0);
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        clip-path: inset(0 100% 0 0);
+        transform: translateX(-58px);
+        opacity: 1;
+      }
+    }
+    @keyframes indexBackNew {
+      from {
+        transform: scale(0.985);
+        filter: brightness(0.96);
+      }
+      to {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+    }
+  }
+
+  /* ---------- Tokens ---------- */
+  :root {
+    --c-bg: rgb(238, 238, 238);
+    --c-bg-alt: rgb(219, 217, 212);      /* 商品プレースホルダ用の温かいグレージュ */
+    --c-ink: #001829;         /* ブランドネイビー */
+    --c-ink-soft: #001829cc;
+    --c-mute: #00182980;
+    --c-line: #00182920;
+    --c-acid: #E6FD28;        /* ブランド黄緑（ロゴ・アクセント色） */
+    --c-brown: #B08650;       /* 4色目：アクセント時のみ */
+
+    --font-display: "founders_grotesk", "Founders Grotesk", "Switzer", "Helvetica Neue", -apple-system, sans-serif;
+    --font-serif: "Source Serif Pro", "Iowan Old Style", Georgia, serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    --scroll-glow: 0;
+    --glow-strength: 0;
+    font-family: var(--font-display);
+    background:
+      radial-gradient(120% 78% at 50% -8%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 58%),
+      linear-gradient(180deg, #f3f3f3 0%, #ececec 42%, #e9e9e9 100%);
+    color: var(--c-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "ss02";
+    position: relative;
+  }
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+  body::before {
+    z-index: -2;
+    background: none;
+    opacity: 0;
+  }
+  body::after {
+    z-index: -1;
+    opacity: 0.16;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  img { display: block; max-width: 100%; }
+
+  ::selection { background: var(--c-acid); color: var(--c-ink); }
+
+  /* ---------- Layout ---------- */
+  .wrap { padding: 0 24px; }
+  @media (min-width: 768px) { .wrap { padding: 0 40px; } }
+
+  /* ---------- Header ---------- */
+  .header {
+    position: sticky;
+    top: 10px;
+    z-index: 50;
+    background: transparent;
+    border-bottom: none;
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding-top: 2px;
+  }
+  .logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 34px;
+    color: var(--c-ink);
+    font-size: 17px;
+    line-height: 1;
+    text-decoration: none;
+    transition: color 0.35s var(--ease-out);
+  }
+  .logo::before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: currentColor;
+  }
+  .logo__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+  .logo__base {
+    color: var(--c-ink);
+    z-index: 0;
+    transition: color 0.35s var(--ease-out);
+  }
+  /* ホバー時、左から黄色がスライドイン */
+  .logo__hover {
+    color: var(--c-acid);
+    z-index: 1;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.4s var(--ease-out);
+  }
+  .logo:hover .logo__hover {
+    clip-path: inset(0 0 0 0);
+  }
+  .nav {
+    display: none;
+    gap: 32px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  @media (min-width: 768px) { .nav { display: flex; } }
+  .nav a {
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.35s var(--ease-out);
+  }
+  .nav a::after {
+    display: none;
+  }
+  .nav a,
+  .footer__col a {
+    display: inline-block;
+    padding: 0.08em 0.34em 0.14em;
+    margin: -0.08em -0.34em -0.14em;
+    background-image: linear-gradient(var(--c-acid), var(--c-acid));
+    background-repeat: no-repeat;
+    background-size: 0 100%;
+    background-position: left center;
+    transition:
+      color 0.35s var(--ease-out),
+      background-size 0.45s var(--ease-out);
+  }
+  .nav a:hover,
+  .footer__col a:hover {
+    background-size: 100% 100%;
+    color: var(--c-ink);
+  }
+
+  .header__bag {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .bag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out), color 0.35s var(--ease-out);
+  }
+  .bag-btn:hover { background: var(--c-acid); border-color: var(--c-acid); }
+  .bag-btn .count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .header--hero .logo,
+  .header--hero .nav a,
+  .header--hero .header__bag {
+    color: var(--c-acid);
+  }
+  .header--hero .nav a::after {
+    display: none;
+  }
+  .header--hero .bag-btn {
+    border-color: rgba(230, 253, 40, 0.48);
+    color: var(--c-acid);
+  }
+  .header--hero .bag-btn:hover {
+    background: var(--c-acid);
+    border-color: var(--c-acid);
+    color: var(--c-ink);
+  }
+
+  /* ---------- Bag drawer ---------- */
+  .bag-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 24, 41, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out);
+    z-index: 120;
+  }
+  .bag-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .bag-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(420px, 100vw);
+    height: 100vh;
+    background: var(--c-bg);
+    border-left: 1px solid var(--c-line);
+    transform: translateX(100%);
+    transition: transform 0.5s var(--ease-out);
+    z-index: 130;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+  }
+  .bag-drawer.is-open { transform: translateX(0); }
+  .bag-drawer__head,
+  .bag-drawer__foot {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .bag-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .bag-drawer__title {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .bag-drawer__close {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--c-line);
+    border-radius: 50%;
+    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+  }
+  .bag-drawer__close:hover {
+    background: var(--c-acid);
+    border-color: var(--c-acid);
+  }
+  .bag-drawer__body {
+    min-height: 0;
+    overflow: auto;
+    padding: 0 24px;
+    scroll-behavior: auto;
+  }
+  .bag-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .bag-item {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .bag-item__media {
+    aspect-ratio: 4/5;
+    background: var(--c-bg-alt);
+    background-image: var(--bag-img, none);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bag-item__media.has-image::before {
+    opacity: 0;
+  }
+  .bag-item__media::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 48%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ph, var(--c-brown));
+    transform: translate(-50%, -50%);
+  }
+  .bag-item__top,
+  .bag-item__bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .bag-item__name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .bag-item__name em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .bag-item__meta,
+  .bag-empty p,
+  .bag-drawer__meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+    text-transform: uppercase;
+  }
+  .bag-item__meta { margin-top: 8px; }
+  .bag-item__price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .bag-item__qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bag-item__qty button,
+  .bag-item__remove {
+    min-width: 32px;
+    min-height: 32px;
+    transition: background 0.4s var(--ease-out);
+  }
+  .bag-item__qty button:hover,
+  .bag-item__remove:hover {
+    background: var(--c-acid);
+  }
+  .bag-item__qty span {
+    min-width: 34px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .bag-item__remove {
+    padding: 0 12px;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    font-size: 11px;
+  }
+  .bag-empty {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 48px 0;
+  }
+  .bag-empty h3 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .bag-drawer__foot {
+    border-top: 1px solid var(--c-line);
+    border-bottom: none;
+    display: grid;
+    gap: 16px;
+  }
+  .bag-drawer__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .bag-drawer__subtotal {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .bag-drawer__checkout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: var(--c-ink);
+    color: var(--c-bg);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out);
+  }
+  .bag-drawer__checkout:hover {
+    background: var(--c-acid);
+    color: var(--c-ink);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    --hero-bg-image: url("hero-top-bg.png");
+    --hero-sweep-progress: 0;
+    --hero-sweep-opacity: 0;
+    --hero-sweep-top: 0px;
+    --hero-sweep-height: 100%;
+    --hero-emotion-band-height: clamp(50px, 4.4vw, 58px);
+    --hero-title-opacity: 0;
+    --hero-title-clip: 100%;
+    position: relative;
+    min-height: 68vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: -66px;
+    padding: 86px 16px 20px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--hero-bg-image);
+    background-size: cover;
+    background-position: center 62%;
+    background-repeat: no-repeat;
+    z-index: 0;
+    transform: scale(1.01);
+  }
+  .hero::after {
+    content: none;
+  }
+  @media (min-width: 768px) {
+    .hero {
+      min-height: 74vh;
+      padding: 90px 28px 24px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero {
+      min-height: 82vh;
+      padding: 94px 40px 28px;
+    }
+  }
+
+  .hero {
+    min-height: 420vh;
+    align-items: flex-start;
+    padding: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .hero::before,
+  .hero::after {
+    content: none;
+  }
+  .hero__copy {
+    max-width: 100%;
+  }
+  .hero__stage {
+    width: 100%;
+    min-height: 0;
+    display: block;
+  }
+  .hero__headline {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    flex: 0 0 100vw;
+    color: var(--c-ink);
+    white-space: nowrap;
+    opacity: 0;
+    clip-path: inset(0 var(--hero-title-clip) 0 0);
+    transform: translateY(14px) scaleX(0.985) scaleY(0.98);
+    transform-origin: center bottom;
+    opacity: var(--hero-title-opacity);
+  }
+  .hero__headline-line {
+    display: inline-block;
+    padding-right: 0.02em;
+  }
+  .hero__headline-logo {
+    display: block;
+    width: min(92vw, 1169px);
+    max-width: 100%;
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .hero {
+      padding: 0;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero {
+      padding: 0;
+    }
+  }
+
+  .hero__copy {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    max-width: none;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    padding: 120px 0 44px;
+    overflow: visible;
+  }
+  @media (min-width: 768px) {
+    .hero__copy {
+      padding: 138px 0 56px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero__copy {
+      padding: 152px 0 64px;
+    }
+  }
+
+  .hero__stage {
+    position: relative;
+    width: 100vw;
+    min-height: clamp(240px, 38vw, 520px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero__emotion-field {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: var(--hero-emotion-band-height);
+    z-index: 3;
+    pointer-events: none;
+    overflow: visible;
+    transform: translateY(-50%);
+  }
+  .hero__emotion {
+    position: absolute;
+    left: var(--emotion-x);
+    top: var(--emotion-y);
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.08em;
+    padding: 0.04em 0.2em 0.08em;
+    font-family: var(--font-display);
+    font-size: var(--emotion-size);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    color: var(--c-ink);
+    opacity: var(--emotion-alpha, 0);
+    white-space: nowrap;
+    transform:
+      translate(0, -50%)
+      rotate(var(--emotion-rotate))
+      scale(var(--emotion-scale, 1));
+    transform-origin: left center;
+    transition: opacity 0.18s ease;
+    filter: blur(var(--emotion-blur, 0));
+  }
+  .hero__letter {
+    display: inline-block;
+    position: relative;
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform-origin: center bottom;
+  }
+  .hero__letter.is-falling {
+    z-index: 4;
+    animation: heroLetterFall var(--letter-fall-duration, 1.18s) cubic-bezier(0.28, 0.03, 0.2, 1) var(--letter-fall-delay, 0s) both;
+    will-change: transform;
+  }
+  .hero__letter.has-landed {
+    visibility: hidden;
+  }
+  .hero__emotion::before {
+    content: none;
+    position: absolute;
+    inset: 0.08em -0.08em 0;
+    z-index: -1;
+    background: var(--c-acid);
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: heroEmotionBand 0.72s cubic-bezier(0.16, 1, 0.3, 1) var(--band-delay) forwards;
+  }
+  .hero__sweep {
+    position: absolute;
+    left: 0;
+    top: var(--hero-sweep-top);
+    z-index: 2;
+    width: 100%;
+    height: var(--hero-sweep-height);
+    background: var(--c-acid);
+    opacity: var(--hero-sweep-opacity);
+    transform: scaleX(var(--hero-sweep-progress));
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  .hero__brace-giant {
+    position: absolute;
+    top: 50%;
+    font-family: var(--font-display);
+    font-size: clamp(176px, 26vw, 420px);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.08em;
+    color: var(--c-ink);
+    opacity: 0;
+    transform: translate3d(0, -50%, 0) scaleX(0.68) scaleY(0.92);
+    animation:
+      heroBraceOpen 1.02s cubic-bezier(0.32, 0.02, 0.2, 1) 0.32s forwards,
+      heroBraceExit 0.82s cubic-bezier(0.64, 0.02, 0.78, 0.12) 3.38s forwards;
+    pointer-events: none;
+  }
+  .hero__brace-giant--left {
+    --brace-x: calc(-50% - clamp(280px, 31vw, 520px));
+    --brace-exit-x: calc(-50% - clamp(420px, 40vw, 720px));
+    --brace-collapse-x: calc(-50% - clamp(34px, 3.8vw, 56px));
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
+  }
+  .hero__brace-giant--right {
+    --brace-x: calc(-50% + clamp(280px, 31vw, 520px));
+    --brace-exit-x: calc(-50% + clamp(420px, 40vw, 720px));
+    --brace-collapse-x: calc(-50% + clamp(34px, 3.8vw, 56px));
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
+  }
+
+  .hero__opening {
+    position: relative;
+    width: min(100%, 1060px);
+    min-height: clamp(150px, 22vw, 260px);
+    transform: scaleX(0.02);
+    transform-origin: center center;
+    animation: heroOpenSpace 1.42s cubic-bezier(0.5, 0.03, 0.94, 0.38) 0.56s forwards;
+  }
+  .hero__opening::before {
+    content: none;
+  }
+
+  .hero__conversation {
+    --prompt-top: clamp(18px, 4vw, 54px);
+    --prompt-left: 17%;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 24px;
+    padding-top: var(--prompt-top);
+    opacity: 0;
+    transform: none;
+    animation: heroConversationIn 0.34s linear 2.08s forwards;
+  }
+  .hero__prompt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.08em;
+    max-width: 100%;
+    font-family: var(--font-display);
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    align-self: flex-start;
+    margin-left: var(--prompt-left);
+  }
+  .hero__prompt-brace {
+    display: inline-block;
+  }
+  .hero__wordmark-wrap {
+    display: inline-block;
+    overflow: hidden;
+    width: 14.6ch;
+    max-width: 14.6ch;
+    clip-path: inset(0 100% 0 0);
+    animation: typeReveal 1.18s steps(15, end) 2.16s forwards;
+  }
+  .hero__wordmark {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .hero__conversation::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--prompt-top) + 1px);
+    height: clamp(10px, 1vw, 14px);
+    left: var(--prompt-left);
+    width: 1.5px;
+    background: var(--c-ink);
+    animation:
+      caretTravel 1.04s steps(15, end) 2.16s forwards,
+      caretBlink 1.02s step-end 2,
+      caretFade 0.01s linear 3.36s forwards;
+  }
+  .hero__tail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .hero__reply {
+    position: absolute;
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--c-ink);
+    white-space: nowrap;
+    display: inline-grid;
+    padding: 0.16em 0.52em 0.2em;
+    background: var(--c-acid);
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translateX(-10px);
+    pointer-events: auto;
+    transition:
+      left 0.54s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.54s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.24s ease,
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.28s ease;
+  }
+  .hero__reply {
+    left: var(--reply-x, 60%);
+    top: var(--reply-y, 28%);
+    animation:
+      heroReplyIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--reply-delay, 2.78s) forwards,
+      heroReplyType 0.82s steps(var(--reply-steps, 12), end) var(--reply-delay, 2.78s) forwards;
+  }
+  .hero__reply.is-picked {
+    z-index: 2;
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--c-ink) 12%, transparent);
+  }
+  .hero__reply.is-refreshing {
+    opacity: 0.62;
+  }
+  .hero__reply-text {
+    display: block;
+    grid-area: 1 / 1;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .hero__reply-text--jp {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  .hero__reply:hover .hero__reply-text--en,
+  .hero__reply:focus-visible .hero__reply-text--en {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  .hero__reply:hover .hero__reply-text--jp,
+  .hero__reply:focus-visible .hero__reply-text--jp {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @keyframes typeReveal {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes heroBraceOpen {
+    to {
+      opacity: 1;
+      transform: translate3d(var(--brace-x, 0), -50%, 0) scaleX(0.68) scaleY(1);
+    }
+  }
+
+  @keyframes heroBraceExit {
+    to {
+      opacity: 0;
+      transform: translate3d(var(--brace-exit-x, var(--brace-x, 0)), -50%, 0) scaleX(0.68) scaleY(1);
+    }
+  }
+
+  @keyframes heroOpenSpace {
+    from { transform: scaleX(0.02); }
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes heroOpenFlash {
+    0% {
+      opacity: 0;
+      transform: scaleX(0.08);
+    }
+    35% {
+      opacity: 0.95;
+      transform: scaleX(0.7);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleX(1.06);
+    }
+  }
+
+  @keyframes heroConversationIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes caretTravel {
+    from { left: var(--prompt-left); }
+    to { left: calc(var(--prompt-left) + 14.32ch - 2px); }
+  }
+
+  @keyframes caretBlink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @keyframes caretFade {
+    to { opacity: 0; }
+  }
+  @keyframes heroReplyIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes heroReplyType {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes heroEmotionIn {
+    from {
+      opacity: 0;
+      transform:
+        translate(0, calc(-50% + 12px))
+        rotate(calc(var(--emotion-rotate) - 7deg))
+        scale(0.82);
+    }
+    to {
+      opacity: var(--emotion-opacity, 0.82);
+    }
+  }
+  @keyframes heroEmotionPass {
+    to {
+      opacity: 0;
+      transform:
+        translate(18vw, -50%)
+        rotate(var(--emotion-rotate))
+        scale(var(--emotion-scale, 1));
+    }
+  }
+  @keyframes heroEmotionBand {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes heroEmotionClean {
+    0% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      clip-path: inset(0 0 0 100%);
+      opacity: 0;
+      transform: translateX(8vw);
+    }
+  }
+  @keyframes heroSweep {
+    0% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    18%, 100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+  @keyframes heroHeadlineReveal {
+    0% {
+      color: var(--c-ink);
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateY(14px) scaleY(0.96);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0) scaleY(1);
+    }
+  }
+  @keyframes heroLetterFall {
+    0% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    100% {
+      opacity: 1;
+      transform:
+        translate3d(var(--letter-fall-x, 0px), var(--letter-fall-y, 560px), 0)
+        rotate(var(--letter-fall-r, 18deg));
+    }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes aboutMarkerIn {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @media (max-width: 767px) {
+    .hero__stage {
+      min-height: 300px;
+    }
+    .hero__emotion-field {
+      height: clamp(50px, 14vw, 58px);
+    }
+    .hero__emotion {
+      font-size: calc(var(--emotion-size) * 0.72);
+    }
+    .hero__headline {
+      width: 100vw;
+    }
+    .hero__brace-giant {
+      font-size: 156px;
+    }
+    .hero__brace-giant--left {
+      --brace-x: calc(-50% - 152px);
+      --brace-exit-x: calc(-50% - 244px);
+      --brace-collapse-x: calc(-50% - 28px);
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
+    }
+    .hero__brace-giant--right {
+      --brace-x: calc(-50% + 152px);
+      --brace-exit-x: calc(-50% + 244px);
+      --brace-collapse-x: calc(-50% + 28px);
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
+    }
+    .hero__opening {
+      width: min(100%, 330px);
+      min-height: 180px;
+    }
+    .hero__conversation {
+      --prompt-left: 20%;
+      --prompt-top: 34px;
+      padding-top: var(--prompt-top);
+    }
+    .hero__prompt {
+      font-size: 13px;
+    }
+    .hero__wordmark-wrap {
+      width: 14.6ch;
+      max-width: 14.6ch;
+    }
+    .hero__conversation::after {
+      top: calc(50% - 20px);
+      height: 24px;
+    }
+    .hero__tail {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero__reply {
+      font-size: 9px;
+    }
+  }
+
+  /* ---------- Section header ---------- */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    padding: 80px 24px 24px;
+    border-bottom: 1px solid var(--c-line);
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .section-head { padding: 120px 40px 32px; }
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .section-head h2 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .section-head__meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+    text-align: right;
+  }
+
+  /* Shop intro (フィルター下のサブコピー) */
+  .section-intro {
+    padding: 26px 16px 28px;
+    max-width: 760px;
+  }
+  @media (min-width: 768px) {
+    .section-intro {
+      padding: 32px 20px 36px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .section-intro {
+      padding: 36px 24px 40px;
+    }
+  }
+  .section-intro__text {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    color: var(--c-ink);
+    max-width: 620px;
+    text-wrap: pretty;
+  }
+  @media (min-width: 1024px) {
+    .section-intro {
+      max-width: none;
+    }
+    .section-intro__text {
+      max-width: none;
+      white-space: nowrap;
+    }
+  }
+
+  /* ---------- Filter ---------- */
+  .filter {
+    --filter-pad-x: 16px;
+    --filter-hover-width: 0px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px var(--filter-pad-x);
+    overflow-x: auto;
+    border-bottom: 1px solid var(--c-line);
+    position: relative;
+    isolation: isolate;
+  }
+  @media (min-width: 768px) { .filter { --filter-pad-x: 20px; padding-block: 16px; } }
+  @media (min-width: 1280px) { .filter { --filter-pad-x: 24px; } }
+  .filter button {
+    --filter-line-scale: 0;
+    position: relative;
+    flex-shrink: 0;
+    min-height: 42px;
+    padding: 0 2px;
+    font-size: 13px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-mute);
+    transition: color 0.28s var(--ease-out);
+    isolation: isolate;
+    z-index: 2;
+  }
+  .filter::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--filter-hover-width);
+    height: 42px;
+    background: var(--c-acid);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left center;
+    transition:
+      opacity 0.12s ease,
+      transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+      width 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+  .filter::after {
+    content: none;
+  }
+  .filter.is-line-showing::before {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1);
+  }
+  .filter button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -8px;
+    width: calc(100% + 16px);
+    height: 42px;
+    background: var(--c-acid);
+    transform: translateY(-50%) scaleX(var(--filter-line-scale));
+    transform-origin: left center;
+    transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .filter button[data-cat="coffee"]::before,
+  .filter button[data-cat="goods"]::before {
+    content: none;
+  }
+  .filter button::after {
+    content: none;
+  }
+  .filter button:hover {
+    --filter-line-scale: 1;
+    color: var(--c-ink);
+  }
+  .filter button.active {
+    --filter-line-scale: 1;
+    color: var(--c-ink);
+  }
+  .filter.has-category-active button:not(.active) {
+    color: rgba(0, 24, 41, 0.28);
+  }
+  .filter.has-category-active button:not(.active):hover {
+    color: rgba(0, 24, 41, 0.58);
+  }
+  .filter button[data-cat="all"].active::before {
+    left: calc(var(--filter-pad-x) * -1);
+    width: calc(100% + var(--filter-pad-x) + 8px);
+  }
+
+  /* ---------- Product grid ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 12px;
+    padding: 24px 16px 72px;
+    align-items: start;
+  }
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 42px 16px;
+      padding: 30px 20px 92px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .grid {
+      gap: 48px 18px;
+      padding: 34px 24px 108px;
+    }
+  }
+
+  .card {
+    grid-column: span 1;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .card.reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (min-width: 768px) {
+    .card {
+      grid-column: span 3;
+    }
+    .card:nth-child(n + 5).size-s { grid-column: span 3; }
+    .card:nth-child(n + 5).size-m { grid-column: span 4; }
+    .card:nth-child(n + 5).size-l { grid-column: span 5; }
+    .card:nth-child(n + 5) {
+      margin-top: 52px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .card:nth-child(n + 5) {
+      margin-top: 72px;
+    }
+  }
+
+  .card__media {
+    aspect-ratio: 3/4;
+    background: transparent;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card__media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    transform: translateX(-102%);
+    z-index: 0;
+    will-change: transform, opacity;
+  }
+  .card__art {
+    position: absolute;
+    inset: 0;
+    background: var(--c-bg-alt);
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 1;
+  }
+  .card__image {
+    position: absolute;
+    inset: 0;
+    background-image: var(--img);
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 2;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card__image-hover {
+    position: absolute;
+    inset: 0;
+    background-image: var(--img-hover);
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 3;
+    transform: scale(1.08);
+    transform-origin: left center;
+    transition:
+      opacity 0.22s linear,
+      clip-path 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* プレースホルダ：商品ごとに色違いの円（コーヒー豆/カップを想起） */
+  .card__art::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 48%; aspect-ratio: 1;
+    background: var(--ph, var(--c-brown));
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 0;
+  }
+  .card:hover .card__art::before {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  .card.has-image .card__art {
+    display: none;
+  }
+  .card.has-image .card__art::before {
+    display: none;
+  }
+  .card__tag,
+  .card__info {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  .card:not(.in) .card__media::before,
+  .card:not(.in) .card__art,
+  .card:not(.in) .card__image,
+  .card:not(.in) .card__image-hover {
+    opacity: 0;
+  }
+  .card.in .card__media::before {
+    animation: cardFlashOverlay 1.08s cubic-bezier(0.32, 0.02, 0.2, 1) forwards;
+    animation-delay: calc(var(--reveal-index, 0) * 135ms + 180ms);
+  }
+  .card.in .card__art {
+    animation: cardContentSlideIn 1.22s cubic-bezier(0.18, 0.94, 0.24, 1) forwards;
+    animation-delay: calc(var(--reveal-index, 0) * 135ms + 285ms);
+  }
+  .card.in .card__image {
+    animation: cardContentSlideIn 1.34s cubic-bezier(0.18, 0.94, 0.24, 1) forwards;
+    animation-delay: calc(var(--reveal-index, 0) * 135ms + 355ms);
+  }
+  .card.in .card__image-hover {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  .card.in .card__tag,
+  .card.in .card__info {
+    animation: cardMetaIn 0.72s var(--ease-out) forwards;
+    animation-delay: calc(var(--reveal-index, 0) * 135ms + 210ms);
+  }
+  .card.has-hover-image:hover .card__image {
+    transform: scale(1.02);
+  }
+  .card.has-hover-image:hover .card__image-hover {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+  @keyframes cardFlashOverlay {
+    0% {
+      opacity: 1;
+      transform: translateX(-102%);
+    }
+    44% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(102%);
+    }
+  }
+  @keyframes cardContentSlideIn {
+    0% {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-12px) scale(1.015);
+      filter: saturate(0.96);
+    }
+    100% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0) scale(1);
+      filter: saturate(1);
+    }
+  }
+  @keyframes cardMetaIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* カーソル追従の黄色い円 "View more" */
+  .card__cursor {
+    --card-cursor-h: 42px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: var(--card-cursor-h);
+    padding: 0 14px;
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 62;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(0.4);
+    transition: opacity 0.22s var(--ease-out);
+    will-change: transform, opacity;
+    white-space: nowrap;
+  }
+  .card__cursor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    z-index: -1;
+  }
+  .card.is-hovered .card__cursor {
+    opacity: 1;
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(1);
+  }
+  .card__cursor span {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.04em;
+  }
+  .card__cursor .brace {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    transform: scaleX(0.9);
+    transform-origin: center;
+    translate: 0 3px;
+  }
+  .card__cursor .label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    transform: translateY(1px);
+  }
+  .card-hover-line {
+    position: fixed;
+    top: calc(var(--hover-line-y, -100px) - 21px);
+    left: 0;
+    width: var(--hover-line-x, 0px);
+    height: 42px;
+    background: var(--c-acid);
+    transform: scaleX(var(--hover-line-scale, 0));
+    transform-origin: left center;
+    opacity: var(--hover-line-opacity, 0);
+    pointer-events: none;
+    z-index: 56;
+    transition: opacity 0.16s var(--ease-out);
+    will-change: width, transform, top, opacity;
+  }
+  .card-hover-label {
+    position: fixed;
+    top: var(--hover-label-y, -100px);
+    left: var(--hover-label-x, 0px);
+    min-height: 42px;
+    padding: 0 14px;
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 70;
+    opacity: var(--hover-label-opacity, 0);
+    transform: translate(-100%, -50%);
+    transition: opacity 0.12s var(--ease-out);
+    white-space: nowrap;
+    will-change: left, top, opacity;
+  }
+  .card-hover-label span {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.04em;
+  }
+  .card-hover-label .brace {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    transform: scaleX(0.9);
+    transform-origin: center;
+    translate: 0 3px;
+  }
+  .card-hover-label .label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    transform: translateY(1px);
+  }
+
+  .card__tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 4;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--c-ink);
+    background: var(--c-bg);
+    padding: 4px 8px;
+    border-radius: 2px;
+  }
+  .card__tag.is-new { background: var(--c-acid); }
+
+  .card__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .card__name {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .card__name-main {
+    display: block;
+  }
+  .card__name em {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .card__cat {
+    font-size: 11px;
+    color: var(--c-mute);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .card__price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- About strip ---------- */
+  .about {
+    background: transparent;
+    padding: 110px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .about { padding: 150px 20px; }
+  }
+  @media (min-width: 1280px) {
+    .about { padding: 180px 24px; }
+  }
+
+  .about__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+  }
+  .about__eyebrow {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 20px;
+    align-self: center;
+    position: relative;
+    overflow: visible;
+    padding: 0.08em 0.22em 0.14em;
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.3vw, 46px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    color: var(--c-ink);
+    background: transparent;
+    isolation: isolate;
+    z-index: 1;
+  }
+  .about__eyebrow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    background: var(--c-acid);
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: -1;
+  }
+  .about__eyebrow-text {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-10px);
+    clip-path: inset(0 100% 0 0);
+  }
+  .about__eyebrow.in::before {
+    animation: aboutMarkerIn 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .about__eyebrow.in .about__eyebrow-text {
+    animation:
+      heroReplyIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) 0.76s forwards,
+      heroReplyType 0.62s steps(22, end) 0.9s forwards;
+  }
+
+  .about__text {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.5vw, 28px);
+    line-height: 1.46;
+    letter-spacing: -0.005em;
+    color: var(--c-ink);
+  }
+  .about__triangles {
+    width: min(100%, 1120px);
+    margin-top: clamp(36px, 7vw, 92px);
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(6px, 1.2vw, 18px);
+    align-items: end;
+    opacity: 0;
+    transform: translateY(38px);
+    transition:
+      opacity 0.52s ease,
+      transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .about__triangles.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .about__triangle {
+    --triangle-rotate: 0deg;
+    --triangle-y: 0px;
+    --triangle-shape: polygon(50% 0%, 100% 100%, 0% 100%);
+    position: relative;
+    aspect-ratio: var(--triangle-ratio, 1 / 1.08);
+    overflow: hidden;
+    clip-path: var(--triangle-shape);
+    background: var(--c-acid);
+    transform:
+      translateY(calc(var(--triangle-y) + 28px))
+      rotate(var(--triangle-rotate))
+      scale(0.72);
+    transform-origin: 50% 72%;
+    opacity: 0;
+    transition:
+      opacity 0.44s ease,
+      transform 1.08s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--triangle-index) * 72ms);
+    will-change: transform, opacity;
+  }
+  .about__triangle[data-letter="A"] {
+    --triangle-ratio: 0.82 / 1;
+    --triangle-shape: polygon(50% 4%, 95% 100%, 5% 100%);
+  }
+  .about__triangle[data-letter="N"] {
+    --triangle-ratio: 0.72 / 1;
+    --triangle-shape: polygon(0% 0%, 100% 100%, 56% 100%, 0% 36%);
+  }
+  .about__triangle[data-letter="Y"] {
+    --triangle-ratio: 0.92 / 1;
+    --triangle-shape: polygon(50% 4%, 100% 100%, 0% 100%);
+  }
+  .about__triangle[data-letter="W"] {
+    --triangle-ratio: 1.15 / 1;
+    --triangle-shape: polygon(50% 5%, 73% 100%, 27% 100%);
+  }
+  .about__triangle[data-shape="A2"] {
+    --triangle-ratio: 0.82 / 1;
+    --triangle-shape: polygon(49% 2%, 88% 100%, 11% 100%);
+  }
+  .about__triangle[data-shape="Y2"] {
+    --triangle-ratio: 0.78 / 1;
+    --triangle-shape: polygon(0% 0%, 100% 0%, 52% 100%);
+  }
+  .about__triangles.in .about__triangle {
+    opacity: 1;
+    transform:
+      translateY(var(--triangle-y))
+      rotate(var(--triangle-rotate))
+      scale(1);
+  }
+  .about__triangle::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background-image: var(--triangle-photo);
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.08);
+    transition:
+      background-image 0.01s linear,
+      transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .about__triangle.is-flipping::before {
+    transform: scale(1.18) rotate(1.2deg);
+  }
+  @media (max-width: 767px) {
+    .about__triangles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 40px;
+    }
+  }
+
+  .about__cta {
+    position: absolute;
+    top: var(--cta-y, 50%);
+    left: var(--cta-x, 50%);
+    transform: translate(-50%, -50%);
+    background: var(--c-acid);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 2px;
+    white-space: nowrap;
+    pointer-events: auto;
+    will-change: top, left;
+    z-index: 2;
+  }
+  .about__cta span {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .about__cta:hover span {
+    transform: translateX(4px);
+  }
+
+  .fallen-letter-floor {
+    position: relative;
+    min-height: clamp(160px, 22vw, 260px);
+    overflow: hidden;
+    background: transparent;
+    pointer-events: none;
+  }
+  .fallen-letter-floor__letter {
+    position: absolute;
+    left: var(--floor-x);
+    bottom: var(--floor-y);
+    font-family: var(--font-display);
+    font-size: var(--floor-size);
+    font-weight: 300;
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    color: var(--c-ink);
+    opacity: 0.28;
+    transform:
+      translate3d(var(--floor-push-x, 0px), var(--floor-push-y, 0px), 0)
+      rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
+    transform-origin: center;
+    transition:
+      opacity 0.28s ease,
+      transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .fallen-letter-floor__letter--landed {
+    animation: floorLetterSettle 0.46s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes floorLetterSettle {
+    from {
+      opacity: 0.52;
+      transform:
+        translate3d(var(--floor-push-x, 0px), calc(var(--floor-push-y, 0px) - 28px), 0)
+        rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
+    }
+    to {
+      opacity: 0.38;
+      transform:
+        translate3d(var(--floor-push-x, 0px), var(--floor-push-y, 0px), 0)
+        rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
+    }
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    padding: 56px 16px 20px;
+    background: transparent;
+    border-top: none;
+  }
+  @media (min-width: 768px) { .footer { padding: 68px 20px 24px; } }
+  @media (min-width: 1280px) { .footer { padding: 72px 24px 24px; } }
+
+  .footer__stage {
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 52px;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .footer__stage {
+      min-height: 420px;
+      margin-bottom: 64px;
+    }
+  }
+
+  .footer__brand-mark {
+    width: clamp(180px, 28vw, 380px);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .footer__brand-mark img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .footer__chip {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 13px 10px;
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    background: var(--c-acid);
+    color: var(--c-ink);
+    transition:
+      transform 0.35s var(--ease-out),
+      filter 0.35s var(--ease-out);
+  }
+  .footer__chip:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.98);
+  }
+
+  .footer__chip--all { top: 10%; left: 2%; }
+  .footer__chip--coffee { top: 70%; left: 8%; }
+  .footer__chip--goods { top: 18%; right: 2%; }
+  .footer__chip--about { top: 61%; right: 6%; }
+  .footer__chip--instagram {
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+  }
+  .footer__chip--instagram:hover { transform: translateX(-50%) translateY(-2px); }
+
+  @media (min-width: 768px) {
+    .footer__chip--all { top: 12%; left: 6%; }
+    .footer__chip--coffee { top: 69%; left: 12%; }
+    .footer__chip--goods { top: 16%; right: 8%; }
+    .footer__chip--about { top: 58%; right: 10%; }
+    .footer__chip--instagram { bottom: 12%; left: 53%; }
+    .footer__chip {
+      padding: 11px 16px 12px;
+      font-size: 15px;
+    }
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .hero__brace-giant {
+      opacity: 1;
+      transform: translate3d(var(--brace-x, 0), -50%, 0) scaleX(0.68) scaleY(1);
+    }
+    .hero__opening {
+      transform: scaleX(1);
+      animation: none;
+    }
+    .hero__opening::before {
+      opacity: 0;
+      animation: none;
+    }
+    .hero__conversation {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    .hero__wordmark-wrap {
+      width: 14.6ch;
+      max-width: 14.6ch;
+      clip-path: inset(0 0 0 0);
+      animation: none;
+    }
+    .hero__conversation::after {
+      display: none;
+      animation: none;
+    }
+    .hero__emotion-field,
+    .hero__sweep {
+      display: none;
+      animation: none;
+    }
+    .hero__headline {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: none;
+      animation: none;
+    }
+    .hero__prompt-brace,
+    .hero__reply,
+    .hero__tail {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0 0 0 0);
+    }
+    .card__media::before,
+    .card__art {
+      clip-path: inset(0 0 0 0);
+      transform: none;
+      animation: none;
+    }
+    .card__tag,
+    .card__info {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+    body::before,
+    body::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header__inner wrap">
+    <a href="index.html" class="logo" aria-label="ANYWAY">
+      <svg class="logo__svg logo__base" viewBox="-4 -2 148.61 129.23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M22.69,84.81v24.18c0,3.97,2.23,6.2,6.2,6.2h8.56c.5,1.74.62,3.35.62,5.08s-.25,3.47-.62,4.96h-12.65c-8.93,0-13.89-4.96-13.89-13.76v-19.71c0-16.74-2.11-22.32-10.17-22.94-.62-1.86-.74-4.22-.74-6.45,0-2.11.25-4.22.74-5.95,8.06-.62,10.17-6.32,10.17-22.94V13.76C10.91,4.96,15.87,0,24.8,0h12.65c.37,1.61.62,3.22.62,4.96s-.25,3.35-.62,5.08h-8.56c-3.97,0-6.2,2.23-6.2,6.2v24.18c0,11.66-1.98,19.59-10.54,22.19,8.56,2.6,10.54,10.54,10.54,22.2Z"/>
+          <path d="M48.23,63.49c-1.24-1.12-2.36-2.6-3.1-4.09,4.59-7.69,10.04-9.92,15.38-9.92,4.46,0,9.42,2.23,12.77,3.97,2.73,1.36,4.96,2.23,7.19,2.23,2.6,0,5.08-1.36,8.31-4.84,1.49.87,2.85,1.74,4.09,2.85,1.36,1.24,2.48,2.73,3.35,4.22-4.59,7.56-9.92,10.04-15,10.04-4.59,0-9.67-2.11-13.27-4.09-2.6-1.36-4.71-2.11-6.82-2.11-2.85,0-5.33,1.36-8.56,4.96-1.61-.87-3.1-1.98-4.34-3.22Z"/>
+          <path d="M117.92,40.42v-24.18c0-3.97-2.23-6.2-6.2-6.2h-8.56c-.5-1.74-.62-3.35-.62-5.08s.25-3.35.62-4.96h12.52c9.05,0,14.01,4.96,14.01,13.76v19.71c0,16.61,1.98,22.32,10.17,22.94.5,1.74.74,3.84.74,5.95,0,2.23-.25,4.59-.74,6.45-8.06.62-10.17,6.2-10.17,22.94v19.71c0,8.8-4.96,13.76-14.01,13.76h-12.52c-.37-1.49-.62-3.22-.62-4.96s.12-3.35.62-5.08h8.56c3.97,0,6.2-2.23,6.2-6.2v-24.18c0-11.66,1.98-19.59,10.54-22.2-8.56-2.6-10.54-10.54-10.54-22.19Z"/>
+        </g>
+      </svg>
+      <svg class="logo__svg logo__hover" viewBox="-4 -2 148.61 129.23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M22.69,84.81v24.18c0,3.97,2.23,6.2,6.2,6.2h8.56c.5,1.74.62,3.35.62,5.08s-.25,3.47-.62,4.96h-12.65c-8.93,0-13.89-4.96-13.89-13.76v-19.71c0-16.74-2.11-22.32-10.17-22.94-.62-1.86-.74-4.22-.74-6.45,0-2.11.25-4.22.74-5.95,8.06-.62,10.17-6.32,10.17-22.94V13.76C10.91,4.96,15.87,0,24.8,0h12.65c.37,1.61.62,3.22.62,4.96s-.25,3.35-.62,5.08h-8.56c-3.97,0-6.2,2.23-6.2,6.2v24.18c0,11.66-1.98,19.59-10.54,22.19,8.56,2.6,10.54,10.54,10.54,22.2Z"/>
+          <path d="M48.23,63.49c-1.24-1.12-2.36-2.6-3.1-4.09,4.59-7.69,10.04-9.92,15.38-9.92,4.46,0,9.42,2.23,12.77,3.97,2.73,1.36,4.96,2.23,7.19,2.23,2.6,0,5.08-1.36,8.31-4.84,1.49.87,2.85,1.74,4.09,2.85,1.36,1.24,2.48,2.73,3.35,4.22-4.59,7.56-9.92,10.04-15,10.04-4.59,0-9.67-2.11-13.27-4.09-2.6-1.36-4.71-2.11-6.82-2.11-2.85,0-5.33,1.36-8.56,4.96-1.61-.87-3.1-1.98-4.34-3.22Z"/>
+          <path d="M117.92,40.42v-24.18c0-3.97-2.23-6.2-6.2-6.2h-8.56c-.5-1.74-.62-3.35-.62-5.08s.25-3.35.62-4.96h12.52c9.05,0,14.01,4.96,14.01,13.76v19.71c0,16.61,1.98,22.32,10.17,22.94.5,1.74.74,3.84.74,5.95,0,2.23-.25,4.59-.74,6.45-8.06.62-10.17,6.2-10.17,22.94v19.71c0,8.8-4.96,13.76-14.01,13.76h-12.52c-.37-1.49-.62-3.22-.62-4.96s.12-3.35.62-5.08h8.56c3.97,0,6.2-2.23,6.2-6.2v-24.18c0-11.66,1.98-19.59,10.54-22.2-8.56-2.6-10.54-10.54-10.54-22.19Z"/>
+        </g>
+      </svg>
+    </a>
+    <nav class="nav" aria-label="メイン">
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="header__bag">
+      <button class="bag-btn" aria-label="カートを開く">
+        <span>Bag</span>
+        <span class="count">(0)</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="bag-overlay" id="bagOverlay"></div>
+<aside class="bag-drawer" id="bagDrawer" aria-hidden="true" aria-label="ショッピングバッグ">
+  <div class="bag-drawer__head">
+    <div>
+      <div class="bag-drawer__meta">Shopping bag</div>
+      <div class="bag-drawer__title">Your selections</div>
+    </div>
+    <button class="bag-drawer__close" id="bagClose" aria-label="カートを閉じる">✕</button>
+  </div>
+  <div class="bag-drawer__body" id="bagItems"></div>
+  <div class="bag-drawer__foot">
+    <div class="bag-drawer__row">
+      <div class="bag-drawer__meta">Subtotal</div>
+      <div class="bag-drawer__subtotal" id="bagSubtotal">¥0</div>
+    </div>
+    <a class="bag-drawer__checkout" href="#" id="bagCheckout">Ready for checkout</a>
+  </div>
+</aside>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__copy">
+    <div class="hero__stage">
+      <div class="hero__emotion-field" aria-hidden="true"></div>
+      <div class="hero__sweep" aria-hidden="true"></div>
+      <h1 class="hero__headline" aria-label="Anyway">
+        <img class="hero__headline-logo" src="assets/anyway-mv-title.svg" alt="">
+      </h1>
+    </div>
+  </div>
+</section>
+
+<!-- Shop -->
+<section id="shop">
+  <div class="filter" role="tablist" aria-label="商品カテゴリ">
+    <button class="active" data-cat="all" role="tab">All</button>
+    <button data-cat="coffee" role="tab">Coffee</button>
+    <button data-cat="goods" role="tab">Goods</button>
+  </div>
+
+  <div class="section-intro">
+    <p class="section-intro__text reveal" id="shopIntroText">
+      毎日に寄り添う一杯。気分に合わせて、選んでください。
+    </p>
+  </div>
+
+  <div class="grid" id="grid" role="list"></div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="about__inner">
+    <div class="about__eyebrow"><span class="about__eyebrow-text">まあ、まずはコーヒーでも。</span></div>
+    <p class="about__text reveal">
+      毎日忙しく過ごしたり、何もせずにグダっとしたり。<br>
+      いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。<br>
+      ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。
+    </p>
+    <div class="about__triangles reveal" aria-label="ANYWAY photo fragments">
+      <span class="about__triangle" data-letter="A" style="--triangle-index: 0; --triangle-y: 18px; --triangle-rotate: -7deg;"></span>
+      <span class="about__triangle" data-letter="N" style="--triangle-index: 1; --triangle-y: -10px; --triangle-rotate: 4deg;"></span>
+      <span class="about__triangle" data-letter="Y" style="--triangle-index: 2; --triangle-y: 12px; --triangle-rotate: -3deg;"></span>
+      <span class="about__triangle" data-letter="W" style="--triangle-index: 3; --triangle-y: -18px; --triangle-rotate: 5deg;"></span>
+      <span class="about__triangle" data-letter="A" data-shape="A2" style="--triangle-index: 4; --triangle-y: 8px; --triangle-rotate: -5deg;"></span>
+      <span class="about__triangle" data-letter="Y" data-shape="Y2" style="--triangle-index: 5; --triangle-y: -6px; --triangle-rotate: 7deg;"></span>
+    </div>
+  </div>
+</section>
+
+<div class="fallen-letter-floor" aria-hidden="true"></div>
+
+<script>
+  /* ---------- Product data (CMS差し替えポイント) ---------- */
+  /* この配列をCMSのAPIから取得するように差し替えれば、
+     管理画面から商品の追加・編集・削除ができる構成。
+     画像は `media: { url, alt }` を追加すれば対応可。
+     size: s/m/l でカードのサイズ、offset: up/down/null でレイアウトのリズム。 */
+  const FALLBACK_PRODUCTS = [
+    { id: "p01", name: "Brew No.07", italic: "Ethiopia", category: "coffee", price: 1800, tag: "NEW", isNew: true, color: "#B08650", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "静かな朝に" },
+    { id: "p02", name: "Daily Blend", italic: null,      category: "coffee", price: 1400, tag: "BLEND", isNew: false, color: "#7a4a1f", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "気持ちを整える" },
+    { id: "p03", name: "Decaf Slow", italic: null,       category: "coffee", price: 1500, tag: "DECAF", isNew: false, color: "#9b6f3a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "夜をやわらかく" },
+    { id: "p04", name: "Mug",         italic: "12oz",    category: "goods",  price: 2400, tag: "GOODS", isNew: false, color: "#001829", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "机の景色を変える" },
+    { id: "p05", name: "Brew No.06", italic: "Colombia", category: "coffee", price: 1700, tag: "SINGLE", isNew: false, color: "#5a3a1a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "少し前向きに" },
+    { id: "p06", name: "Tote",        italic: "everyday", category: "goods", price: 3200, tag: "GOODS", isNew: false, color: "#E6FD28", image: null, hoverImage: null, size: "l", offset: null, href: "product.html", hoverLabel: "ふらっと外へ" },
+    { id: "p07", name: "Morning Kit", italic: null,      category: "coffee", price: 3800, tag: "SET",   isNew: true, color: "#c89b6b", image: null, hoverImage: null, size: "s", offset: null, href: "product.html", hoverLabel: "朝を始めるセット" },
+    { id: "p08", name: "T-Shirt",     italic: "logo",    category: "goods",  price: 4200, tag: "GOODS", isNew: false, color: "#B2B2B2", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "今日は軽くいく" },
+  ];
+
+  /* ---------- Render ---------- */
+  const grid = document.getElementById("grid");
+  const filterButtons = document.querySelectorAll(".filter button");
+  const shopIntroText = document.getElementById("shopIntroText");
+  const bagButton = document.querySelector(".bag-btn");
+  const bagCount = document.querySelector(".bag-btn .count");
+  const bagDrawer = document.getElementById("bagDrawer");
+  const bagOverlay = document.getElementById("bagOverlay");
+  const bagClose = document.getElementById("bagClose");
+  const bagItems = document.getElementById("bagItems");
+  const bagSubtotal = document.getElementById("bagSubtotal");
+  const bagCheckout = document.getElementById("bagCheckout");
+  const CART_KEY = "hysd-cart-v1";
+  const FILTER_KEY = "hysd-filter-cat";
+
+  const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
+  const FILTER_COPY = {
+    all: "",
+    coffee: "毎日に寄り添う一杯。気分に合わせて、選んでください。",
+    goods: "カップやトートなど、コーヒーの時間を少しだけ気持ちよくする日用品たちです。",
+  };
+  const HERO_REPLY_POOL = [
+    { en: "slow morning", jp: "ゆっくりいこ" },
+    { en: "need a reset", jp: "ちょいリセット" },
+    { en: "a little brighter", jp: "ちょい明るめで" },
+    { en: "take it easy", jp: "力ぬいてこ" },
+    { en: "one more breath", jp: "もうひと息" },
+    { en: "late start today", jp: "今日はゆっくりで" },
+    { en: "something steady", jp: "安定感ほしい" },
+    { en: "just a small lift", jp: "ちょい上げたい" },
+    { en: "keep it gentle", jp: "やさしめで" },
+    { en: "clear my head", jp: "頭すっきりしたい" },
+    { en: "back to myself", jp: "自分に戻ろ" },
+    { en: "let it soften", jp: "ふわっといこ" },
+  ];
+  const HERO_EMOTION_WORDS = [
+    "restless",
+    "hopeful",
+    "calm",
+    "messy",
+    "light",
+    "tired",
+    "overthinking",
+    "soft",
+    "new start",
+    "cloudy",
+    "quiet",
+    "anxious",
+    "awake",
+    "nervous",
+    "slow",
+    "heavy",
+    "bright",
+    "wired",
+    "loose",
+    "blue",
+    "steady",
+    "unready",
+    "fine",
+    "blank",
+    "alive",
+    "gentle",
+    "too much",
+    "almost",
+    "okay",
+  ];
+  const HERO_REPLY_POSITIONS = [
+    { x: "52%", y: "8%" },
+    { x: "79%", y: "20%" },
+    { x: "36%", y: "36%" },
+    { x: "63%", y: "42%" },
+    { x: "87%", y: "58%" },
+    { x: "53%", y: "68%" },
+    { x: "74%", y: "82%" },
+    { x: "26%", y: "78%" },
+  ];
+  const heroSection = document.querySelector(".hero");
+
+  function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function renderHeroReplyInner(entry) {
+    return `<span class="hero__reply-text hero__reply-text--en">${entry.en} }</span><span class="hero__reply-text hero__reply-text--jp">${entry.jp} }</span>`;
+  }
+
+  function setupHeroReplies() {
+    const tail = document.querySelector(".hero__tail");
+    if (!tail) return;
+
+    const isMobile = window.innerWidth <= 767;
+    const replyCount = isMobile ? 5 : 7;
+    const replies = shuffle(HERO_REPLY_POOL).slice(0, replyCount);
+    const positions = shuffle(HERO_REPLY_POSITIONS).slice(0, replyCount);
+
+    const repliesMarkup = replies.map((reply, index) => {
+      const position = positions[index] || HERO_REPLY_POSITIONS[index % HERO_REPLY_POSITIONS.length];
+      const steps = Math.max(8, Math.min(18, reply.en.length));
+      const delay = 2.76 + index * 0.16;
+      return `<span class="hero__reply" tabindex="0" style="--reply-x:${position.x}; --reply-y:${position.y}; --reply-delay:${delay.toFixed(2)}s; --reply-steps:${steps};" data-reply-en="${reply.en}" data-reply-jp="${reply.jp}">${renderHeroReplyInner(reply)}</span>`;
+    }).join("");
+
+    tail.innerHTML = repliesMarkup;
+    setupHeroReplyInteraction(tail);
+  }
+
+  function setupHeroEmotionIntro() {
+    const field = document.querySelector(".hero__emotion-field");
+    if (!field) return;
+
+    const isMobile = window.innerWidth <= 767;
+    const emotionCount = isMobile ? 6 : 16;
+    const words = shuffle(HERO_EMOTION_WORDS).slice(0, emotionCount);
+    const columns = isMobile ? 3 : 8;
+    const rows = Math.ceil(emotionCount / columns);
+    const gridLeft = isMobile ? 5 : 2;
+    const gridTop = isMobile ? 26 : 32;
+    const gridWidth = isMobile ? 88 : 96;
+    const gridHeight = isMobile ? 48 : 36;
+
+    const renderLetters = (word) => [...word].map((char, charIndex) => {
+      const safeChar = char === " " ? "&nbsp;" : char;
+      const dropBase = window.innerHeight + (isMobile ? 360 : 520);
+      const drop = dropBase + Math.random() * (isMobile ? 420 : 620);
+      const drift = -64 + Math.random() * 128;
+      const rotate = -42 + Math.random() * 84;
+      const delay = Math.random() * 0.12;
+      const duration = 1.24 + Math.random() * 0.86;
+      return `<span class="hero__letter" data-letter-index="${charIndex}" data-letter-delay="${delay.toFixed(3)}" style="--letter-fall-y:${drop.toFixed(1)}px; --letter-fall-x:${drift.toFixed(1)}px; --letter-fall-r:${rotate.toFixed(1)}deg; --letter-fall-delay:${delay.toFixed(3)}s; --letter-fall-duration:${duration.toFixed(2)}s;">${safeChar}</span>`;
+    }).join("");
+
+    field.innerHTML = words.map((word, index) => {
+      const col = index % columns;
+      const row = Math.floor(index / columns);
+      const cellX = gridLeft + (col / Math.max(1, columns - 1)) * gridWidth;
+      const cellY = gridTop + (row / Math.max(1, rows - 1)) * gridHeight;
+      const baseSize = 18 + Math.random() * (isMobile ? 7 : 10);
+      const cellWidthPx = window.innerWidth * (gridWidth / columns / 100);
+      const size = Math.min(baseSize, Math.max(isMobile ? 16 : 18, cellWidthPx / Math.max(word.length * 0.68, 4.2)));
+      const estimatedWidth = (word.length * size * 0.68 / window.innerWidth) * 100;
+      const x = Math.max(1.8, Math.min(98 - estimatedWidth, cellX + (-1.4 + Math.random() * 2.8)));
+      const y = cellY + (-4 + Math.random() * 8);
+      const rotate = -1.2 + Math.random() * 2.4;
+      const delay = 0.06 + Math.random() * 0.9 + row * 0.08;
+      const bandDelay = 1.22 + Math.random() * 0.58 + row * 0.04;
+      const scale = 0.92 + Math.random() * 0.16;
+      const opacity = 0.62 + Math.random() * 0.3;
+      const blur = Math.random() > 0.82 ? "0.4px" : "0";
+
+      return `<span class="hero__emotion" data-emotion-opacity="${opacity.toFixed(2)}" data-emotion-delay="${delay.toFixed(2)}" style="--emotion-x:${x.toFixed(2)}%; --emotion-y:${y.toFixed(2)}%; --emotion-rotate:${rotate.toFixed(2)}deg; --emotion-size:${size.toFixed(2)}px; --emotion-delay:${delay.toFixed(2)}s; --band-delay:${bandDelay.toFixed(2)}s; --emotion-scale:${scale.toFixed(2)}; --emotion-opacity:${opacity.toFixed(2)}; --emotion-blur:${blur};">${renderLetters(word)}</span>`;
+    }).join("");
+
+    field.querySelectorAll(".hero__emotion").forEach((node) => {
+      const delay = Number(node.dataset.emotionDelay || 0);
+      window.setTimeout(() => {
+        node.dataset.emotionVisible = "1";
+        node.style.setProperty("--emotion-alpha", node.dataset.emotionOpacity || "0.78");
+      }, delay * 1000);
+    });
+
+    setupFallenLetterFloor(words);
+  }
+
+  function setupFallenLetterFloor(words) {
+    const floor = document.querySelector(".fallen-letter-floor");
+    if (!floor) return;
+
+    const letters = words.join("").replace(/\s/g, "").split("");
+    const visibleLetters = shuffle(letters).slice(0, Math.min(letters.length, 72));
+
+    floor.innerHTML = "";
+    visibleLetters.forEach((char, index) => {
+      addLetterToFloor(floor, char, index);
+    });
+    setupFloorLetterInteraction(floor);
+  }
+
+  function addLetterToFloor(floor, char, index, isLanded = false) {
+    if (!floor || !char || floor.children.length >= 220) return;
+    const floorIndex = Number.isFinite(index) ? index : floor.children.length;
+
+    const letter = document.createElement("span");
+    const x = 2 + Math.random() * 94;
+    const y = Math.random() * 28 + (floorIndex % 5) * 9;
+    const size = 12 + Math.random() * 28;
+    const rotate = -38 + Math.random() * 76;
+
+    letter.className = `fallen-letter-floor__letter${isLanded ? " fallen-letter-floor__letter--landed" : ""}`;
+    letter.textContent = char;
+    letter.style.setProperty("--floor-x", `${x.toFixed(2)}%`);
+    letter.style.setProperty("--floor-y", `${y.toFixed(2)}px`);
+    letter.style.setProperty("--floor-size", `${size.toFixed(2)}px`);
+    letter.style.setProperty("--floor-rotate", `${rotate.toFixed(2)}deg`);
+    letter.style.setProperty("--floor-push-x", "0px");
+    letter.style.setProperty("--floor-push-y", "0px");
+    letter.style.setProperty("--floor-push-r", "0deg");
+    floor.appendChild(letter);
+  }
+
+  function setupFloorLetterInteraction(floor) {
+    if (!floor || floor.dataset.interactionReady === "1") return;
+    floor.dataset.interactionReady = "1";
+
+    let rafId = null;
+    let pointer = { x: -9999, y: -9999 };
+    const radius = 150;
+
+    const resetLetters = () => {
+      floor.querySelectorAll(".fallen-letter-floor__letter").forEach((letter) => {
+        letter.style.setProperty("--floor-push-x", "0px");
+        letter.style.setProperty("--floor-push-y", "0px");
+        letter.style.setProperty("--floor-push-r", "0deg");
+      });
+    };
+
+    const updateLetters = () => {
+      const floorRect = floor.getBoundingClientRect();
+      const pointerNearFloor =
+        pointer.x >= floorRect.left - radius &&
+        pointer.x <= floorRect.right + radius &&
+        pointer.y >= floorRect.top - radius &&
+        pointer.y <= floorRect.bottom + radius;
+
+      if (!pointerNearFloor) {
+        resetLetters();
+        rafId = null;
+        return;
+      }
+
+      floor.querySelectorAll(".fallen-letter-floor__letter").forEach((letter) => {
+        const rect = letter.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = cx - pointer.x;
+        const dy = cy - pointer.y;
+        const distance = Math.hypot(dx, dy);
+
+        if (distance > radius || distance === 0) {
+          letter.style.setProperty("--floor-push-x", "0px");
+          letter.style.setProperty("--floor-push-y", "0px");
+          letter.style.setProperty("--floor-push-r", "0deg");
+          return;
+        }
+
+        const force = Math.pow(1 - distance / radius, 1.7);
+        const angle = Math.atan2(dy, dx);
+        const pushX = Math.cos(angle) * force * 58;
+        const pushY = Math.sin(angle) * force * 44 - force * 20;
+        const pushR = (dx >= 0 ? 1 : -1) * force * 18;
+
+        letter.style.setProperty("--floor-push-x", `${pushX.toFixed(1)}px`);
+        letter.style.setProperty("--floor-push-y", `${pushY.toFixed(1)}px`);
+        letter.style.setProperty("--floor-push-r", `${pushR.toFixed(1)}deg`);
+      });
+
+      rafId = null;
+    };
+
+    window.addEventListener("pointermove", (event) => {
+      pointer = { x: event.clientX, y: event.clientY };
+      if (rafId === null) rafId = requestAnimationFrame(updateLetters);
+    }, { passive: true });
+    window.addEventListener("pointerleave", resetLetters);
+  }
+
+  function setupHeroScrollIntro() {
+    const hero = document.querySelector(".hero");
+    const sweep = document.querySelector(".hero__sweep");
+    const floor = document.querySelector(".fallen-letter-floor");
+    const emotions = [...document.querySelectorAll(".hero__emotion")];
+    if (!hero || !sweep || !emotions.length) return;
+
+    let rafId = null;
+    let introLocked = false;
+    let sweepCompleted = false;
+    let titleDelayTimer = null;
+    let titleRevealStart = null;
+    let titleRevealProgress = 0;
+    const SWEEP_COMPLETE_PROGRESS = 0.38;
+    const TITLE_DELAY_MS = 1000;
+    const TITLE_REVEAL_MS = 560;
+    const clamp01 = (value) => Math.max(0, Math.min(1, value));
+
+    function measureSweepBounds() {
+      const stage = document.querySelector(".hero__stage");
+      const field = document.querySelector(".hero__emotion-field");
+      if (!stage || !field) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const fieldRect = field.getBoundingClientRect();
+      const top = fieldRect.top - stageRect.top;
+
+      hero.style.setProperty("--hero-sweep-top", `${top.toFixed(1)}px`);
+      hero.style.setProperty("--hero-sweep-height", `${Math.max(42, fieldRect.height).toFixed(1)}px`);
+    }
+
+    function update() {
+      measureSweepBounds();
+      const heroRect = hero.getBoundingClientRect();
+      const stickyTravel = Math.max(hero.offsetHeight - window.innerHeight, 1);
+      const rawProgress = clamp01((0 - heroRect.top) / stickyTravel);
+      const progress = rawProgress < 0.02 ? 0 : rawProgress;
+      const activeSweepProgress = introLocked || sweepCompleted
+        ? 1
+        : clamp01(progress / SWEEP_COMPLETE_PROGRESS);
+      let needsTitleFrame = false;
+
+      if (activeSweepProgress >= 0.995 && !sweepCompleted) {
+        sweepCompleted = true;
+        hero.dataset.sweepCompleted = "1";
+        titleDelayTimer = window.setTimeout(() => {
+          titleDelayTimer = null;
+          titleRevealStart = performance.now();
+          requestUpdate();
+        }, TITLE_DELAY_MS);
+      }
+
+      if (titleRevealStart !== null && !introLocked) {
+        titleRevealProgress = clamp01((performance.now() - titleRevealStart) / TITLE_REVEAL_MS);
+        needsTitleFrame = titleRevealProgress < 1;
+      }
+
+      if (titleRevealProgress >= 0.995) {
+        introLocked = true;
+        hero.dataset.introLocked = "1";
+      }
+
+      const sweepProgress = activeSweepProgress;
+      const visibleTitleProgress = introLocked ? 1 : titleRevealProgress;
+
+      hero.style.setProperty("--hero-sweep-progress", sweepProgress.toFixed(4));
+      hero.style.setProperty("--hero-sweep-opacity", sweepProgress > 0 ? "1" : "0");
+
+      hero.style.setProperty("--hero-title-opacity", visibleTitleProgress.toFixed(4));
+      hero.style.setProperty("--hero-title-clip", `${((1 - visibleTitleProgress) * 100).toFixed(2)}%`);
+
+      emotions.forEach((node) => {
+        const baseOpacity = node.dataset.emotionVisible === "1"
+          ? Number(node.dataset.emotionOpacity || 0.78)
+          : 0;
+
+        node.style.setProperty("--emotion-alpha", baseOpacity.toFixed(3));
+        node.querySelectorAll(".hero__letter").forEach((letter) => {
+          if (letter.dataset.fallTriggered === "1") return;
+          if (progress < 0.015) return;
+
+          const rect = letter.getBoundingClientRect();
+          const threshold = clamp01(rect.left / Math.max(window.innerWidth, 1));
+          const charIndex = Number(letter.dataset.letterIndex || 0);
+          const contactProgress = activeSweepProgress + 0.012 - charIndex * 0.002;
+
+          if (node.dataset.emotionVisible === "1" && contactProgress >= threshold) {
+            letter.dataset.fallTriggered = "1";
+            letter.classList.add("is-falling");
+          }
+        });
+      });
+
+      rafId = needsTitleFrame ? requestAnimationFrame(update) : null;
+    }
+
+    const requestUpdate = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    emotions.forEach((node) => {
+      node.querySelectorAll(".hero__letter").forEach((letter) => {
+        letter.addEventListener("animationend", (event) => {
+          if (event.animationName !== "heroLetterFall" || letter.dataset.landed === "1") return;
+          letter.dataset.landed = "1";
+          letter.classList.add("has-landed");
+          addLetterToFloor(floor, letter.textContent || "", undefined, true);
+        });
+      });
+    });
+    window.setTimeout(requestUpdate, 1200);
+    update();
+  }
+
+  function setupHeroReplyInteraction(tail) {
+    const replies = [...tail.querySelectorAll(".hero__reply")];
+    let isCycling = false;
+
+    function setReplyContent(reply, entry) {
+      const steps = Math.max(8, Math.min(18, entry.en.length));
+      reply.dataset.replyEn = entry.en;
+      reply.dataset.replyJp = entry.jp;
+      reply.style.setProperty("--reply-steps", steps);
+      reply.innerHTML = renderHeroReplyInner(entry);
+    }
+
+    replies.forEach((reply) => {
+      reply.addEventListener("click", () => {
+        if (isCycling) return;
+        isCycling = true;
+
+        const chosen = {
+          en: reply.dataset.replyEn,
+          jp: reply.dataset.replyJp,
+        };
+        const chosenPosition = {
+          x: reply.style.getPropertyValue("--reply-x"),
+          y: reply.style.getPropertyValue("--reply-y"),
+        };
+        const nextReplies = shuffle(
+          HERO_REPLY_POOL.filter((entry) => entry.en !== chosen.en)
+        ).slice(0, Math.max(0, replies.length - 1));
+        const nextPositions = shuffle(
+          HERO_REPLY_POSITIONS.filter(
+            (position) => position.x !== chosenPosition.x || position.y !== chosenPosition.y
+          )
+        );
+
+        replies.forEach((node) => node.classList.add("is-refreshing"));
+        reply.classList.add("is-picked");
+
+        window.setTimeout(() => {
+          let replyIndex = 0;
+          let positionIndex = 0;
+          replies.forEach((node) => {
+            if (node === reply) {
+              setReplyContent(node, chosen);
+              node.style.setProperty("--reply-x", chosenPosition.x);
+              node.style.setProperty("--reply-y", chosenPosition.y);
+              return;
+            }
+            const nextEntry = nextReplies[replyIndex % nextReplies.length];
+            const nextPosition = nextPositions[positionIndex % nextPositions.length] || HERO_REPLY_POSITIONS[positionIndex % HERO_REPLY_POSITIONS.length];
+            setReplyContent(node, nextEntry);
+            node.style.setProperty("--reply-x", nextPosition.x);
+            node.style.setProperty("--reply-y", nextPosition.y);
+            replyIndex += 1;
+            positionIndex += 1;
+          });
+        }, 120);
+
+        window.setTimeout(() => {
+          replies.forEach((node) => node.classList.remove("is-refreshing"));
+          reply.classList.remove("is-picked");
+          isCycling = false;
+        }, 720);
+      });
+    });
+  }
+
+  function applyHeroBackground(products = []) {
+    if (!heroSection) return;
+    const cmsHeroImage = products.find((product) => product.heroImage)?.heroImage;
+    if (!cmsHeroImage) return;
+    heroSection.style.setProperty("--hero-bg-image", `url('${cmsHeroImage}')`);
+  }
+
+  function loadCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  function resolveCartItemImage(item) {
+    if (item.image) return item.image;
+    return productsData.find((product) => product.id === item.id)?.image || "";
+  }
+
+  function getCartCount(cart = loadCart()) {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  function getSubtotal(cart = loadCart()) {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  function updateBagCount() {
+    bagCount.textContent = `(${getCartCount()})`;
+  }
+
+  function renderBag() {
+    const cart = loadCart();
+    let cartChanged = false;
+    cart.forEach((item) => {
+      if (!item.image) {
+        const resolvedImage = resolveCartItemImage(item);
+        if (resolvedImage) {
+          item.image = resolvedImage;
+          cartChanged = true;
+        }
+      }
+    });
+    if (cartChanged) saveCart(cart);
+    bagSubtotal.textContent = yen.format(getSubtotal(cart));
+
+    if (!cart.length) {
+      bagItems.innerHTML = `
+        <div class="bag-empty">
+          <div>
+            <h3>Your bag is empty.</h3>
+            <p>Add a coffee and we will keep it here.</p>
+          </div>
+        </div>
+      `;
+      const bagBody = bagItems.closest(".bag-drawer__body");
+      if (bagBody) bagBody.scrollTop = 0;
+      return;
+    }
+
+    bagItems.innerHTML = `
+      <ul class="bag-list">
+        ${cart.map((item, index) => `
+          <li class="bag-item">
+            <div class="bag-item__media ${item.image ? "has-image" : ""}" style="--ph: ${item.color || "#B08650"}; --bag-img: ${item.image ? `url('${item.image}')` : "none"};" aria-hidden="true"></div>
+            <div>
+              <div class="bag-item__top">
+                <div>
+                  <div class="bag-item__name">${item.name}${item.italic ? ` <em>${item.italic}</em>` : ""}</div>
+                  <div class="bag-item__meta">${item.variant || item.category || "Coffee"}</div>
+                </div>
+                <div class="bag-item__price">${yen.format(item.price * item.quantity)}</div>
+              </div>
+              <div class="bag-item__bottom" style="margin-top: 14px;">
+                <div class="bag-item__qty" data-index="${index}">
+                  <button type="button" data-action="decrease" aria-label="数量を減らす">−</button>
+                  <span>${item.quantity}</span>
+                  <button type="button" data-action="increase" aria-label="数量を増やす">＋</button>
+                </div>
+                <button class="bag-item__remove" type="button" data-remove="${index}">Remove</button>
+              </div>
+            </div>
+          </li>
+        `).join("")}
+      </ul>
+    `;
+    const bagBody = bagItems.closest(".bag-drawer__body");
+    if (bagBody) bagBody.scrollTop = 0;
+  }
+
+  function openBag() {
+    renderBag();
+    const bagBody = bagItems.closest(".bag-drawer__body");
+    bagDrawer.scrollTop = 0;
+    if (bagBody) bagBody.scrollTop = 0;
+    bagDrawer.classList.add("is-open");
+    bagOverlay.classList.add("is-open");
+    bagDrawer.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => {
+      bagDrawer.scrollTop = 0;
+      if (bagBody) bagBody.scrollTop = 0;
+      requestAnimationFrame(() => {
+        bagDrawer.scrollTop = 0;
+        if (bagBody) bagBody.scrollTop = 0;
+      });
+    });
+    window.setTimeout(() => {
+      bagDrawer.scrollTop = 0;
+      if (bagBody) bagBody.scrollTop = 0;
+    }, 80);
+  }
+
+  function closeBag() {
+    bagDrawer.classList.remove("is-open");
+    bagOverlay.classList.remove("is-open");
+    bagDrawer.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  async function checkoutCart() {
+    const cart = loadCart();
+    if (!cart.length) return;
+
+    const originalLabel = bagCheckout.textContent;
+    bagCheckout.textContent = "Preparing checkout...";
+    bagCheckout.style.pointerEvents = "none";
+
+    try {
+      const res = await fetch("/api/checkout/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cart.map((item) => ({
+            id: item.id,
+            size: item.size,
+            grind: item.grind,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        throw new Error(data.message || "Failed to start checkout");
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(error);
+      window.alert(`Checkout could not start.\n${error.message}`);
+      bagCheckout.textContent = originalLabel;
+      bagCheckout.style.pointerEvents = "";
+    }
+  }
+
+  function updateQuantity(index, delta) {
+    const cart = loadCart();
+    const item = cart[index];
+    if (!item) return;
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    saveCart(cart);
+    updateBagCount();
+    renderBag();
+  }
+
+  let productsData = [...FALLBACK_PRODUCTS];
+
+  async function loadProducts() {
+    try {
+      const res = await fetch("/api/products");
+      if (!res.ok) throw new Error(`Failed to load products: ${res.status}`);
+      const data = await res.json();
+      if (Array.isArray(data.contents) && data.contents.length) {
+        productsData = data.contents;
+      }
+    } catch (error) {
+      console.warn("Using fallback products.", error);
+      productsData = [...FALLBACK_PRODUCTS];
+    }
+    applyHeroBackground(productsData);
+  }
+
+  function getProductHref(product) {
+    const target = product.href || "product.html";
+    const separator = target.includes("?") ? "&" : "?";
+    return `${target}${separator}id=${encodeURIComponent(product.id)}`;
+  }
+
+  function render(category) {
+    const list = category === "all" ? productsData : productsData.filter(p => p.category === category);
+    if (shopIntroText) {
+      shopIntroText.textContent = FILTER_COPY[category] || FILTER_COPY.all;
+      shopIntroText.style.display = category === "all" ? "none" : "";
+    }
+    grid.innerHTML = list.map((p, index) => {
+      const italicHTML = p.italic ? `<em>${p.italic}</em>` : "";
+      const sizeClass = `size-${p.size || "m"}`;
+      const offsetClass = p.offset ? `offset-${p.offset}` : "";
+      const hoverLabel = p.hoverLabel || "ADD TO CART";
+      const hoverImageClass = p.hoverImage ? "has-hover-image" : "";
+      const imageClass = p.image ? "has-image" : "";
+      return `
+        <article class="card reveal ${sizeClass} ${offsetClass} ${hoverImageClass} ${imageClass}" role="link" tabindex="0" aria-label="${p.name}の商品詳細を見る" data-href="${getProductHref(p)}" data-cat="${p.category}" style="--ph: ${p.color}; --img: ${p.image ? `url('${p.image}')` : "none"}; --img-hover: ${p.hoverImage ? `url('${p.hoverImage}')` : "none"}; --reveal-index: ${index};">
+          <div class="card__media" aria-hidden="true">
+            <div class="card__art"></div>
+            <div class="card__image"></div>
+            <div class="card__image-hover"></div>
+            <div class="card__cursor"><span class="label">${hoverLabel}</span><span class="brace">}</span></div>
+          </div>
+          <div class="card__info">
+            <div>
+              <div class="card__name"><span class="card__name-main">${p.name}</span>${italicHTML}</div>
+            </div>
+            <div class="card__price">${yen.format(p.price)}</div>
+          </div>
+        </article>
+      `;
+    }).join("");
+    observeReveals();
+    setupCardCursors();
+    setupCardLinks();
+  }
+
+  function navigateWithDirection(href, direction) {
+    sessionStorage.setItem("hysd-nav-direction", direction);
+    window.location.href = href;
+  }
+
+  /* ---------- Filter ---------- */
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      sessionStorage.setItem(FILTER_KEY, btn.dataset.cat);
+      syncFilterActiveLine(btn);
+      render(btn.dataset.cat);
+    });
+  });
+
+  function syncFilterActiveLine(activeButton = document.querySelector(".filter button.active")) {
+    const filter = document.querySelector(".filter");
+    if (!filter) return;
+    const category = activeButton?.dataset.cat || "all";
+    filter.classList.toggle("has-category-active", category !== "all");
+    if (category === "coffee" || category === "goods") {
+      syncFilterLine(activeButton);
+    } else {
+      filter.classList.remove("is-line-showing");
+      filter.style.setProperty("--filter-hover-width", "0px");
+    }
+  }
+
+  function syncFilterLine(button) {
+    const filter = document.querySelector(".filter");
+    if (!filter || !button) return;
+    const filterRect = filter.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const width = Math.max(0, buttonRect.right - filterRect.left);
+    filter.style.setProperty("--filter-hover-width", `${width.toFixed(1)}px`);
+    filter.classList.add("is-line-showing");
+  }
+
+  function setupFilterHoverLine() {
+    const filter = document.querySelector(".filter");
+    if (!filter) return;
+    const hoverTargets = filter.querySelectorAll('button[data-cat="coffee"], button[data-cat="goods"]');
+    const activeButton = () => filter.querySelector("button.active");
+    const hideLine = () => {
+      syncFilterActiveLine(activeButton());
+    };
+
+    hoverTargets.forEach((button) => {
+      button.addEventListener("mouseenter", () => syncFilterLine(button));
+      button.addEventListener("mousemove", () => syncFilterLine(button));
+      button.addEventListener("focus", () => syncFilterLine(button));
+      button.addEventListener("blur", hideLine);
+    });
+    filter.addEventListener("mouseleave", hideLine);
+    window.addEventListener("resize", hideLine);
+    syncFilterActiveLine(activeButton());
+  }
+
+  document.querySelectorAll(".footer__chip[data-footer-filter]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const cat = link.dataset.footerFilter;
+      const matchingButton = document.querySelector(`.filter button[data-cat="${cat}"]`);
+      if (matchingButton) matchingButton.click();
+      document.getElementById("shop")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  /* ---------- Card cursor: マウス追従の "View more" ---------- */
+  function setupCardCursors() {
+    let hoverLine = document.querySelector(".card-hover-line");
+    if (!hoverLine) {
+      hoverLine = document.createElement("div");
+      hoverLine.className = "card-hover-line";
+      hoverLine.setAttribute("aria-hidden", "true");
+      document.body.appendChild(hoverLine);
+    }
+    let hoverLabel = document.querySelector(".card-hover-label");
+    if (!hoverLabel) {
+      hoverLabel = document.createElement("div");
+      hoverLabel.className = "card-hover-label";
+      hoverLabel.setAttribute("aria-hidden", "true");
+      document.body.appendChild(hoverLabel);
+    }
+
+    let lineTargetX = 0;
+    let lineTargetY = -100;
+    let lineCurrentX = 0;
+    let lineCurrentY = -100;
+    let lineActive = false;
+    let lineRafId = null;
+
+    function applyHoverLine() {
+      hoverLine.style.setProperty("--hover-line-x", `${Math.max(0, lineCurrentX).toFixed(1)}px`);
+      hoverLine.style.setProperty("--hover-line-y", `${lineCurrentY.toFixed(1)}px`);
+      hoverLine.style.setProperty("--hover-line-opacity", lineActive ? "1" : "0");
+      hoverLine.style.setProperty("--hover-line-scale", lineActive ? "1" : "0");
+      hoverLabel.style.setProperty("--hover-label-x", `${Math.max(0, lineCurrentX).toFixed(1)}px`);
+      hoverLabel.style.setProperty("--hover-label-y", `${lineCurrentY.toFixed(1)}px`);
+      hoverLabel.style.setProperty("--hover-label-opacity", lineActive ? "1" : "0");
+    }
+
+    function tickHoverLine() {
+      const ease = lineActive ? 0.2 : 0.24;
+      lineCurrentX += (lineTargetX - lineCurrentX) * ease;
+      lineCurrentY += (lineTargetY - lineCurrentY) * 0.32;
+      applyHoverLine();
+
+      if (
+        Math.abs(lineTargetX - lineCurrentX) < 0.4 &&
+        Math.abs(lineTargetY - lineCurrentY) < 0.4
+      ) {
+        lineRafId = null;
+        return;
+      }
+      lineRafId = requestAnimationFrame(tickHoverLine);
+    }
+
+    function startHoverLineTick() {
+      if (lineRafId === null) lineRafId = requestAnimationFrame(tickHoverLine);
+    }
+
+    function moveHoverLine(event, cursorEl, mediaEl, isEntering = false) {
+      hoverLabel.innerHTML = cursorEl.innerHTML;
+      const mediaRect = mediaEl.getBoundingClientRect();
+      const cursorWidth = hoverLabel.offsetWidth || cursorEl?.offsetWidth || 0;
+      const cursorHeight = hoverLabel.offsetHeight || cursorEl?.offsetHeight || 0;
+      const localX = event.clientX - mediaRect.left;
+      const localY = event.clientY - mediaRect.top;
+      const safeX = cursorWidth >= mediaEl.clientWidth
+        ? mediaEl.clientWidth / 2
+        : Math.min(Math.max(localX, cursorWidth / 2), mediaEl.clientWidth - cursorWidth / 2);
+      const safeY = cursorHeight >= mediaEl.clientHeight
+        ? mediaEl.clientHeight / 2
+        : Math.min(Math.max(localY, cursorHeight / 2), mediaEl.clientHeight - cursorHeight / 2);
+      const nextX = Math.max(0, mediaRect.left + safeX + cursorWidth / 2);
+      lineTargetX = nextX;
+      lineTargetY = mediaRect.top + safeY;
+      if (!lineActive || isEntering) {
+        lineCurrentX = Math.min(lineCurrentX, nextX * 0.18);
+        lineCurrentY = lineTargetY;
+      }
+      lineActive = true;
+      startHoverLineTick();
+    }
+
+    function hideHoverLine() {
+      lineActive = false;
+      lineTargetX = 0;
+      startHoverLineTick();
+    }
+
+    document.querySelectorAll(".card").forEach((card) => {
+      if (card.dataset.cursorReady === "1") return;
+      card.dataset.cursorReady = "1";
+      const cursor = card.querySelector(".card__cursor");
+      const media = card.querySelector(".card__media");
+      if (!cursor || !media) return;
+
+      let targetX = 0, targetY = 0;
+      let currentX = 0, currentY = 0;
+      let isHovering = false;
+      let rafId = null;
+
+      function applyPos() {
+        const cursorWidth = cursor.offsetWidth || 0;
+        const cursorHeight = cursor.offsetHeight || 0;
+        const safeX = cursorWidth >= media.clientWidth
+          ? media.clientWidth / 2
+          : Math.min(Math.max(currentX, cursorWidth / 2), media.clientWidth - cursorWidth / 2);
+        const safeY = cursorHeight >= media.clientHeight
+          ? media.clientHeight / 2
+          : Math.min(Math.max(currentY, cursorHeight / 2), media.clientHeight - cursorHeight / 2);
+        cursor.style.setProperty("--cur-x", `calc(${safeX}px - 50%)`);
+        cursor.style.setProperty("--cur-y", `calc(${safeY}px - 50%)`);
+      }
+
+      function tick() {
+        const ease = 0.28;
+        currentX += (targetX - currentX) * ease;
+        currentY += (targetY - currentY) * ease;
+        applyPos();
+
+        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+          rafId = null;
+          return;
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function startTick() {
+        if (rafId === null) rafId = requestAnimationFrame(tick);
+      }
+
+      media.addEventListener("mouseenter", (e) => {
+        isHovering = true;
+        card.classList.add("is-hovered");
+        moveHoverLine(e, cursor, media, true);
+        const rect = media.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        // 初期位置を即時セット（カーソルがジャンプしないように）
+        currentX = targetX;
+        currentY = targetY;
+        applyPos();
+        startTick();
+      });
+
+      media.addEventListener("mousemove", (e) => {
+        if (!isHovering) {
+          isHovering = true;
+          card.classList.add("is-hovered");
+        }
+        moveHoverLine(e, cursor, media);
+        const rect = media.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        startTick();
+      });
+
+      media.addEventListener("mouseleave", () => {
+        isHovering = false;
+        card.classList.remove("is-hovered");
+        hideHoverLine();
+      });
+    });
+  }
+
+  function setupCardLinks() {
+    document.querySelectorAll(".card").forEach((card) => {
+      const href = card.dataset.href;
+      if (!href) return;
+      card.addEventListener("click", () => {
+        navigateWithDirection(href, "forward");
+      });
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigateWithDirection(href, "forward");
+        }
+      });
+    });
+  }
+
+  function setupDirectionalLinks() {
+    document.querySelectorAll("[data-nav-direction]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const anchor = e.currentTarget;
+        if (!(anchor instanceof HTMLAnchorElement)) return;
+        const href = anchor.getAttribute("href");
+        const direction = anchor.dataset.navDirection;
+        if (!href || !direction) return;
+        e.preventDefault();
+        navigateWithDirection(href, direction);
+      });
+    });
+  }
+
+  function setupScrollGlow() {
+    let rafId = null;
+    const update = () => {
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+      document.body.style.setProperty("--scroll-glow", progress.toFixed(3));
+      document.body.style.setProperty("--glow-strength", (0.2 + progress * 0.8).toFixed(3));
+      rafId = null;
+    };
+    const requestUpdate = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    update();
+  }
+
+  function setupHeaderContrast() {
+    const header = document.querySelector(".header");
+    const themeSections = document.querySelectorAll("[data-header-theme='acid']");
+    if (!header || !themeSections.length) return;
+
+    const syncHeaderState = (isAcid) => {
+      header.classList.toggle("header--hero", isAcid);
+    };
+
+    syncHeaderState(false);
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const hasAcidSection = entries.some((entry) => entry.isIntersecting);
+      syncHeaderState(hasAcidSection);
+    }, {
+      threshold: 0.2,
+      rootMargin: "-64px 0px 0px 0px",
+    });
+
+    themeSections.forEach((section) => sectionObserver.observe(section));
+  }
+
+  function setupAboutTriangles() {
+    const group = document.querySelector(".about__triangles");
+    const triangles = Array.from(document.querySelectorAll(".about__triangle"));
+    if (!group || !triangles.length) return;
+
+    const photos = [
+      "assets/triangle-photo-1.png",
+      "assets/triangle-photo-2.png",
+      "assets/triangle-photo-3.png",
+      "assets/triangle-photo-4.png",
+    ];
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const setPhoto = (triangle, offset = 0) => {
+      const current = Number(triangle.dataset.photoIndex || 0);
+      const next = (current + 1 + offset) % photos.length;
+      triangle.dataset.photoIndex = String(next);
+      triangle.style.setProperty("--triangle-photo", `url("${photos[next]}")`);
+      triangle.classList.add("is-flipping");
+      window.setTimeout(() => triangle.classList.remove("is-flipping"), 110);
+    };
+
+    triangles.forEach((triangle, index) => {
+      triangle.dataset.photoIndex = String(index % photos.length);
+      triangle.style.setProperty("--triangle-photo", `url("${photos[index % photos.length]}")`);
+    });
+
+    if (prefersReduced) return;
+
+    let hasStarted = false;
+    const start = () => {
+      if (hasStarted) return;
+      hasStarted = true;
+
+      triangles.forEach((triangle, index) => {
+        let flips = 0;
+        const burst = window.setInterval(() => {
+          setPhoto(triangle, index + flips);
+          flips += 1;
+          if (flips > 9 + index) window.clearInterval(burst);
+        }, 92 + index * 13);
+
+        window.setInterval(() => {
+          setPhoto(triangle, index + Math.floor(Math.random() * photos.length));
+        }, 1800 + index * 290);
+      });
+    };
+
+    const triangleObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        start();
+        triangleObserver.disconnect();
+      }
+    }, { threshold: 0.32 });
+
+    triangleObserver.observe(group);
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  let observer;
+  function observeReveals() {
+    if (observer) observer.disconnect();
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("in");
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -10% 0px" });
+    document.querySelectorAll(".reveal, .about__eyebrow").forEach(el => observer.observe(el));
+  }
+
+  /* ---------- Init ---------- */
+  async function initPage() {
+    setupHeroEmotionIntro();
+    setupHeroScrollIntro();
+    setupHeroReplies();
+    setupAboutTriangles();
+
+    const initialCategory = sessionStorage.getItem(FILTER_KEY) || "all";
+    const initialButton = document.querySelector(`.filter button[data-cat="${initialCategory}"]`);
+    if (initialButton) {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      initialButton.classList.add("active");
+    }
+
+    await loadProducts();
+    render(initialCategory);
+    updateBagCount();
+    renderBag();
+    setupHeaderContrast();
+    setupDirectionalLinks();
+    setupScrollGlow();
+    setupFilterHoverLine();
+
+    bagButton.addEventListener("click", openBag);
+  bagClose.addEventListener("click", closeBag);
+  bagOverlay.addEventListener("click", closeBag);
+  bagCheckout.addEventListener("click", (e) => {
+    e.preventDefault();
+    checkoutCart();
+  });
+    document.addEventListener("click", (e) => {
+      const target = e.target.closest(".bag-btn");
+      if (!target) return;
+      openBag();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeBag();
+    });
+    bagItems.addEventListener("click", (e) => {
+    const removeIndex = e.target.closest("[data-remove]")?.dataset.remove;
+    if (removeIndex !== undefined) {
+      const cart = loadCart();
+      cart.splice(Number(removeIndex), 1);
+      saveCart(cart);
+      updateBagCount();
+      renderBag();
+      return;
+    }
+
+    const qtyControl = e.target.closest(".bag-item__qty");
+    const action = e.target.dataset.action;
+    if (qtyControl && action) {
+      updateQuantity(Number(qtyControl.dataset.index), action === "increase" ? 1 : -1);
+    }
+    });
+  }
+
+  initPage();
+
+  /* ---------- About: マウス追従するCTAボタン ---------- */
+  (function setupAboutCta() {
+    const section = document.querySelector(".about");
+    const cta = document.querySelector(".about__cta");
+    if (!section || !cta) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let centerX = 0;
+    let centerY = 0;
+    let isHovering = false;
+    let rafId = null;
+
+    function calcCenter() {
+      const sRect = section.getBoundingClientRect();
+      // セクション内座標での中央
+      centerX = sRect.width / 2;
+      centerY = sRect.height / 2;
+      if (!isHovering) {
+        targetX = centerX;
+        targetY = centerY;
+        currentX = centerX;
+        currentY = centerY;
+        applyPos();
+      }
+    }
+
+    function applyPos() {
+      cta.style.setProperty("--cta-x", currentX + "px");
+      cta.style.setProperty("--cta-y", currentY + "px");
+    }
+
+    function tick() {
+      const ease = isHovering ? 0.18 : 0.08;
+      currentX += (targetX - currentX) * ease;
+      currentY += (targetY - currentY) * ease;
+      applyPos();
+
+      const dx = Math.abs(targetX - currentX);
+      const dy = Math.abs(targetY - currentY);
+      if (dx < 0.1 && dy < 0.1) {
+        currentX = targetX;
+        currentY = targetY;
+        applyPos();
+        rafId = null;
+        return;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startTick() {
+      if (rafId === null) rafId = requestAnimationFrame(tick);
+    }
+
+    section.addEventListener("mousemove", (e) => {
+      isHovering = true;
+      const rect = section.getBoundingClientRect();
+      // ボタン中心 = マウス位置（セクション基準座標）
+      targetX = e.clientX - rect.left;
+      targetY = e.clientY - rect.top;
+      startTick();
+    });
+
+    section.addEventListener("mouseleave", () => {
+      isHovering = false;
+      targetX = centerX;
+      targetY = centerY;
+      startTick();
+    });
+
+    window.addEventListener("resize", calcCenter);
+    requestAnimationFrame(() => {
+      calcCenter();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(calcCenter);
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

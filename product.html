@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="ja" class="page-product">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brew No.07 / Ethiopia — ANYWAY</title>
+<meta name="description" content="ANYWAY. Brew No.07 — Single Origin Ethiopia Yirgacheffe. Bright florals, jasmine, citrus.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>
+  (() => {
+    const dir = sessionStorage.getItem("hysd-nav-direction");
+    if (dir) {
+      document.documentElement.classList.add(`vt-${dir}`);
+      sessionStorage.removeItem("hysd-nav-direction");
+    }
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,700&display=swap" rel="stylesheet">
+
+<style>
+  @view-transition {
+    navigation: auto;
+  }
+
+  /* ---------- Tokens ---------- */
+  :root {
+    --c-bg: rgb(238, 238, 238);
+    --c-bg-alt: rgb(219, 217, 212);
+    --c-ink: #001829;
+    --c-ink-soft: #001829cc;
+    --c-mute: #00182980;
+    --c-line: #00182920;
+    --c-acid: #E6FD28;
+    --c-brown: #B08650;
+
+    --font-display: "founders_grotesk", "Founders Grotesk", "Switzer", "Helvetica Neue", -apple-system, sans-serif;
+    --font-serif: "Source Serif Pro", "Iowan Old Style", Georgia, serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --header-h: 64px;
+    --notice-h: 38px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    --scroll-glow: 0;
+    --glow-strength: 0;
+    font-family: var(--font-display);
+    background:
+      radial-gradient(120% 78% at 50% -8%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 58%),
+      linear-gradient(180deg, #f3f3f3 0%, #ececec 42%, #e9e9e9 100%);
+    color: var(--c-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "ss02";
+    position: relative;
+  }
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+  body::before {
+    z-index: -2;
+    background: none;
+    opacity: 0;
+  }
+  body::after {
+    z-index: -1;
+    opacity: 0.16;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+  }
+  @supports (view-transition-name: root) {
+    .page-shell {
+      opacity: 1;
+      clip-path: none;
+      transform: none;
+    }
+    body.is-ready .page-shell {
+      animation: none;
+    }
+    html.vt-forward ::view-transition-group(root) {
+      animation-duration: 0.82s;
+      animation-timing-function: cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+    html.vt-forward ::view-transition-old(root) {
+      animation: productOldHold 0.82s ease forwards;
+      z-index: 1;
+      transform-origin: left center;
+    }
+    html.vt-forward ::view-transition-new(root) {
+      animation: productOverlayIn 0.82s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      z-index: 2;
+      box-shadow:
+        -36px 0 100px rgba(0, 24, 41, 0.16),
+        -8px 0 24px rgba(0, 24, 41, 0.08);
+    }
+    @keyframes productOldHold {
+      from {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      to {
+        opacity: 1;
+        transform: scale(0.985);
+        filter: brightness(0.96);
+      }
+    }
+    @keyframes productOverlayIn {
+      from {
+        clip-path: inset(0 100% 0 0);
+        transform: translateX(-58px);
+      }
+      to {
+        clip-path: inset(0 0 0 0);
+        transform: translateX(0);
+      }
+    }
+  }
+  body.is-entering {
+    overflow: hidden;
+  }
+  body.is-leaving-back {
+    overflow: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  img { display: block; max-width: 100%; }
+  ::selection { background: var(--c-acid); color: var(--c-ink); }
+
+  .page-transition-underlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 24, 41, 0.06);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.45s var(--ease-out);
+  }
+  body.is-leaving-back .page-transition-underlay {
+    opacity: 1;
+  }
+
+  .page-shell {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateX(-28px);
+    transform-origin: left center;
+    position: relative;
+    z-index: 1;
+  }
+  body.is-ready .page-shell {
+    animation: pageEnter 0.82s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+  }
+  body.is-leaving-back .page-shell {
+    animation: pageLeaveBack 0.52s cubic-bezier(0.55, 0, 0.2, 1) forwards;
+  }
+  @keyframes pageEnter {
+    from {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-28px);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0);
+    }
+  }
+  @keyframes pageLeaveBack {
+    from {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0);
+      box-shadow:
+        -36px 0 100px rgba(0, 24, 41, 0.16),
+        -8px 0 24px rgba(0, 24, 41, 0.08);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-88px);
+      box-shadow:
+        -48px 0 120px rgba(0, 24, 41, 0.2),
+        -12px 0 32px rgba(0, 24, 41, 0.12);
+    }
+  }
+
+  .wrap { padding: 0 24px; }
+  @media (min-width: 768px) { .wrap { padding: 0 40px; } }
+
+  /* ---------- Header ---------- */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+  }
+  .logo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 34px;
+    color: var(--c-ink);
+    line-height: 1;
+    text-decoration: none;
+  }
+  .logo::before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: currentColor;
+  }
+  .logo__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+  .logo__base { color: var(--c-ink); z-index: 0; }
+  .logo__hover {
+    color: var(--c-acid);
+    z-index: 1;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.4s var(--ease-out);
+  }
+  .logo:hover .logo__hover { clip-path: inset(0 0 0 0); }
+
+  .nav {
+    display: none;
+    gap: 32px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  @media (min-width: 768px) { .nav { display: flex; } }
+  .nav a { position: relative; padding: 4px 0; }
+  .nav a::after { display: none; }
+  .nav a,
+  .subbar__crumb a,
+  .related__head a,
+  .footer__col a {
+    display: inline-block;
+    padding: 0.08em 0.34em 0.14em;
+    margin: -0.08em -0.34em -0.14em;
+    background-image: linear-gradient(var(--c-acid), var(--c-acid));
+    background-repeat: no-repeat;
+    background-size: 0 100%;
+    background-position: left center;
+    transition:
+      color 0.35s var(--ease-out),
+      background-size 0.45s var(--ease-out);
+  }
+  .nav a:hover,
+  .subbar__crumb a:hover,
+  .related__head a:hover,
+  .footer__col a:hover {
+    background-size: 100% 100%;
+    color: var(--c-ink);
+  }
+
+  .header__bag { display: flex; align-items: center; gap: 14px; font-size: 13px; }
+  .bag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+  }
+  .bag-btn:hover { background: var(--c-acid); border-color: var(--c-acid); }
+  .bag-btn .count { font-family: var(--font-mono); font-size: 11px; }
+
+  /* ---------- Bag drawer ---------- */
+  .bag-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 24, 41, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out);
+    z-index: 70;
+  }
+  .bag-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .bag-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(420px, 100vw);
+    height: 100vh;
+    background: var(--c-bg);
+    border-left: 1px solid var(--c-line);
+    transform: translateX(100%);
+    transition: transform 0.5s var(--ease-out);
+    z-index: 80;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+  }
+  .bag-drawer.is-open { transform: translateX(0); }
+  .bag-drawer__head,
+  .bag-drawer__foot {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .bag-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .bag-drawer__title {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .bag-drawer__close {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--c-line);
+    border-radius: 50%;
+    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+  }
+  .bag-drawer__close:hover {
+    background: var(--c-acid);
+    border-color: var(--c-acid);
+  }
+  .bag-drawer__body {
+    min-height: 0;
+    overflow: auto;
+    padding: 0 24px;
+    scroll-behavior: auto;
+  }
+  .bag-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .bag-item {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .bag-item__media {
+    aspect-ratio: 4/5;
+    background: var(--c-bg-alt);
+    background-image: var(--bag-img, none);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bag-item__media.has-image::before {
+    opacity: 0;
+  }
+  .bag-item__media::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 48%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ph, var(--c-brown));
+    transform: translate(-50%, -50%);
+  }
+  .bag-item__top,
+  .bag-item__bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .bag-item__name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .bag-item__name em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .bag-item__meta,
+  .bag-empty p,
+  .bag-drawer__meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+    text-transform: uppercase;
+  }
+  .bag-item__meta { margin-top: 8px; }
+  .bag-item__price {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .bag-item__qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bag-item__qty button,
+  .bag-item__remove {
+    min-width: 32px;
+    min-height: 32px;
+    transition: background 0.4s var(--ease-out);
+  }
+  .bag-item__qty button:hover,
+  .bag-item__remove:hover {
+    background: var(--c-acid);
+  }
+  .bag-item__qty span {
+    min-width: 34px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .bag-item__remove {
+    padding: 0 12px;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    font-size: 11px;
+  }
+  .bag-empty {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 48px 0;
+  }
+  .bag-empty h3 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .bag-drawer__foot {
+    border-top: 1px solid var(--c-line);
+    border-bottom: none;
+    display: grid;
+    gap: 16px;
+  }
+  .bag-drawer__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .bag-drawer__subtotal {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .bag-drawer__checkout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: var(--c-ink);
+    color: var(--c-bg);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out);
+  }
+  .bag-drawer__checkout:hover {
+    background: var(--c-acid);
+    color: var(--c-ink);
+  }
+
+  /* ---------- Sub bar (右カラム先頭に配置) ---------- */
+  .subbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 24px 0;
+    margin-bottom: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .subbar__crumb a { color: var(--c-mute); }
+  .subbar__code { color: var(--c-ink); }
+
+  /* ---------- Product page (左sticky / 右スクロール、ストーリー終了で両方一緒にスクロールアウト) ---------- */
+  .product {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  @media (min-width: 900px) {
+    .product {
+      grid-template-columns: minmax(360px, 34%) 1fr;
+    }
+  }
+  @media (min-width: 1280px) {
+    .product {
+      grid-template-columns: minmax(400px, 32%) 1fr;
+    }
+  }
+
+  /* ---------- Left column (stickyでストーリー範囲内だけ固定) ---------- */
+  .product__buy {
+    padding: 32px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  @media (min-width: 900px) {
+    .product__buy {
+      position: sticky;
+      top: var(--header-h);
+      align-self: start;
+      height: calc(100vh - var(--header-h));
+      padding: 40px 32px;
+      justify-content: center;
+      gap: 22px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .product__buy {
+      padding: 48px 40px;
+      gap: 26px;
+    }
+  }
+
+  .product__media {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1/1;
+    background: transparent;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .product__media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    clip-path: inset(0 100% 0 0);
+    z-index: 0;
+  }
+  .product__art,
+  .story__art,
+  .rcard__art {
+    position: absolute;
+    inset: 0;
+    background: var(--c-bg-alt);
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 1;
+  }
+  .product__media.has-image .product__art,
+  .story__image.has-image .story__art,
+  .rcard__media.has-image .rcard__art {
+    background: transparent;
+  }
+  .product__media.has-image,
+  .story__image.has-image,
+  .rcard__media.has-image {
+    background: transparent;
+  }
+  .product__media.has-image .product__art::before,
+  .story__image.has-image .story__art::before,
+  .rcard__media.has-image .rcard__art::before {
+    display: none;
+  }
+  .product__image,
+  .story__image-layer,
+  .rcard__image {
+    position: absolute;
+    inset: 0;
+    background-image: var(--img);
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 1;
+  }
+  .rcard__image-hover {
+    position: absolute;
+    inset: 0;
+    background-image: var(--img-hover);
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    z-index: 3;
+    transform: scale(1.08);
+    transform-origin: left center;
+    transition:
+      opacity 0.22s linear,
+      clip-path 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .product__art::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 52%; aspect-ratio: 1;
+    background: var(--c-brown);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  body.is-ready .product__media::before,
+  .story__image.reveal.in::before,
+  .story__image-grid.reveal.in .story__image::before {
+    animation: mediaFlashOverlay 0.94s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  body.is-ready .product__media.has-image::before,
+  .story__image.has-image.reveal.in::before,
+  .story__image-grid.reveal.in .story__image.has-image::before,
+  .rcard.reveal.in .rcard__media.has-image::before {
+    animation: mediaFlashOverlayClear 0.94s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  body.is-ready .product__media .product__art,
+  .story__image.reveal.in .story__art,
+  .story__image-grid.reveal.in .story__art {
+    animation: mediaContentSlideIn 0.96s cubic-bezier(0.2, 0.96, 0.22, 1) 340ms forwards;
+  }
+  body.is-ready .product__media .product__image,
+  .story__image.reveal.in .story__image-layer,
+  .story__image-grid.reveal.in .story__image-layer {
+    animation: mediaContentSlideIn 1.04s cubic-bezier(0.2, 0.96, 0.22, 1) 400ms forwards;
+  }
+  @keyframes mediaFlashOverlay {
+    0% { clip-path: inset(0 100% 0 0); opacity: 1; }
+    52% { clip-path: inset(0 0 0 0); opacity: 1; }
+    100% { clip-path: inset(0 0 0 0); opacity: 1; }
+  }
+  @keyframes mediaFlashOverlayClear {
+    0% { clip-path: inset(0 100% 0 0); opacity: 1; }
+    58% { clip-path: inset(0 0 0 0); opacity: 1; }
+    100% { clip-path: inset(0 0 0 0); opacity: 0; }
+  }
+  @keyframes mediaContentSlideIn {
+    0% {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-18px) scale(1.006);
+      filter: saturate(0.92);
+    }
+    100% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0) scale(1);
+      filter: saturate(1);
+    }
+  }
+
+  .product__buy-meta {
+    text-align: center;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--c-ink);
+    max-width: 320px;
+  }
+  .product__heading {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  .product__heading-sub {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+  }
+  .product__heading-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 2.6vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+  }
+  .product__buy-meta em {
+    display: block;
+    font-style: normal;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .product__price {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .product__price small {
+    margin-left: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+  }
+
+  .product__options {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .option__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .option__choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .option__choices.is-single {
+    grid-template-columns: minmax(140px, 1fr);
+    justify-content: center;
+  }
+  .option__choices.is-single .option__choice {
+    grid-column: 1;
+  }
+  .option__choice {
+    padding: 10px 14px;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--c-mute);
+    cursor: pointer;
+    transition: all 0.4s var(--ease-out);
+  }
+  .option__choice:hover { color: var(--c-ink); border-color: var(--c-mute); }
+  .option__choice.is-selected {
+    color: var(--c-ink);
+    border-color: var(--c-ink);
+    background: var(--c-bg);
+  }
+  .add-to-bag {
+    width: 100%;
+    max-width: 320px;
+    padding: 0;
+    background: none;
+    color: var(--c-ink);
+    border: none;
+    border-radius: 0;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: minmax(20px, auto) auto minmax(20px, auto);
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    position: relative;
+    z-index: 0;
+    transition: color 0.25s var(--ease-out), letter-spacing 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+  }
+  .add-to-bag__brace {
+    display: block;
+    transform: none;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: 22px;
+    line-height: 1;
+    color: currentColor;
+    text-align: center;
+    transition: color 0.25s var(--ease-out), transform 0.45s var(--ease-out);
+  }
+  .add-to-bag__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    padding: 4px 8px;
+    justify-content: center;
+  }
+  .add-to-bag__text {
+    display: inline-block;
+  }
+  .add-to-bag__label::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.38s var(--ease-out);
+    z-index: -1;
+  }
+  .add-to-bag::before {
+    display: none;
+  }
+  .add-to-bag:hover {
+    color: var(--c-ink);
+    letter-spacing: 0.06em;
+  }
+  .add-to-bag:hover .add-to-bag__brace--left {
+    transform: none;
+  }
+  .add-to-bag:hover .add-to-bag__brace--right {
+    transform: none;
+  }
+  .add-to-bag:hover .add-to-bag__label::before {
+    transform: scaleX(1);
+  }
+  .add-to-bag .arrow {
+    font-family: var(--font-mono);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .add-to-bag:hover .arrow { transform: translateX(4px); }
+
+  /* ---------- Right column (scrollable story) ---------- */
+  .product__story {
+    padding: 32px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  @media (min-width: 900px) {
+    .product__story {
+      padding: 40px 56px 120px;
+      gap: 0;
+    }
+  }
+  @media (min-width: 1280px) {
+    .product__story {
+      padding: 48px 80px 160px;
+      gap: 0;
+    }
+  }
+
+  /* CMSブロックのコンテナ：product__storyと同じflex+gapで縦に積む */
+  #storyBlocks {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  @media (min-width: 900px) {
+    #storyBlocks {
+      gap: 48px;
+    }
+  }
+  @media (min-width: 1280px) {
+    #storyBlocks {
+      gap: 56px;
+    }
+  }
+
+  .story__name {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .story__name h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  .story__name h1 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .story__name-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+  }
+
+  .story__lead {
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.55;
+    color: var(--c-ink);
+    max-width: 760px;
+  }
+
+  .story__image {
+    background: transparent;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    width: auto;
+    /* 親(.product__story)のpaddingを相殺して右カラム幅いっぱいに広げる */
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+  @media (min-width: 900px) {
+    .story__image {
+      margin-left: -56px;
+      margin-right: -56px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .story__image {
+      margin-left: -80px;
+      margin-right: -80px;
+    }
+  }
+  .story__image::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    clip-path: inset(0 100% 0 0);
+    z-index: 0;
+  }
+  .story__art::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 36%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ph, var(--c-brown));
+    transform: translate(-50%, -50%);
+  }
+  .story__image.is-wide { aspect-ratio: 4/3; }
+  .story__image.is-banner { aspect-ratio: 16/7; }
+  .story__image.is-tall { aspect-ratio: 3/4; }
+  .story__image.is-square { aspect-ratio: 1/1; }
+  .story__image-grid {
+    display: grid;
+    width: calc(100% - 20px);
+    margin-inline: auto;
+    gap: 14px;
+  }
+  .story__image-grid.is-single {
+    justify-items: center;
+  }
+  .story__image-grid.reveal {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .story__image-grid .story__image {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .story__image-grid.is-single .story__image {
+    width: min(100%, 560px);
+  }
+  .story__image-grid .story__image.is-wide {
+    aspect-ratio: 4/5;
+  }
+  @media (min-width: 900px) {
+    .story__image-grid {
+      grid-template-columns: 1fr 1fr;
+      width: calc(100% - 48px);
+      gap: 0;
+    }
+    .story__image-grid.is-single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .story__image-grid.reveal {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  @media (min-width: 1280px) {
+    .story__image-grid {
+      width: calc(100% - 72px);
+      gap: 0;
+    }
+    .story__image-grid.reveal {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .story__pull {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.6vw, 44px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--c-ink);
+    padding: 24px 0;
+    max-width: 820px;
+  }
+  .story__pull em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .story__pull.is-small {
+    font-size: clamp(22px, 2.4vw, 32px);
+  }
+
+  .story__body {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--c-ink);
+    max-width: 760px;
+  }
+  .story__body + .story__body { margin-top: -24px; }
+  .story__body p + p { margin-top: 1em; }
+
+  .story__caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--c-mute);
+    text-transform: uppercase;
+    margin-top: -32px;
+  }
+  .story__image + .story__caption,
+  .story__image-grid + .story__caption {
+    margin-top: -52px;
+  }
+  .story__caption + .story__image,
+  .story__caption + .story__image-grid {
+    margin-top: -20px;
+  }
+
+  /* ---------- Spec table ---------- */
+  .spec {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px 24px;
+    padding: 32px 0;
+    border-top: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
+    max-width: 760px;
+  }
+  .spec dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+    padding-top: 2px;
+  }
+  .spec dd {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--c-ink);
+    font-weight: 500;
+  }
+  .spec dd em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .story__name.reveal,
+  .story__lead.reveal,
+  .story__body.reveal,
+  .story__pull.reveal,
+  .story__caption.reveal,
+  .spec.reveal {
+    transform: translateX(-26px);
+    transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+  }
+  .story__name.reveal.in,
+  .story__lead.reveal.in,
+  .story__body.reveal.in,
+  .story__pull.reveal.in,
+  .story__caption.reveal.in,
+  .spec.reveal.in {
+    transform: translateX(0);
+  }
+
+  /* ---------- Related products ---------- */
+  .related {
+    padding: 80px 24px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 768px) { .related { padding: 100px 40px; } }
+  .related__head {
+    margin-top: 14px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .related__head h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .related__head h2 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .related__head a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-mute);
+  }
+
+  .related__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 16px;
+  }
+  @media (min-width: 768px) { .related__grid { grid-template-columns: repeat(3, 1fr); gap: 48px 24px; } }
+  @media (min-width: 1280px) { .related__grid { grid-template-columns: repeat(3, 1fr); gap: 56px 32px; } }
+
+  .rcard { display: flex; flex-direction: column; cursor: pointer; }
+  .rcard__media {
+    aspect-ratio: 4/5;
+    background: transparent;
+    border-radius: 2px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rcard__media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    clip-path: inset(0 100% 0 0);
+    z-index: 2;
+  }
+  .rcard__art::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 48%; aspect-ratio: 1;
+    background: var(--ph, var(--c-brown));
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .rcard:hover .rcard__art::before { transform: translate(-50%, -50%) scale(1.04); }
+  .rcard__cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 14px 12px;
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(0.4);
+    transition: opacity 0.22s var(--ease-out);
+    will-change: transform, opacity;
+    white-space: nowrap;
+  }
+  .rcard__cursor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    z-index: -1;
+  }
+  .rcard.is-hovered .rcard__cursor {
+    opacity: 1;
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(1);
+  }
+  .rcard__cursor span {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.04em;
+  }
+  .rcard__cursor .brace {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    transform: scaleX(0.9);
+    transform-origin: center;
+    translate: 0 3px;
+  }
+  .rcard__cursor .label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    transform: translateY(1px);
+  }
+  .rcard.reveal { opacity: 1; transform: none; }
+  body:not(.is-ready) .product__media::before,
+  body:not(.is-ready) .product__media .product__art,
+  body:not(.is-ready) .product__media .product__image,
+  .story__image:not(.in)::before,
+  .story__image:not(.in) .story__art,
+  .story__image:not(.in) .story__image-layer,
+  .story__image-grid:not(.in) .story__image::before,
+  .story__image-grid:not(.in) .story__image .story__art,
+  .story__image-grid:not(.in) .story__image .story__image-layer,
+  .rcard:not(.in) .rcard__media::before,
+  .rcard:not(.in) .rcard__art,
+  .rcard:not(.in) .rcard__image,
+  .rcard:not(.in) .rcard__image-hover {
+    opacity: 0;
+  }
+  .rcard.reveal.in .rcard__media::before {
+    animation: mediaFlashOverlay 0.82s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .rcard.reveal.in .rcard__art {
+    animation: mediaContentSlideIn 0.94s cubic-bezier(0.2, 0.96, 0.22, 1) 560ms forwards;
+  }
+  .rcard.reveal.in .rcard__image {
+    animation: mediaContentSlideIn 0.98s cubic-bezier(0.2, 0.96, 0.22, 1) 630ms forwards;
+  }
+  .rcard.reveal.in .rcard__image-hover {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  .rcard.has-hover-image:hover .rcard__image {
+    transform: scale(1.02);
+  }
+  .rcard.has-hover-image:hover .rcard__image-hover {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+  .rcard__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .rcard__name { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.2; }
+  .rcard__name-main {
+    display: block;
+  }
+  .rcard__name em {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .rcard__price { font-family: var(--font-mono); font-size: 14px; }
+
+  /* ---------- Footer (TOPと共通) ---------- */
+  .footer {
+    padding: 64px 24px 24px;
+    background: transparent;
+    border-top: none;
+  }
+  @media (min-width: 768px) { .footer { padding: 80px 40px 32px; } }
+
+  .footer__stage {
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 52px;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .footer__stage {
+      min-height: 420px;
+      margin-bottom: 64px;
+    }
+  }
+  .footer__brand-mark {
+    width: clamp(180px, 28vw, 380px);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .footer__brand-mark img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .footer__chip {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 13px 10px;
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    background: var(--c-acid);
+    color: var(--c-ink);
+    transition:
+      transform 0.35s var(--ease-out),
+      filter 0.35s var(--ease-out);
+  }
+  .footer__chip:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.98);
+  }
+  .footer__chip--all { top: 10%; left: 2%; }
+  .footer__chip--coffee { top: 70%; left: 8%; }
+  .footer__chip--goods { top: 18%; right: 2%; }
+  .footer__chip--about { top: 61%; right: 6%; }
+  .footer__chip--instagram {
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+  }
+  .footer__chip--instagram:hover { transform: translateX(-50%) translateY(-2px); }
+  @media (min-width: 768px) {
+    .footer__chip--all { top: 12%; left: 6%; }
+    .footer__chip--coffee { top: 69%; left: 12%; }
+    .footer__chip--goods { top: 16%; right: 8%; }
+    .footer__chip--about { top: 58%; right: 10%; }
+    .footer__chip--instagram { bottom: 12%; left: 53%; }
+    .footer__chip {
+      padding: 11px 16px 12px;
+      font-size: 15px;
+    }
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--c-mute);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- Reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    body::before,
+    body::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-transition-underlay" aria-hidden="true"></div>
+<div class="page-shell" id="pageShell">
+<!-- Header -->
+<header class="header">
+  <div class="header__inner wrap">
+    <a href="index.html" class="logo" aria-label="ANYWAY">
+      <svg class="logo__svg logo__base" viewBox="-4 -2 148.61 129.23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M22.69,84.81v24.18c0,3.97,2.23,6.2,6.2,6.2h8.56c.5,1.74.62,3.35.62,5.08s-.25,3.47-.62,4.96h-12.65c-8.93,0-13.89-4.96-13.89-13.76v-19.71c0-16.74-2.11-22.32-10.17-22.94-.62-1.86-.74-4.22-.74-6.45,0-2.11.25-4.22.74-5.95,8.06-.62,10.17-6.32,10.17-22.94V13.76C10.91,4.96,15.87,0,24.8,0h12.65c.37,1.61.62,3.22.62,4.96s-.25,3.35-.62,5.08h-8.56c-3.97,0-6.2,2.23-6.2,6.2v24.18c0,11.66-1.98,19.59-10.54,22.19,8.56,2.6,10.54,10.54,10.54,22.2Z"/>
+          <path d="M48.23,63.49c-1.24-1.12-2.36-2.6-3.1-4.09,4.59-7.69,10.04-9.92,15.38-9.92,4.46,0,9.42,2.23,12.77,3.97,2.73,1.36,4.96,2.23,7.19,2.23,2.6,0,5.08-1.36,8.31-4.84,1.49.87,2.85,1.74,4.09,2.85,1.36,1.24,2.48,2.73,3.35,4.22-4.59,7.56-9.92,10.04-15,10.04-4.59,0-9.67-2.11-13.27-4.09-2.6-1.36-4.71-2.11-6.82-2.11-2.85,0-5.33,1.36-8.56,4.96-1.61-.87-3.1-1.98-4.34-3.22Z"/>
+          <path d="M117.92,40.42v-24.18c0-3.97-2.23-6.2-6.2-6.2h-8.56c-.5-1.74-.62-3.35-.62-5.08s.25-3.35.62-4.96h12.52c9.05,0,14.01,4.96,14.01,13.76v19.71c0,16.61,1.98,22.32,10.17,22.94.5,1.74.74,3.84.74,5.95,0,2.23-.25,4.59-.74,6.45-8.06.62-10.17,6.2-10.17,22.94v19.71c0,8.8-4.96,13.76-14.01,13.76h-12.52c-.37-1.49-.62-3.22-.62-4.96s.12-3.35.62-5.08h8.56c3.97,0,6.2-2.23,6.2-6.2v-24.18c0-11.66,1.98-19.59,10.54-22.2-8.56-2.6-10.54-10.54-10.54-22.19Z"/>
+        </g>
+      </svg>
+      <svg class="logo__svg logo__hover" viewBox="-4 -2 148.61 129.23" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M22.69,84.81v24.18c0,3.97,2.23,6.2,6.2,6.2h8.56c.5,1.74.62,3.35.62,5.08s-.25,3.47-.62,4.96h-12.65c-8.93,0-13.89-4.96-13.89-13.76v-19.71c0-16.74-2.11-22.32-10.17-22.94-.62-1.86-.74-4.22-.74-6.45,0-2.11.25-4.22.74-5.95,8.06-.62,10.17-6.32,10.17-22.94V13.76C10.91,4.96,15.87,0,24.8,0h12.65c.37,1.61.62,3.22.62,4.96s-.25,3.35-.62,5.08h-8.56c-3.97,0-6.2,2.23-6.2,6.2v24.18c0,11.66-1.98,19.59-10.54,22.19,8.56,2.6,10.54,10.54,10.54,22.2Z"/>
+          <path d="M48.23,63.49c-1.24-1.12-2.36-2.6-3.1-4.09,4.59-7.69,10.04-9.92,15.38-9.92,4.46,0,9.42,2.23,12.77,3.97,2.73,1.36,4.96,2.23,7.19,2.23,2.6,0,5.08-1.36,8.31-4.84,1.49.87,2.85,1.74,4.09,2.85,1.36,1.24,2.48,2.73,3.35,4.22-4.59,7.56-9.92,10.04-15,10.04-4.59,0-9.67-2.11-13.27-4.09-2.6-1.36-4.71-2.11-6.82-2.11-2.85,0-5.33,1.36-8.56,4.96-1.61-.87-3.1-1.98-4.34-3.22Z"/>
+          <path d="M117.92,40.42v-24.18c0-3.97-2.23-6.2-6.2-6.2h-8.56c-.5-1.74-.62-3.35-.62-5.08s.25-3.35.62-4.96h12.52c9.05,0,14.01,4.96,14.01,13.76v19.71c0,16.61,1.98,22.32,10.17,22.94.5,1.74.74,3.84.74,5.95,0,2.23-.25,4.59-.74,6.45-8.06.62-10.17,6.2-10.17,22.94v19.71c0,8.8-4.96,13.76-14.01,13.76h-12.52c-.37-1.49-.62-3.22-.62-4.96s.12-3.35.62-5.08h8.56c3.97,0,6.2-2.23,6.2-6.2v-24.18c0-11.66,1.98-19.59,10.54-22.2-8.56-2.6-10.54-10.54-10.54-22.19Z"/>
+        </g>
+      </svg>
+    </a>
+    <nav class="nav" aria-label="メイン">
+      <a href="index.html" data-nav-direction="back" data-target-cat="all">Shop</a>
+      <a href="index.html" data-nav-direction="back">About</a>
+    </nav>
+    <div class="header__bag">
+      <button class="bag-btn" aria-label="カートを開く"><span>Bag</span><span class="count">(0)</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Product (2-column) -->
+<section class="product">
+
+  <!-- Left: sticky buy panel -->
+  <div class="product__buy">
+    <div class="product__media" aria-hidden="true">
+      <div class="product__art"></div>
+      <div class="product__image"></div>
+    </div>
+
+    <div class="product__heading" id="productHeading">
+      <div class="product__heading-sub">Coffee · Ethiopia</div>
+      <div class="product__heading-title">Brew No.07</div>
+    </div>
+
+    <div class="product__buy-meta">
+      <em>Bright florals</em>
+      jasmine, citrus, a slow morning.<br>
+      朝の最初の一杯に。
+    </div>
+
+    <div class="product__price" id="totalPrice">¥1,800 <small>(税込)</small></div>
+
+    <div class="product__options">
+      <div>
+        <div class="option__label">Size</div>
+        <div class="option__choices" data-option="size">
+          <button class="option__choice is-selected" data-value="200" data-price="1800">200g</button>
+          <button class="option__choice" data-value="500" data-price="4200">500g</button>
+        </div>
+      </div>
+      <div>
+        <div class="option__label">Grind</div>
+        <div class="option__choices" data-option="grind">
+          <button class="option__choice is-selected" data-value="whole">Whole bean</button>
+          <button class="option__choice" data-value="medium">Medium grind</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="add-to-bag" id="addBtn">
+      <span class="add-to-bag__brace add-to-bag__brace--left">{</span>
+      <span class="add-to-bag__label"><span class="add-to-bag__text">Add to bag</span><span class="arrow">→</span></span>
+      <span class="add-to-bag__brace add-to-bag__brace--right">}</span>
+    </button>
+  </div>
+
+  <!-- Right: scrollable story (CMSブロック配列から生成) -->
+  <div class="product__story">
+
+    <!-- Sub bar: パンくず＋商品コード（固定要素・ブロックの外） -->
+    <div class="subbar">
+      <div class="subbar__crumb"><a href="index.html" data-nav-direction="back" data-target-cat="all">Shop</a> &nbsp;/&nbsp; <a href="index.html" data-nav-direction="back" data-target-cat="coffee">Coffee</a> &nbsp;/&nbsp; <span style="color: var(--c-ink);">Brew No.07</span></div>
+      <div class="subbar__code">No.07 ETH 25-26</div>
+    </div>
+
+    <!-- ブロックがここにレンダリングされる -->
+    <div id="storyBlocks"></div>
+
+  </div>
+
+</section>
+
+<!-- Related products -->
+<section class="related">
+  <div class="related__head">
+    <h2>You may also <em>like</em>.</h2>
+    <a href="index.html" data-nav-direction="back" data-target-cat="all">View all →</a>
+  </div>
+  <div class="related__grid">
+    <article class="rcard reveal" style="--ph: #7a4a1f; --img: none;">
+      <div class="rcard__media" aria-hidden="true"><div class="rcard__art"></div><div class="rcard__image"></div></div>
+      <div class="rcard__info">
+        <div>
+          <div class="rcard__name">Daily Blend</div>
+          <div class="rcard__cat">{Coffee}</div>
+        </div>
+        <div class="rcard__price">¥1,400</div>
+      </div>
+    </article>
+    <article class="rcard reveal" style="--ph: #5a3a1a; --img: none;">
+      <div class="rcard__media" aria-hidden="true"><div class="rcard__art"></div><div class="rcard__image"></div></div>
+      <div class="rcard__info">
+        <div>
+          <div class="rcard__name">Brew No.06 <em>Colombia</em></div>
+          <div class="rcard__cat">{Coffee}</div>
+        </div>
+        <div class="rcard__price">¥1,700</div>
+      </div>
+    </article>
+    <article class="rcard reveal" style="--ph: #c89b6b; --img: none;">
+      <div class="rcard__media" aria-hidden="true"><div class="rcard__art"></div><div class="rcard__image"></div></div>
+      <div class="rcard__info">
+        <div>
+          <div class="rcard__name">Morning Kit</div>
+          <div class="rcard__cat">{Coffee}</div>
+        </div>
+        <div class="rcard__price">¥3,800</div>
+      </div>
+    </article>
+  </div>
+</section>
+
+</div>
+
+<div class="bag-overlay" id="bagOverlay"></div>
+<aside class="bag-drawer" id="bagDrawer" aria-hidden="true" aria-label="ショッピングバッグ">
+  <div class="bag-drawer__head">
+    <div>
+      <div class="bag-drawer__meta">Shopping bag</div>
+      <div class="bag-drawer__title">Your selections</div>
+    </div>
+    <button class="bag-drawer__close" id="bagClose" aria-label="カートを閉じる">✕</button>
+  </div>
+  <div class="bag-drawer__body" id="bagItems"></div>
+  <div class="bag-drawer__foot">
+    <div class="bag-drawer__row">
+      <div class="bag-drawer__meta">Subtotal</div>
+      <div class="bag-drawer__subtotal" id="bagSubtotal">¥0</div>
+    </div>
+    <a class="bag-drawer__checkout" href="#" id="bagCheckout">Ready for checkout</a>
+  </div>
+</aside>
+
+<script>
+  /* ============================================================
+     CMSブロック駆動のストーリーレンダリング
+
+     この BLOCKS 配列を CMS（microCMS / Sanity / Contentful等）から
+     fetch するように差し替えれば、編集者が管理画面から
+     「画像 / テキスト / プルクオート」などのブロックを
+     好きな順番に並べ替え・追加・削除できる構成になります。
+
+     ブロック種類:
+     - name      : 商品名見出し              { eyebrow, title, titleEm }
+     - lead      : リード文（セリフ大きめ）   { text }
+     - body      : 本文段落                  { text }
+     - pull      : プルクオート（大引用）    { text, size? }
+     - imageSingle : 1枚画像                 { aspect: wide|banner|tall|square, color, url? }
+     - imagePair   : 2カラム画像             { aspect: wide|banner|tall|square, color, url?, url2?, color2?, aspect2? }
+     - caption   : 画像キャプション           { text }
+     - spec      : スペック表                 { items: [{label, value}] }
+     ============================================================ */
+  const FALLBACK_BLOCKS = [
+    { type: "name", eyebrow: "Single Origin · Vol.07", title: "Brew No.07", titleEm: "Ethiopia." },
+    { type: "imageSingle", aspect: "wide", color: "#c89b6b" },
+    { type: "caption", text: "— Yirgacheffe Farm, Ethiopia / 2025 Harvest" },
+    { type: "lead", text: "エチオピア、イルガチェフェ。標高2,000mの朝霧に包まれた農園で育まれた豆は、カップに注がれた瞬間にジャスミンと柑橘の香りを放ちます。" },
+    { type: "body", text: "ANYWAY の旅は、毎年この季節にエチオピアから始まります。同じ農園を何度も訪れ、その年の気候、雨量、収穫のタイミングを話し合いながら、ロットを選んでいます。Brew No.07 は、2025年の収穫の中でも、特に風味のクリアさで選ばれた一杯です。" },
+    { type: "imagePair", aspect: "tall", color: "#001829", aspect2: "tall", color2: "#B08650" },
+    { type: "pull", text: '"今日の気分を、<br>カップの中で<em>確かめる</em>。"' },
+    { type: "body", text: "抽出はペーパードリップ、特にHario V60を推奨しています。お湯の温度は92℃、豆15gに対して湯量250ml、3分で抽出。最初の一口で、口の中いっぱいに広がるジャスミンの余韻を楽しんでください。" },
+    { type: "spec", items: [
+      { label: "Origin", value: "Yirgacheffe, <em>Ethiopia</em>" },
+      { label: "Altitude", value: "1,950 – 2,100m" },
+      { label: "Process", value: "Washed" },
+      { label: "Roast", value: "Light" },
+      { label: "Notes", value: "Jasmine, Bergamot, Honey" },
+      { label: "Brew", value: "Pour over · V60" },
+      { label: "Best by", value: "Within 4 weeks of roasting" },
+    ]},
+    { type: "image", aspect: "square", color: "#B08650" },
+    { type: "body", text: "コーヒーは、その日の気分にそっと寄り添う一番近い存在。「今日はどう?」という問いに、カップの中の一口が返事をくれる。Brew No.07 は、そんな朝のための一杯です。" },
+    { type: "pull", text: "A cup for every kind of <em>day</em>.", size: "small" },
+  ];
+
+  function formatBlockText(text = "") {
+    return String(text).replace(/\n\n+/g, "<br><br>").replace(/\n/g, "<br>");
+  }
+
+  function renderSpecFromText(text = "") {
+    const lines = String(text)
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    if (!lines.length) return "";
+
+    const rows = lines.map((line) => {
+      const match = line.match(/^([^:：]+)\s*[:：]\s*(.+)$/);
+      if (match) {
+        return `<dt>${match[1]}</dt><dd>${match[2]}</dd>`;
+      }
+      return `<dt></dt><dd>${line}</dd>`;
+    }).join("");
+
+    return `<dl class="spec reveal">${rows}</dl>`;
+  }
+
+  const renderers = {
+    name: (b) => `
+      <div class="story__name reveal">
+        ${b.eyebrow ? `<div class="story__name-sub">${b.eyebrow}</div>` : ""}
+        <h1>${b.title}${b.titleEm ? `<br><em>${b.titleEm}</em>` : ""}</h1>
+      </div>`,
+    lead: (b) => `<p class="story__lead reveal">${formatBlockText(b.text)}</p>`,
+    body: (b) => `<p class="story__body reveal">${formatBlockText(b.text)}</p>`,
+    pull: (b) => `<p class="story__pull reveal${b.size === "small" ? " is-small" : ""}">${formatBlockText(b.text)}</p>`,
+    imageSingle: (b) => `<div class="story__image is-${b.aspect || "wide"} reveal ${b.url ? "has-image" : ""}" style="--ph: ${b.color || "var(--c-acid)"}; --img: ${b.url ? `url('${b.url}')` : "none"};" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>`,
+    imagePair: (b) => `
+      <div class="story__image-grid reveal ${b.url2 ? "" : "is-single"}">
+        <div class="story__image is-${b.aspect || "wide"} ${b.url ? "has-image" : ""}" style="--ph: ${b.color || "var(--c-acid)"}; --img: ${b.url ? `url('${b.url}')` : "none"};" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>
+        ${b.url2 ? `<div class="story__image is-${b.aspect2 || b.aspect || "wide"} has-image" style="--ph: ${b.color2 || b.color || "var(--c-acid)"}; --img: url('${b.url2}');" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>` : ""}
+      </div>`,
+    image: (b) => {
+      if (b.url2 || b.color2) {
+        return renderers.imagePair(b);
+      }
+      return `<div class="story__image is-${b.aspect || "wide"} reveal ${b.url ? "has-image" : ""}" style="--ph: ${b.color || "var(--c-acid)"}; --img: ${b.url ? `url('${b.url}')` : "none"};" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>`;
+    },
+    caption: (b) => `<div class="story__caption reveal">${formatBlockText(b.text)}</div>`,
+    spec: (b) => {
+      if (Array.isArray(b.items) && b.items.length) {
+        return `
+          <dl class="spec reveal">
+            ${b.items.map(item => `<dt>${item.label}</dt><dd>${item.value}</dd>`).join("")}
+          </dl>`;
+      }
+      return renderSpecFromText(b.text);
+    },
+  };
+
+  const storyContainer = document.getElementById("storyBlocks");
+  const relatedGrid = document.querySelector(".related__grid");
+
+  function renderStoryBlocks(blocks) {
+    storyContainer.innerHTML = blocks.map((b) => {
+      const fn = renderers[b.type];
+      return fn ? fn(b) : "";
+    }).join("");
+  }
+
+  const FALLBACK_PRODUCT = {
+    id: "p01",
+    name: "Brew No.07",
+    italic: "Ethiopia",
+    category: "coffee",
+    color: "#B08650",
+    image: null,
+    description: "ANYWAY. Brew No.07 — Single Origin Ethiopia Yirgacheffe. Bright florals, jasmine, citrus.",
+    buyMetaEyebrow: "Bright florals",
+    buyMetaText: "jasmine, citrus, a slow morning.<br>朝の最初の一杯に。",
+    code: "No.07 ETH 25-26",
+    price: 1800,
+    sizes: [
+      { value: "200", label: "200g", price: 1800, selected: true },
+      { value: "500", label: "500g", price: 4200, selected: false },
+    ],
+    grinds: [
+      { value: "whole", label: "Whole bean", selected: true },
+      { value: "medium", label: "Medium grind", selected: false },
+    ],
+    blocks: FALLBACK_BLOCKS,
+    related: [
+      { id: "p02", name: "Daily Blend", italic: null, category: "coffee", price: 1400, color: "#7a4a1f", image: null },
+      { id: "p05", name: "Brew No.06", italic: "Colombia", category: "coffee", price: 1700, color: "#5a3a1a", image: null },
+      { id: "p07", name: "Morning Kit", italic: null, category: "coffee", price: 3800, color: "#c89b6b", image: null },
+    ],
+  };
+
+  /* ---------- Option selection + price ---------- */
+  const yen = new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY", maximumFractionDigits: 0 });
+  const totalPriceEl = document.getElementById("totalPrice");
+  const addBtn = document.getElementById("addBtn");
+  const addBtnText = addBtn.querySelector(".add-to-bag__text");
+  const bagButton = document.querySelector(".bag-btn");
+  const bagCount = document.querySelector(".bag-btn .count");
+  const bagDrawer = document.getElementById("bagDrawer");
+  const bagOverlay = document.getElementById("bagOverlay");
+  const bagClose = document.getElementById("bagClose");
+  const bagItems = document.getElementById("bagItems");
+  const bagSubtotal = document.getElementById("bagSubtotal");
+  const bagCheckout = document.getElementById("bagCheckout");
+  const CART_KEY = "hysd-cart-v1";
+  const FILTER_KEY = "hysd-filter-cat";
+  const productMedia = document.querySelector(".product__media");
+  const productHeading = document.getElementById("productHeading");
+  const productBuyMeta = document.querySelector(".product__buy-meta");
+  const productOptions = document.querySelector(".product__options");
+  const productCrumb = document.querySelector(".subbar__crumb");
+  const productCode = document.querySelector(".subbar__code");
+  const pageDescriptionMeta = document.querySelector('meta[name="description"]');
+  const queryProductId = new URLSearchParams(window.location.search).get("id") || FALLBACK_PRODUCT.id;
+  let currentProduct = structuredClone(FALLBACK_PRODUCT);
+  let allProducts = [...FALLBACK_PRODUCT.related, {
+    id: FALLBACK_PRODUCT.id,
+    name: FALLBACK_PRODUCT.name,
+    italic: FALLBACK_PRODUCT.italic,
+    category: FALLBACK_PRODUCT.category,
+    price: FALLBACK_PRODUCT.price,
+    color: FALLBACK_PRODUCT.color,
+    image: FALLBACK_PRODUCT.image,
+  }];
+  const state = { size: "200", grind: "whole", price: 1800 };
+
+  function getProductHref(id) {
+    return `product.html?id=${encodeURIComponent(id)}`;
+  }
+
+  function normalizeCategoryLabel(category) {
+    return String(category || "").toLowerCase() === "goods" ? "Goods" : "Coffee";
+  }
+
+  function getPrimaryProductImage(product) {
+    if (product.image) return product.image;
+    const imageBlock = (product.blocks || []).find((block) =>
+      block?.type === "imageSingle" || block?.type === "imagePair" || block?.type === "image"
+    );
+    return imageBlock?.url || imageBlock?.url2 || "";
+  }
+
+  function renderOptionGroups(product) {
+    const sizeChoicesClass = product.sizes.length === 1 ? "option__choices is-single" : "option__choices";
+    const grindChoicesClass = product.grinds.length === 1 ? "option__choices is-single" : "option__choices";
+    productOptions.innerHTML = `
+      <div>
+        <div class="option__label">Size</div>
+        <div class="${sizeChoicesClass}" data-option="size">
+          ${product.sizes.map((size, index) => `
+            <button class="option__choice ${size.selected || index === 0 ? "is-selected" : ""}" data-value="${size.value}" data-price="${size.price}">
+              ${size.label}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+      <div>
+        <div class="option__label">Grind</div>
+        <div class="${grindChoicesClass}" data-option="grind">
+          ${product.grinds.map((grind, index) => `
+            <button class="option__choice ${grind.selected || index === 0 ? "is-selected" : ""}" data-value="${grind.value}">
+              ${grind.label}
+            </button>
+          `).join("")}
+        </div>
+      </div>
+    `;
+    state.size = product.sizes.find((size) => size.selected)?.value || product.sizes[0]?.value || "200";
+    state.grind = product.grinds.find((grind) => grind.selected)?.value || product.grinds[0]?.value || "whole";
+    state.price = product.sizes.find((size) => size.selected)?.price || product.sizes[0]?.price || product.price || 0;
+    totalPriceEl.innerHTML = `${yen.format(state.price)} <small>(税込)</small>`;
+  }
+
+  function renderRelatedProducts(items) {
+    relatedGrid.innerHTML = items.map((item) => `
+      <article class="rcard reveal ${item.hoverImage ? "has-hover-image" : ""}" role="link" tabindex="0" data-href="${getProductHref(item.id)}" style="--ph: ${item.color || "#B08650"}; --img: ${item.image ? `url('${item.image}')` : "none"}; --img-hover: ${item.hoverImage ? `url('${item.hoverImage}')` : "none"};">
+        <div class="rcard__media ${item.image ? "has-image" : ""}" aria-hidden="true">
+          <div class="rcard__art"></div>
+          <div class="rcard__image"></div>
+          <div class="rcard__image-hover"></div>
+          <div class="rcard__cursor"><span class="label">${item.hoverLabel || "もうひとつ見る"}</span><span class="brace">}</span></div>
+        </div>
+        <div class="rcard__info">
+          <div>
+            <div class="rcard__name"><span class="rcard__name-main">${item.name}</span>${item.italic ? `<em>${item.italic}</em>` : ""}</div>
+          </div>
+          <div class="rcard__price">${yen.format(item.price || 0)}</div>
+        </div>
+      </article>
+    `).join("");
+    setupRelatedCardCursors();
+  }
+
+  function selectRelatedProducts(product, items = []) {
+    const sameCategory = items.filter((item) =>
+      item &&
+      item.id !== product.id &&
+      String(item.category || "").toLowerCase() === String(product.category || "").toLowerCase()
+    );
+
+    if (sameCategory.length) return sameCategory.slice(0, 3);
+    if (Array.isArray(product.related) && product.related.length) return product.related.slice(0, 3);
+    return FALLBACK_PRODUCT.related.slice(0, 3);
+  }
+
+  function applyProductData(product) {
+    const filteredBlocks = (Array.isArray(product.blocks) && product.blocks.length ? product.blocks : FALLBACK_BLOCKS)
+      .filter((block) => block?.type !== "name");
+
+    currentProduct = {
+      ...structuredClone(FALLBACK_PRODUCT),
+      ...product,
+      blocks: filteredBlocks.length ? filteredBlocks : FALLBACK_BLOCKS.filter((block) => block?.type !== "name"),
+      sizes: Array.isArray(product.sizes) && product.sizes.length ? product.sizes : FALLBACK_PRODUCT.sizes,
+      grinds: Array.isArray(product.grinds) && product.grinds.length ? product.grinds : FALLBACK_PRODUCT.grinds,
+    };
+    currentProduct.related = selectRelatedProducts(currentProduct, allProducts);
+
+    document.title = `${currentProduct.name}${currentProduct.italic ? ` / ${currentProduct.italic}` : ""} — ANYWAY`;
+    if (pageDescriptionMeta) {
+      pageDescriptionMeta.setAttribute("content", currentProduct.description || FALLBACK_PRODUCT.description);
+    }
+    if (productMedia) {
+      const primaryImage = getPrimaryProductImage(currentProduct);
+      productMedia.style.setProperty("--ph", currentProduct.color || "#B08650");
+      productMedia.style.setProperty("--img", primaryImage ? `url('${primaryImage}')` : "none");
+      productMedia.classList.toggle("has-image", Boolean(primaryImage));
+    }
+    if (productHeading) {
+      productHeading.innerHTML = `
+        <div class="product__heading-sub">${normalizeCategoryLabel(currentProduct.category)} · ${currentProduct.italic || currentProduct.name}</div>
+        <div class="product__heading-title">${currentProduct.name}</div>
+      `;
+    }
+    if (productBuyMeta) {
+      productBuyMeta.innerHTML = `
+        <em>${currentProduct.buyMetaEyebrow || ""}</em>
+        ${currentProduct.buyMetaText || ""}
+      `;
+    }
+    if (productCrumb) {
+      productCrumb.innerHTML = `<a href="index.html" data-nav-direction="back" data-target-cat="all">Shop</a> &nbsp;/&nbsp; <a href="index.html" data-nav-direction="back" data-target-cat="${String(currentProduct.category).toLowerCase()}">${normalizeCategoryLabel(currentProduct.category)}</a> &nbsp;/&nbsp; <span style="color: var(--c-ink);">${currentProduct.name}</span>`;
+    }
+    if (productCode) {
+      productCode.textContent = currentProduct.code || "";
+    }
+    renderStoryBlocks(currentProduct.blocks);
+    renderOptionGroups(currentProduct);
+    renderRelatedProducts(currentProduct.related);
+  }
+
+  async function loadProductData(productId) {
+    try {
+      const [detailRes, listRes] = await Promise.all([
+        fetch(`/api/products/${encodeURIComponent(productId)}`),
+        fetch("/api/products"),
+      ]);
+      if (!detailRes.ok) throw new Error(`Failed to load product: ${detailRes.status}`);
+      if (!listRes.ok) throw new Error(`Failed to load products: ${listRes.status}`);
+      const data = await detailRes.json();
+      const listData = await listRes.json();
+      if (Array.isArray(listData.contents) && listData.contents.length) {
+        allProducts = listData.contents;
+      }
+      applyProductData(data);
+    } catch (error) {
+      console.warn("Using fallback product.", error);
+      applyProductData(FALLBACK_PRODUCT);
+    }
+  }
+
+  function loadCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  function resolveCartItemImage(item) {
+    if (item.image) return item.image;
+    if (currentProduct.id === item.id) return getPrimaryProductImage(currentProduct);
+    return "";
+  }
+
+  function getCartCount(cart = loadCart()) {
+    return cart.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  function getSubtotal(cart = loadCart()) {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  function formatGrindLabel(value) {
+    const normalized = String(value || "").trim().toLowerCase();
+    if (normalized === "whole" || normalized === "whole bean" || normalized === "bean" || value === "豆") {
+      return "豆";
+    }
+    if (normalized === "medium" || normalized === "medium grind" || normalized === "ground" || value === "粉") {
+      return "粉";
+    }
+    return String(value || "");
+  }
+
+  function formatVariant(item) {
+    return `${item.size}g / ${formatGrindLabel(item.grind)}`;
+  }
+
+  function updateBagCount() {
+    bagCount.textContent = `(${getCartCount()})`;
+  }
+
+  function renderBag() {
+    const cart = loadCart();
+    let cartChanged = false;
+    cart.forEach((item) => {
+      if (!item.image) {
+        const resolvedImage = resolveCartItemImage(item);
+        if (resolvedImage) {
+          item.image = resolvedImage;
+          cartChanged = true;
+        }
+      }
+    });
+    if (cartChanged) saveCart(cart);
+    bagSubtotal.textContent = yen.format(getSubtotal(cart));
+
+    if (!cart.length) {
+      bagItems.innerHTML = `
+        <div class="bag-empty">
+          <div>
+            <h3>Your bag is empty.</h3>
+            <p>Add a coffee and we will keep it here.</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    bagItems.innerHTML = `
+      <ul class="bag-list">
+        ${cart.map((item, index) => `
+          <li class="bag-item">
+            <div class="bag-item__media ${item.image ? "has-image" : ""}" style="--ph: ${item.color || "#B08650"}; --bag-img: ${item.image ? `url('${item.image}')` : "none"};" aria-hidden="true"></div>
+            <div>
+              <div class="bag-item__top">
+                <div>
+                  <div class="bag-item__name">${item.name}${item.italic ? ` <em>${item.italic}</em>` : ""}</div>
+                  <div class="bag-item__meta">${formatVariant(item)}</div>
+                </div>
+                <div class="bag-item__price">${yen.format(item.price * item.quantity)}</div>
+              </div>
+              <div class="bag-item__bottom" style="margin-top: 14px;">
+                <div class="bag-item__qty" data-index="${index}">
+                  <button type="button" data-action="decrease" aria-label="数量を減らす">−</button>
+                  <span>${item.quantity}</span>
+                  <button type="button" data-action="increase" aria-label="数量を増やす">＋</button>
+                </div>
+                <button class="bag-item__remove" type="button" data-remove="${index}">Remove</button>
+              </div>
+            </div>
+          </li>
+        `).join("")}
+      </ul>
+    `;
+    const bagBody = bagItems.closest(".bag-drawer__body");
+    if (bagBody) bagBody.scrollTop = 0;
+  }
+
+  function openBag() {
+    renderBag();
+    const bagBody = bagItems.closest(".bag-drawer__body");
+    bagDrawer.scrollTop = 0;
+    if (bagBody) bagBody.scrollTop = 0;
+    bagDrawer.classList.add("is-open");
+    bagOverlay.classList.add("is-open");
+    bagDrawer.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => {
+      bagDrawer.scrollTop = 0;
+      if (bagBody) bagBody.scrollTop = 0;
+      requestAnimationFrame(() => {
+        bagDrawer.scrollTop = 0;
+        if (bagBody) bagBody.scrollTop = 0;
+        requestAnimationFrame(() => {
+          bagDrawer.scrollTop = 0;
+          if (bagBody) bagBody.scrollTop = 0;
+        });
+      });
+    });
+    window.setTimeout(() => {
+      bagDrawer.scrollTop = 0;
+      if (bagBody) bagBody.scrollTop = 0;
+    }, 80);
+  }
+
+  function closeBag() {
+    bagDrawer.classList.remove("is-open");
+    bagOverlay.classList.remove("is-open");
+    bagDrawer.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  async function checkoutCart() {
+    const cart = loadCart();
+    if (!cart.length) return;
+
+    const originalLabel = bagCheckout.textContent;
+    bagCheckout.textContent = "Preparing checkout...";
+    bagCheckout.style.pointerEvents = "none";
+
+    try {
+      const res = await fetch("/api/checkout/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cart.map((item) => ({
+            id: item.id,
+            size: item.size,
+            grind: item.grind,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.url) {
+        throw new Error(data.message || "Failed to start checkout");
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(error);
+      window.alert(`Checkout could not start.\n${error.message}`);
+      bagCheckout.textContent = originalLabel;
+      bagCheckout.style.pointerEvents = "";
+    }
+  }
+
+  function updateQuantity(index, delta) {
+    const cart = loadCart();
+    const item = cart[index];
+    if (!item) return;
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    saveCart(cart);
+    updateBagCount();
+    renderBag();
+  }
+
+  function addCurrentProductToCart() {
+    const cart = loadCart();
+    const variant = formatVariant(state);
+    const existing = cart.find((item) =>
+      item.id === currentProduct.id &&
+      item.size === state.size &&
+      item.grind === state.grind
+    );
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        id: currentProduct.id,
+        name: currentProduct.name,
+        italic: currentProduct.italic,
+        category: normalizeCategoryLabel(currentProduct.category),
+        color: currentProduct.color,
+        image: getPrimaryProductImage(currentProduct),
+        size: state.size,
+        grind: state.grind,
+        price: state.price,
+        quantity: 1,
+        variant,
+      });
+    }
+
+    saveCart(cart);
+    updateBagCount();
+    renderBag();
+  }
+
+  function navigateWithDirection(href, direction) {
+    sessionStorage.setItem("hysd-nav-direction", direction);
+    window.location.href = href;
+  }
+
+  function navigateBackWithOverlay(href, targetCat) {
+    if (targetCat) {
+      sessionStorage.setItem(FILTER_KEY, targetCat);
+    }
+    sessionStorage.setItem("hysd-nav-direction", "back");
+    document.body.classList.add("is-leaving-back");
+    window.setTimeout(() => {
+      window.location.href = href;
+    }, 460);
+  }
+
+  function setupScrollGlow() {
+    let rafId = null;
+    const update = () => {
+      const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+      document.body.style.setProperty("--scroll-glow", progress.toFixed(3));
+      document.body.style.setProperty("--glow-strength", (0.2 + progress * 0.8).toFixed(3));
+      rafId = null;
+    };
+    const requestUpdate = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    update();
+  }
+
+  function setupDirectionalLinks() {
+    document.querySelectorAll("[data-nav-direction]").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const anchor = e.currentTarget;
+        if (!(anchor instanceof HTMLAnchorElement)) return;
+        const href = anchor.getAttribute("href");
+        const direction = anchor.dataset.navDirection;
+        if (!href || !direction) return;
+        e.preventDefault();
+        if (direction === "back") {
+          navigateBackWithOverlay(href, anchor.dataset.targetCat);
+          return;
+        }
+        if (anchor.dataset.targetCat) {
+          sessionStorage.setItem(FILTER_KEY, anchor.dataset.targetCat);
+        }
+        navigateWithDirection(href, direction);
+      });
+    });
+  }
+
+  function setupRelatedCardCursors() {
+    document.querySelectorAll(".rcard").forEach((card) => {
+      const cursor = card.querySelector(".rcard__cursor");
+      const media = card.querySelector(".rcard__media");
+      if (!cursor || !media) return;
+
+      let targetX = 0;
+      let targetY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let rafId = null;
+
+      function applyPos() {
+        cursor.style.setProperty("--cur-x", `calc(${currentX}px - 50%)`);
+        cursor.style.setProperty("--cur-y", `calc(${currentY}px - 50%)`);
+      }
+
+      function tick() {
+        const ease = 0.28;
+        currentX += (targetX - currentX) * ease;
+        currentY += (targetY - currentY) * ease;
+        applyPos();
+        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+          rafId = null;
+          return;
+        }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function startTick() {
+        if (rafId === null) rafId = requestAnimationFrame(tick);
+      }
+
+      media.addEventListener("mouseenter", (e) => {
+        const rect = media.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        currentX = targetX;
+        currentY = targetY;
+        applyPos();
+        card.classList.add("is-hovered");
+        startTick();
+      });
+
+      media.addEventListener("mousemove", (e) => {
+        const rect = media.getBoundingClientRect();
+        targetX = e.clientX - rect.left;
+        targetY = e.clientY - rect.top;
+        startTick();
+      });
+
+      media.addEventListener("mouseleave", () => {
+        card.classList.remove("is-hovered");
+      });
+    });
+  }
+
+  productOptions.addEventListener("click", (e) => {
+    const group = e.target.closest(".option__choices");
+    const btn = e.target.closest(".option__choice");
+    if (!group || !btn) return;
+    const opt = group.dataset.option;
+    group.querySelectorAll(".option__choice").forEach((choice) => choice.classList.remove("is-selected"));
+    btn.classList.add("is-selected");
+    state[opt] = btn.dataset.value;
+    if (btn.dataset.price) state.price = parseInt(btn.dataset.price, 10);
+    totalPriceEl.innerHTML = `${yen.format(state.price)} <small>(税込)</small>`;
+  });
+
+  addBtn.addEventListener("click", () => {
+    /* Stripe接続点：ここで Stripe Checkout / Payment Links を呼び出す
+       例: stripe.redirectToCheckout({ lineItems: [{ price: priceId, quantity: 1 }] })
+       priceIdは state.size と state.grind の組み合わせで決まる */
+    try {
+      addCurrentProductToCart();
+      addBtnText.textContent = "Added ✓";
+      openBag();
+      requestAnimationFrame(() => {
+        openBag();
+        window.setTimeout(() => {
+          openBag();
+        }, 80);
+      });
+      setTimeout(() => {
+        addBtnText.textContent = "Add to bag";
+      }, 1600);
+    } catch (error) {
+      console.error("Add to bag failed", error);
+      window.alert(`Could not add to bag.\n${error.message || error}`);
+      openBag();
+    }
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add("in");
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+  function observeReveals() {
+    observer.disconnect();
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  }
+
+  function setupRelatedLinks() {
+    document.querySelectorAll(".rcard").forEach((card) => {
+      const href = card.dataset.href;
+      if (!href) return;
+      card.addEventListener("click", () => navigateWithDirection(href, "forward"));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigateWithDirection(href, "forward");
+        }
+      });
+    });
+  }
+
+  async function initPage() {
+    await loadProductData(queryProductId);
+    observeReveals();
+    setupDirectionalLinks();
+    setupRelatedLinks();
+    updateBagCount();
+    renderBag();
+    setupScrollGlow();
+
+    bagButton.addEventListener("click", openBag);
+  bagClose.addEventListener("click", closeBag);
+  bagOverlay.addEventListener("click", closeBag);
+  bagCheckout.addEventListener("click", (e) => {
+    e.preventDefault();
+    checkoutCart();
+  });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeBag();
+    });
+    bagItems.addEventListener("click", (e) => {
+    const removeIndex = e.target.closest("[data-remove]")?.dataset.remove;
+    if (removeIndex !== undefined) {
+      const cart = loadCart();
+      cart.splice(Number(removeIndex), 1);
+      saveCart(cart);
+      updateBagCount();
+      renderBag();
+      return;
+    }
+
+    const qtyControl = e.target.closest(".bag-item__qty");
+    const action = e.target.dataset.action;
+    if (qtyControl && action) {
+      updateQuantity(Number(qtyControl.dataset.index), action === "increase" ? 1 : -1);
+    }
+    });
+
+    document.body.classList.add("is-entering");
+    requestAnimationFrame(() => {
+      document.body.classList.add("is-ready");
+      document.body.classList.remove("is-entering");
+    });
+  }
+
+  initPage();
+</script>
+
+</body>
+</html>
