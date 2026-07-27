@@ -212,6 +212,8 @@
     border-bottom: 1px solid var(--c-line);
   }
   .header__inner {
+    position: relative;
+    z-index: 52;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -258,9 +260,14 @@
     letter-spacing: 0.02em;
   }
   @media (min-width: 768px) { .nav { display: flex; } }
-  .nav a { position: relative; padding: 4px 0; }
+  .nav a {
+    position: relative;
+    display: inline-block;
+    padding: 0.08em 0.34em 0.14em;
+    margin: -0.08em -0.34em -0.14em;
+    transition: color 0.35s var(--ease-out);
+  }
   .nav a::after { display: none; }
-  .nav a,
   .subbar__crumb a,
   .related__head a,
   .footer__col a {
@@ -276,6 +283,9 @@
       background-size 0.45s var(--ease-out);
   }
   .nav a:hover,
+  .nav a:focus-visible {
+    color: var(--c-ink);
+  }
   .subbar__crumb a:hover,
   .related__head a:hover,
   .footer__col a:hover {
@@ -285,16 +295,60 @@
 
   .header__bag { display: flex; align-items: center; gap: 14px; font-size: 13px; }
   .bag-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
-    border: 1px solid var(--c-line);
-    border-radius: 999px;
-    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+    min-height: 42px;
+    padding: 0 3px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    transition: color 0.35s var(--ease-out);
   }
-  .bag-btn:hover { background: var(--c-acid); border-color: var(--c-acid); }
+  .bag-btn:hover,
+  .bag-btn:focus-visible {
+    color: var(--c-ink);
+  }
   .bag-btn .count { font-family: var(--font-mono); font-size: 11px; }
+  .header-edge-line {
+    position: fixed;
+    pointer-events: none;
+    background: var(--c-acid);
+    opacity: 0;
+    z-index: 0;
+    will-change: transform, opacity, width, height, left, top;
+  }
+  .header-edge-line.is-visible {
+    opacity: 1;
+  }
+  .header-edge-line--nav {
+    top: 0;
+    left: var(--header-nav-line-left, 0px);
+    width: var(--header-nav-line-width, 0px);
+    height: var(--header-nav-line-height, 42px);
+    transform: scaleY(var(--header-nav-line-scale, 0));
+    transform-origin: top center;
+    transition:
+      opacity 0.14s ease,
+      transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+      left 0.24s var(--ease-out),
+      width 0.24s var(--ease-out),
+      height 0.24s var(--ease-out);
+  }
+  .header-edge-line--bag {
+    top: var(--header-bag-line-top, 0px);
+    right: 0;
+    width: var(--header-bag-line-width, 0px);
+    height: 42px;
+    transform: scaleX(var(--header-bag-line-scale, 0));
+    transform-origin: right center;
+    transition:
+      opacity 0.14s ease,
+      transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+      top 0.2s var(--ease-out),
+      width 0.2s var(--ease-out);
+  }
 
   /* ---------- Bag drawer ---------- */
   .bag-overlay {
@@ -2158,6 +2212,88 @@
     });
   }
 
+  function setupHeaderEdgeLines() {
+    const header = document.querySelector(".header");
+    const navLinks = Array.from(document.querySelectorAll(".nav a"));
+    const bagButton = document.querySelector(".bag-btn");
+    if (!header || (!navLinks.length && !bagButton)) return;
+
+    const navLine = document.createElement("div");
+    navLine.className = "header-edge-line header-edge-line--nav";
+    const bagLine = document.createElement("div");
+    bagLine.className = "header-edge-line header-edge-line--bag";
+    header.append(navLine, bagLine);
+
+    let activeNav = null;
+    let bagActive = false;
+
+    function syncNavLine(target) {
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const padX = 9;
+      document.documentElement.style.setProperty("--header-nav-line-left", `${(rect.left - padX).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-width", `${(rect.width + padX * 2).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-height", `${(rect.bottom + 7).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-scale", "1");
+      navLine.classList.add("is-visible");
+    }
+
+    function hideNavLine() {
+      activeNav = null;
+      document.documentElement.style.setProperty("--header-nav-line-scale", "0");
+      navLine.classList.remove("is-visible");
+    }
+
+    function syncBagLine() {
+      if (!bagButton) return;
+      const rect = bagButton.getBoundingClientRect();
+      const padX = 9;
+      document.documentElement.style.setProperty("--header-bag-line-top", `${(rect.top + rect.height / 2 - 21).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-bag-line-width", `${(window.innerWidth - rect.left + padX).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-bag-line-scale", "1");
+      bagLine.classList.add("is-visible");
+    }
+
+    function hideBagLine() {
+      bagActive = false;
+      document.documentElement.style.setProperty("--header-bag-line-scale", "0");
+      bagLine.classList.remove("is-visible");
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => {
+        activeNav = link;
+        syncNavLine(link);
+      });
+      link.addEventListener("focus", () => {
+        activeNav = link;
+        syncNavLine(link);
+      });
+      link.addEventListener("mouseleave", hideNavLine);
+      link.addEventListener("blur", hideNavLine);
+    });
+
+    if (bagButton) {
+      bagButton.addEventListener("mouseenter", () => {
+        bagActive = true;
+        syncBagLine();
+      });
+      bagButton.addEventListener("focus", () => {
+        bagActive = true;
+        syncBagLine();
+      });
+      bagButton.addEventListener("mouseleave", hideBagLine);
+      bagButton.addEventListener("blur", hideBagLine);
+    }
+
+    const resync = () => {
+      if (activeNav) syncNavLine(activeNav);
+      if (bagActive) syncBagLine();
+    };
+    window.addEventListener("resize", resync);
+    window.addEventListener("scroll", resync, { passive: true });
+  }
+
   function setupRelatedCardCursors() {
     document.querySelectorAll(".rcard").forEach((card) => {
       const cursor = card.querySelector(".rcard__cursor");
@@ -2283,6 +2419,7 @@
     await loadProductData(queryProductId);
     observeReveals();
     setupDirectionalLinks();
+    setupHeaderEdgeLines();
     setupRelatedLinks();
     updateBagCount();
     renderBag();

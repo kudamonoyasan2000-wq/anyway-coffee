@@ -161,6 +161,8 @@
     border-bottom: none;
   }
   .header__inner {
+    position: relative;
+    z-index: 52;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -218,13 +220,14 @@
   @media (min-width: 768px) { .nav { display: flex; } }
   .nav a {
     position: relative;
-    padding: 4px 0;
+    display: inline-block;
+    padding: 0.08em 0.34em 0.14em;
+    margin: -0.08em -0.34em -0.14em;
     transition: color 0.35s var(--ease-out);
   }
   .nav a::after {
     display: none;
   }
-  .nav a,
   .footer__col a {
     display: inline-block;
     padding: 0.08em 0.34em 0.14em;
@@ -238,6 +241,9 @@
       background-size 0.45s var(--ease-out);
   }
   .nav a:hover,
+  .nav a:focus-visible {
+    color: var(--c-ink);
+  }
   .footer__col a:hover {
     background-size: 100% 100%;
     color: var(--c-ink);
@@ -250,15 +256,21 @@
     font-size: 13px;
   }
   .bag-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
-    border: 1px solid var(--c-line);
-    border-radius: 999px;
-    transition: background 0.4s var(--ease-out), border-color 0.4s var(--ease-out), color 0.35s var(--ease-out);
+    min-height: 42px;
+    padding: 0 3px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    transition: color 0.35s var(--ease-out);
   }
-  .bag-btn:hover { background: var(--c-acid); border-color: var(--c-acid); }
+  .bag-btn:hover,
+  .bag-btn:focus-visible {
+    color: var(--c-ink);
+  }
   .bag-btn .count {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -272,13 +284,48 @@
     display: none;
   }
   .header--hero .bag-btn {
-    border-color: rgba(230, 253, 40, 0.48);
     color: var(--c-acid);
   }
   .header--hero .bag-btn:hover {
-    background: var(--c-acid);
-    border-color: var(--c-acid);
     color: var(--c-ink);
+  }
+  .header-edge-line {
+    position: fixed;
+    pointer-events: none;
+    background: var(--c-acid);
+    opacity: 0;
+    z-index: 0;
+    will-change: transform, opacity, width, height, left, top;
+  }
+  .header-edge-line.is-visible {
+    opacity: 1;
+  }
+  .header-edge-line--nav {
+    top: 0;
+    left: var(--header-nav-line-left, 0px);
+    width: var(--header-nav-line-width, 0px);
+    height: var(--header-nav-line-height, 42px);
+    transform: scaleY(var(--header-nav-line-scale, 0));
+    transform-origin: top center;
+    transition:
+      opacity 0.14s ease,
+      transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+      left 0.24s var(--ease-out),
+      width 0.24s var(--ease-out),
+      height 0.24s var(--ease-out);
+  }
+  .header-edge-line--bag {
+    top: var(--header-bag-line-top, 0px);
+    right: 0;
+    width: var(--header-bag-line-width, 0px);
+    height: 42px;
+    transform: scaleX(var(--header-bag-line-scale, 0));
+    transform-origin: right center;
+    transition:
+      opacity 0.14s ease,
+      transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+      top 0.2s var(--ease-out),
+      width 0.2s var(--ease-out);
   }
 
   /* ---------- Bag drawer ---------- */
@@ -501,6 +548,8 @@
     --hero-emotion-band-height: clamp(50px, 4.4vw, 58px);
     --hero-title-opacity: 0;
     --hero-title-clip: 100%;
+    --hero-title-line-width: min(92vw, 1169px);
+    --hero-title-line-height: clamp(42px, 4.4vw, 58px);
     position: relative;
     min-height: 68vh;
     display: flex;
@@ -565,23 +614,66 @@
     flex: 0 0 100vw;
     color: var(--c-ink);
     white-space: nowrap;
-    opacity: 0;
+    opacity: 1;
     clip-path: inset(0 var(--hero-title-clip) 0 0);
-    transform: translateY(14px) scaleX(0.985) scaleY(0.98);
-    transform-origin: center bottom;
-    opacity: var(--hero-title-opacity);
+    transform: translateY(0) scaleX(1) scaleY(1);
+    transform-origin: center center;
   }
   .hero__headline-line {
     display: inline-block;
     padding-right: 0.02em;
   }
-  .hero__headline-logo {
+  .hero__headline-logo,
+  .hero__headline-svg {
     display: block;
     width: min(92vw, 1169px);
     max-width: 100%;
     height: auto;
     user-select: none;
     pointer-events: none;
+  }
+  .hero__headline-logo {
+    display: block;
+    opacity: var(--hero-title-opacity);
+  }
+  .hero__headline-svg {
+    display: none;
+    overflow: visible;
+  }
+  .hero__svg-title {
+    font-family: FoundersGrotesk-Regular, var(--font-display);
+    font-size: 300px;
+    fill: var(--c-ink);
+  }
+  .hero__svg-title--mask {
+    fill: #fff;
+  }
+  .hero__svg-title--final {
+    opacity: var(--hero-title-opacity);
+  }
+  .hero__svg-pass-line {
+    fill: var(--c-acid);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .hero__title-sweeps {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .hero__title-sweep-line {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(170vw, 1800px);
+    height: var(--line-thickness, 48px);
+    background: var(--c-acid);
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--line-angle, 0deg));
+    transform-origin: center;
+    will-change: transform, opacity;
   }
   @media (min-width: 768px) {
     .hero {
@@ -699,6 +791,10 @@
     transform: scaleX(var(--hero-sweep-progress));
     transform-origin: left center;
     pointer-events: none;
+  }
+  .hero.is-title-sweep-running .hero__sweep,
+  .hero.is-title-sweep-done .hero__sweep {
+    opacity: 0;
   }
 
   .hero__brace-giant {
@@ -978,6 +1074,51 @@
       transform: scaleX(1);
     }
   }
+  @keyframes heroTitleLinePass {
+    0% {
+      opacity: 0;
+      transform:
+        translate(-50%, -50%)
+        translate(var(--line-pass-start-x), var(--line-pass-start-y))
+        rotate(var(--line-angle))
+        scaleX(1);
+    }
+    10% {
+      opacity: 1;
+    }
+    54% {
+      opacity: 1;
+      transform:
+        translate(-50%, -50%)
+        translate(0, 0)
+        rotate(var(--line-angle))
+        scaleX(1);
+    }
+    72% {
+      opacity: 1;
+      transform:
+        translate(-50%, -50%)
+        translate(var(--line-pass-end-x), var(--line-pass-end-y))
+        rotate(var(--line-angle))
+        scaleX(1);
+    }
+    86% {
+      opacity: 1;
+      transform:
+        translate(-50%, -50%)
+        translate(0, 0)
+        rotate(var(--line-angle))
+        scaleX(0.16);
+    }
+    100% {
+      opacity: 0.92;
+      transform:
+        translate(-50%, -50%)
+        translate(0, 0)
+        rotate(var(--line-angle))
+        scaleX(0.16);
+    }
+  }
   @keyframes heroHeadlineReveal {
     0% {
       color: var(--c-ink);
@@ -1144,14 +1285,14 @@
     --filter-hover-width: 0px;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 28px;
     padding: 14px var(--filter-pad-x);
     overflow-x: auto;
     border-bottom: 1px solid var(--c-line);
     position: relative;
     isolation: isolate;
   }
-  @media (min-width: 768px) { .filter { --filter-pad-x: 20px; padding-block: 16px; } }
+  @media (min-width: 768px) { .filter { --filter-pad-x: 20px; gap: 34px; padding-block: 16px; } }
   @media (min-width: 1280px) { .filter { --filter-pad-x: 24px; } }
   .filter button {
     --filter-line-scale: 0;
@@ -1180,7 +1321,6 @@
     width: var(--filter-hover-width);
     height: 42px;
     background: var(--c-acid);
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
     opacity: 0;
     transform: translateY(-50%) scaleX(0);
     transform-origin: left center;
@@ -1455,7 +1595,7 @@
     font-weight: 500;
     line-height: 1;
     text-align: center;
-    display: inline-flex;
+    display: none;
     align-items: center;
     justify-content: center;
     pointer-events: none;
@@ -1501,12 +1641,15 @@
   }
   .card-hover-line {
     position: fixed;
-    top: calc(var(--hover-line-y, -100px) - 21px);
-    left: 0;
-    width: var(--hover-line-x, 0px);
+    top: calc(var(--hover-line-start-y, -100px) - 21px);
+    left: var(--hover-line-start-x, 0px);
+    width: var(--hover-line-length, 0px);
     height: 42px;
     background: var(--c-acid);
-    transform: scaleX(var(--hover-line-scale, 0));
+    transform:
+      rotate(var(--hover-line-angle, 0deg))
+      scaleX(var(--hover-line-scale, 0))
+      scaleY(var(--hover-line-thickness, 1));
     transform-origin: left center;
     opacity: var(--hover-line-opacity, 0);
     pointer-events: none;
@@ -1515,6 +1658,7 @@
     will-change: width, transform, top, opacity;
   }
   .card-hover-label {
+    display: none !important;
     position: fixed;
     top: var(--hover-label-y, -100px);
     left: var(--hover-label-x, 0px);
@@ -2082,11 +2226,31 @@
 <!-- Hero -->
 <section class="hero">
   <div class="hero__copy">
-    <div class="hero__stage">
+      <div class="hero__stage">
       <div class="hero__emotion-field" aria-hidden="true"></div>
       <div class="hero__sweep" aria-hidden="true"></div>
+      <div class="hero__title-sweeps" aria-hidden="true">
+        <span class="hero__title-sweep-line"></span>
+      </div>
       <h1 class="hero__headline" aria-label="Anyway">
         <img class="hero__headline-logo" src="assets/anyway-mv-title.svg" alt="">
+        <svg class="hero__headline-svg" viewBox="0 0 1169.09 302.4" role="img" aria-label="ANYWAY">
+          <text class="hero__svg-title hero__svg-title--final" transform="translate(0 244.5)">
+            <tspan x="0" y="0">AN</tspan><tspan x="382.19" y="0">Y</tspan><tspan x="578.39" y="0">W</tspan><tspan x="803.69" y="0">A</tspan><tspan x="949.49" y="0">Y</tspan><tspan x="1116.29" y="0">.</tspan>
+          </text>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+          <rect class="hero__svg-pass-line"></rect>
+        </svg>
       </h1>
     </div>
   </div>
@@ -2423,22 +2587,35 @@
     const sweep = document.querySelector(".hero__sweep");
     const floor = document.querySelector(".fallen-letter-floor");
     const emotions = [...document.querySelectorAll(".hero__emotion")];
+    const titleLines = [...document.querySelectorAll(".hero__title-sweep-line")];
     if (!hero || !sweep || !emotions.length) return;
 
     let rafId = null;
     let introLocked = false;
     let sweepCompleted = false;
-    let titleDelayTimer = null;
-    let titleRevealStart = null;
     let titleRevealProgress = 0;
+    let titleLineSequenceStarted = false;
     const SWEEP_COMPLETE_PROGRESS = 0.38;
-    const TITLE_DELAY_MS = 1000;
-    const TITLE_REVEAL_MS = 560;
+    const TITLE_LINE_END_PROGRESS = 0.96;
+    const TITLE_REVEAL_END_PROGRESS = 0.98;
     const clamp01 = (value) => Math.max(0, Math.min(1, value));
+    const easeOutCubic = (value) => 1 - Math.pow(1 - clamp01(value), 3);
+    const easeInOutCubic = (value) => {
+      const p = clamp01(value);
+      return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    };
+    const smoothStep = (value) => {
+      const p = clamp01(value);
+      return p * p * (3 - 2 * p);
+    };
+    const titlePassBlueprints = [
+      { x: 0.5, y: 0.62, angle: 0, thick: 0.54, dir: -1, delay: 0, duration: 0.98, lead: true },
+    ];
 
     function measureSweepBounds() {
       const stage = document.querySelector(".hero__stage");
       const field = document.querySelector(".hero__emotion-field");
+      const headlineLogo = document.querySelector(".hero__headline-logo");
       if (!stage || !field) return;
 
       const stageRect = stage.getBoundingClientRect();
@@ -2447,6 +2624,58 @@
 
       hero.style.setProperty("--hero-sweep-top", `${top.toFixed(1)}px`);
       hero.style.setProperty("--hero-sweep-height", `${Math.max(42, fieldRect.height).toFixed(1)}px`);
+      if (headlineLogo) {
+        const logoRect = headlineLogo.getBoundingClientRect();
+        const lineWidth = Math.max(240, logoRect.width);
+        const lineHeight = Math.max(42, Math.min(72, fieldRect.height));
+        hero.style.setProperty("--hero-title-line-width", `${lineWidth.toFixed(1)}px`);
+        hero.style.setProperty("--hero-title-line-height", `${lineHeight.toFixed(1)}px`);
+      }
+    }
+
+    function syncTitleLines(lineProgress) {
+      const stage = document.querySelector(".hero__stage");
+      const headlineLogo = document.querySelector(".hero__headline-logo");
+      if (!stage || !headlineLogo || !titleLines.length) return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const logoRect = headlineLogo.getBoundingClientRect();
+      const passDistance = Math.max(window.innerWidth, window.innerHeight) * 1.7;
+      const fullLength = Math.hypot(window.innerWidth, window.innerHeight) * 2.05;
+      const baseThickness = Math.max(28, Math.min(52, logoRect.height * 0.18));
+
+      titleLines.forEach((line, index) => {
+        const blueprint = titlePassBlueprints[index];
+        if (!blueprint) {
+          line.style.opacity = "0";
+          return;
+        }
+        const localProgress = clamp01((lineProgress - blueprint.delay) / (blueprint.duration || 0.82));
+        const passProgress = easeInOutCubic(localProgress);
+        const direction = blueprint.dir || (index % 2 === 0 ? -1 : 1);
+        const angleRad = blueprint.angle * Math.PI / 180;
+        const axisX = Math.cos(angleRad);
+        const axisY = Math.sin(angleRad);
+        const centerX = logoRect.left - stageRect.left + logoRect.width * blueprint.x;
+        const centerY = logoRect.top - stageRect.top + logoRect.height * blueprint.y;
+        const passOffset = direction * passDistance * (1 - passProgress * 2);
+        const moveX = axisX * passOffset;
+        const moveY = axisY * passOffset;
+        const globalLineFade = 1 - smoothStep((lineProgress - 0.88) / 0.1);
+        const entryFade = smoothStep(localProgress / 0.08);
+        const exitFade = 1 - smoothStep((localProgress - 0.84) / 0.16);
+        const leadWeight = blueprint.lead ? 1 : smoothStep((lineProgress - 0.14) / 0.18);
+        const passOpacity = lineProgress <= 0
+          ? 0
+          : entryFade * exitFade * globalLineFade * leadWeight;
+
+        line.style.left = `${centerX.toFixed(1)}px`;
+        line.style.top = `${centerY.toFixed(1)}px`;
+        line.style.width = `${fullLength.toFixed(1)}px`;
+        line.style.height = `${(baseThickness * blueprint.thick).toFixed(1)}px`;
+        line.style.opacity = passOpacity.toFixed(3);
+        line.style.transform = `translate(-50%, -50%) translate(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px) rotate(${blueprint.angle}deg)`;
+      });
     }
 
     function update() {
@@ -2458,36 +2687,39 @@
       const activeSweepProgress = introLocked || sweepCompleted
         ? 1
         : clamp01(progress / SWEEP_COMPLETE_PROGRESS);
+      const lineProgress = introLocked
+        ? 1
+        : clamp01((progress - SWEEP_COMPLETE_PROGRESS) / (TITLE_LINE_END_PROGRESS - SWEEP_COMPLETE_PROGRESS));
       let needsTitleFrame = false;
 
       if (activeSweepProgress >= 0.995 && !sweepCompleted) {
         sweepCompleted = true;
         hero.dataset.sweepCompleted = "1";
-        titleDelayTimer = window.setTimeout(() => {
-          titleDelayTimer = null;
-          titleRevealStart = performance.now();
-          requestUpdate();
-        }, TITLE_DELAY_MS);
+        titleLineSequenceStarted = true;
+        hero.classList.add("is-title-sweep-running");
       }
 
-      if (titleRevealStart !== null && !introLocked) {
-        titleRevealProgress = clamp01((performance.now() - titleRevealStart) / TITLE_REVEAL_MS);
-        needsTitleFrame = titleRevealProgress < 1;
-      }
+      titleRevealProgress = introLocked
+        ? 1
+        : easeOutCubic((lineProgress - 0.26) / 0.38);
+      needsTitleFrame = !introLocked && titleRevealProgress > 0 && titleRevealProgress < 1;
 
       if (titleRevealProgress >= 0.995) {
         introLocked = true;
         hero.dataset.introLocked = "1";
+        hero.classList.remove("is-title-sweep-running");
+        hero.classList.add("is-title-sweep-done");
       }
 
       const sweepProgress = activeSweepProgress;
       const visibleTitleProgress = introLocked ? 1 : titleRevealProgress;
 
       hero.style.setProperty("--hero-sweep-progress", sweepProgress.toFixed(4));
-      hero.style.setProperty("--hero-sweep-opacity", sweepProgress > 0 ? "1" : "0");
+      hero.style.setProperty("--hero-sweep-opacity", sweepProgress > 0 && !titleLineSequenceStarted ? "1" : "0");
 
       hero.style.setProperty("--hero-title-opacity", visibleTitleProgress.toFixed(4));
-      hero.style.setProperty("--hero-title-clip", `${((1 - visibleTitleProgress) * 100).toFixed(2)}%`);
+      hero.style.setProperty("--hero-title-clip", "0%");
+      syncTitleLines(lineProgress);
 
       emotions.forEach((node) => {
         const baseOpacity = node.dataset.emotionVisible === "1"
@@ -2868,7 +3100,13 @@
     if (!filter || !button) return;
     const filterRect = filter.getBoundingClientRect();
     const buttonRect = button.getBoundingClientRect();
-    const width = Math.max(0, buttonRect.right - filterRect.left);
+    const lineEndPadding = 28;
+    const nextButton = button.nextElementSibling?.matches?.("button") ? button.nextElementSibling : null;
+    const desiredWidth = buttonRect.right - filterRect.left + lineEndPadding;
+    const nextLimit = nextButton
+      ? nextButton.getBoundingClientRect().left - filterRect.left - 8
+      : desiredWidth;
+    const width = Math.max(0, Math.min(desiredWidth, nextLimit));
     filter.style.setProperty("--filter-hover-width", `${width.toFixed(1)}px`);
     filter.classList.add("is-line-showing");
   }
@@ -2920,33 +3158,46 @@
       document.body.appendChild(hoverLabel);
     }
 
+    let lineStartX = 0;
+    let lineStartY = -100;
     let lineTargetX = 0;
     let lineTargetY = -100;
     let lineCurrentX = 0;
     let lineCurrentY = -100;
+    let lineRevealProgress = 0;
+    let lineRevealTarget = 0;
     let lineActive = false;
     let lineRafId = null;
 
     function applyHoverLine() {
-      hoverLine.style.setProperty("--hover-line-x", `${Math.max(0, lineCurrentX).toFixed(1)}px`);
-      hoverLine.style.setProperty("--hover-line-y", `${lineCurrentY.toFixed(1)}px`);
-      hoverLine.style.setProperty("--hover-line-opacity", lineActive ? "1" : "0");
-      hoverLine.style.setProperty("--hover-line-scale", lineActive ? "1" : "0");
-      hoverLabel.style.setProperty("--hover-label-x", `${Math.max(0, lineCurrentX).toFixed(1)}px`);
-      hoverLabel.style.setProperty("--hover-label-y", `${lineCurrentY.toFixed(1)}px`);
-      hoverLabel.style.setProperty("--hover-label-opacity", lineActive ? "1" : "0");
+      const deltaX = lineCurrentX - lineStartX;
+      const deltaY = lineCurrentY - lineStartY;
+      const length = Math.hypot(deltaX, deltaY);
+      const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+      const easedReveal = 1 - Math.pow(1 - lineRevealProgress, 3);
+      hoverLine.style.setProperty("--hover-line-start-x", `${lineStartX.toFixed(1)}px`);
+      hoverLine.style.setProperty("--hover-line-start-y", `${lineStartY.toFixed(1)}px`);
+      hoverLine.style.setProperty("--hover-line-length", `${Math.max(0, length).toFixed(1)}px`);
+      hoverLine.style.setProperty("--hover-line-angle", `${angle.toFixed(2)}deg`);
+      hoverLine.style.setProperty("--hover-line-opacity", lineActive || lineRevealProgress > 0.03 ? "1" : "0");
+      hoverLine.style.setProperty("--hover-line-scale", easedReveal.toFixed(3));
+      hoverLine.style.setProperty("--hover-line-thickness", (0.86 + easedReveal * 0.14).toFixed(3));
     }
 
     function tickHoverLine() {
-      const ease = lineActive ? 0.2 : 0.24;
+      const ease = lineActive ? 0.105 : 0.26;
       lineCurrentX += (lineTargetX - lineCurrentX) * ease;
-      lineCurrentY += (lineTargetY - lineCurrentY) * 0.32;
+      lineCurrentY += (lineTargetY - lineCurrentY) * (lineActive ? 0.15 : 0.26);
+      lineRevealProgress += (lineRevealTarget - lineRevealProgress) * (lineActive ? 0.055 : 0.22);
       applyHoverLine();
 
       if (
         Math.abs(lineTargetX - lineCurrentX) < 0.4 &&
-        Math.abs(lineTargetY - lineCurrentY) < 0.4
+        Math.abs(lineTargetY - lineCurrentY) < 0.4 &&
+        Math.abs(lineRevealTarget - lineRevealProgress) < 0.01
       ) {
+        lineRevealProgress = lineRevealTarget;
+        applyHoverLine();
         lineRafId = null;
         return;
       }
@@ -2957,33 +3208,38 @@
       if (lineRafId === null) lineRafId = requestAnimationFrame(tickHoverLine);
     }
 
-    function moveHoverLine(event, cursorEl, mediaEl, isEntering = false) {
-      hoverLabel.innerHTML = cursorEl.innerHTML;
-      const mediaRect = mediaEl.getBoundingClientRect();
-      const cursorWidth = hoverLabel.offsetWidth || cursorEl?.offsetWidth || 0;
-      const cursorHeight = hoverLabel.offsetHeight || cursorEl?.offsetHeight || 0;
-      const localX = event.clientX - mediaRect.left;
-      const localY = event.clientY - mediaRect.top;
-      const safeX = cursorWidth >= mediaEl.clientWidth
-        ? mediaEl.clientWidth / 2
-        : Math.min(Math.max(localX, cursorWidth / 2), mediaEl.clientWidth - cursorWidth / 2);
-      const safeY = cursorHeight >= mediaEl.clientHeight
-        ? mediaEl.clientHeight / 2
-        : Math.min(Math.max(localY, cursorHeight / 2), mediaEl.clientHeight - cursorHeight / 2);
-      const nextX = Math.max(0, mediaRect.left + safeX + cursorWidth / 2);
+    function chooseRandomLineStart(pointerX, pointerY) {
+      const edge = Math.floor(Math.random() * 4);
+      const margin = 72;
+      if (edge === 0) return { x: Math.random() * window.innerWidth, y: -margin };
+      if (edge === 1) return { x: window.innerWidth + margin, y: Math.random() * window.innerHeight };
+      if (edge === 2) return { x: Math.random() * window.innerWidth, y: window.innerHeight + margin };
+      return { x: -margin, y: Math.random() * window.innerHeight };
+    }
+
+    function moveHoverLine(event, isEntering = false) {
+      const nextX = event.clientX;
+      const nextY = event.clientY;
       lineTargetX = nextX;
-      lineTargetY = mediaRect.top + safeY;
+      lineTargetY = nextY;
       if (!lineActive || isEntering) {
-        lineCurrentX = Math.min(lineCurrentX, nextX * 0.18);
-        lineCurrentY = lineTargetY;
+        const start = chooseRandomLineStart(nextX, nextY);
+        lineStartX = start.x;
+        lineStartY = start.y;
+        lineCurrentX = lineStartX;
+        lineCurrentY = lineStartY;
+        lineRevealProgress = 0;
       }
       lineActive = true;
+      lineRevealTarget = 1;
       startHoverLineTick();
     }
 
     function hideHoverLine() {
       lineActive = false;
-      lineTargetX = 0;
+      lineRevealTarget = 0;
+      lineTargetX = lineStartX;
+      lineTargetY = lineStartY;
       startHoverLineTick();
     }
 
@@ -3032,7 +3288,7 @@
       media.addEventListener("mouseenter", (e) => {
         isHovering = true;
         card.classList.add("is-hovered");
-        moveHoverLine(e, cursor, media, true);
+        moveHoverLine(e, true);
         const rect = media.getBoundingClientRect();
         targetX = e.clientX - rect.left;
         targetY = e.clientY - rect.top;
@@ -3048,7 +3304,7 @@
           isHovering = true;
           card.classList.add("is-hovered");
         }
-        moveHoverLine(e, cursor, media);
+        moveHoverLine(e);
         const rect = media.getBoundingClientRect();
         targetX = e.clientX - rect.left;
         targetY = e.clientY - rect.top;
@@ -3108,6 +3364,88 @@
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
     update();
+  }
+
+  function setupHeaderEdgeLines() {
+    const header = document.querySelector(".header");
+    const navLinks = Array.from(document.querySelectorAll(".nav a"));
+    const bagButton = document.querySelector(".bag-btn");
+    if (!header || (!navLinks.length && !bagButton)) return;
+
+    const navLine = document.createElement("div");
+    navLine.className = "header-edge-line header-edge-line--nav";
+    const bagLine = document.createElement("div");
+    bagLine.className = "header-edge-line header-edge-line--bag";
+    header.append(navLine, bagLine);
+
+    let activeNav = null;
+    let bagActive = false;
+
+    function syncNavLine(target) {
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const padX = 9;
+      document.documentElement.style.setProperty("--header-nav-line-left", `${(rect.left - padX).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-width", `${(rect.width + padX * 2).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-height", `${(rect.bottom + 7).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-nav-line-scale", "1");
+      navLine.classList.add("is-visible");
+    }
+
+    function hideNavLine() {
+      activeNav = null;
+      document.documentElement.style.setProperty("--header-nav-line-scale", "0");
+      navLine.classList.remove("is-visible");
+    }
+
+    function syncBagLine() {
+      if (!bagButton) return;
+      const rect = bagButton.getBoundingClientRect();
+      const padX = 9;
+      document.documentElement.style.setProperty("--header-bag-line-top", `${(rect.top + rect.height / 2 - 21).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-bag-line-width", `${(window.innerWidth - rect.left + padX).toFixed(1)}px`);
+      document.documentElement.style.setProperty("--header-bag-line-scale", "1");
+      bagLine.classList.add("is-visible");
+    }
+
+    function hideBagLine() {
+      bagActive = false;
+      document.documentElement.style.setProperty("--header-bag-line-scale", "0");
+      bagLine.classList.remove("is-visible");
+    }
+
+    navLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => {
+        activeNav = link;
+        syncNavLine(link);
+      });
+      link.addEventListener("focus", () => {
+        activeNav = link;
+        syncNavLine(link);
+      });
+      link.addEventListener("mouseleave", hideNavLine);
+      link.addEventListener("blur", hideNavLine);
+    });
+
+    if (bagButton) {
+      bagButton.addEventListener("mouseenter", () => {
+        bagActive = true;
+        syncBagLine();
+      });
+      bagButton.addEventListener("focus", () => {
+        bagActive = true;
+        syncBagLine();
+      });
+      bagButton.addEventListener("mouseleave", hideBagLine);
+      bagButton.addEventListener("blur", hideBagLine);
+    }
+
+    const resync = () => {
+      if (activeNav) syncNavLine(activeNav);
+      if (bagActive) syncBagLine();
+    };
+    window.addEventListener("resize", resync);
+    window.addEventListener("scroll", resync, { passive: true });
   }
 
   function setupHeaderContrast() {
@@ -3223,6 +3561,7 @@
     updateBagCount();
     renderBag();
     setupHeaderContrast();
+    setupHeaderEdgeLines();
     setupDirectionalLinks();
     setupScrollGlow();
     setupFilterHoverLine();
