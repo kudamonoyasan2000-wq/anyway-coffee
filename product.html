@@ -329,6 +329,7 @@
     height: var(--header-nav-line-height, 42px);
     transform: scaleY(var(--header-nav-line-scale, 0));
     transform-origin: top center;
+    filter: url(#roughRectEdge);
     transition:
       opacity 0.14s ease,
       transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
@@ -343,6 +344,7 @@
     height: 42px;
     transform: scaleX(var(--header-bag-line-scale, 0));
     transform-origin: right center;
+    filter: url(#roughRectEdge);
     transition:
       opacity 0.14s ease,
       transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1277,7 +1279,7 @@
   }
   .rcard.is-hovered .rcard__cursor {
     opacity: 1;
-    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(1);
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(calc(1 + var(--cur-punch, 0) * 0.16));
   }
   .rcard__cursor span {
     position: relative;
@@ -1467,6 +1469,13 @@
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <filter id="roughRectEdge" x="-20%" y="-120%" width="140%" height="340%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.11" numOctaves="2" seed="7" result="rre-noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="rre-noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <div class="page-transition-underlay" aria-hidden="true"></div>
 <div class="page-shell" id="pageShell">
@@ -2304,19 +2313,24 @@
       let targetY = 0;
       let currentX = 0;
       let currentY = 0;
+      let punch = 0;
       let rafId = null;
 
       function applyPos() {
         cursor.style.setProperty("--cur-x", `calc(${currentX}px - 50%)`);
         cursor.style.setProperty("--cur-y", `calc(${currentY}px - 50%)`);
+        cursor.style.setProperty("--cur-punch", punch.toFixed(3));
       }
 
       function tick() {
-        const ease = 0.28;
+        const ease = 0.12;
         currentX += (targetX - currentX) * ease;
         currentY += (targetY - currentY) * ease;
+        punch += (0 - punch) * 0.25;
         applyPos();
-        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1 && punch < 0.002) {
+          punch = 0;
+          applyPos();
           rafId = null;
           return;
         }
@@ -2333,6 +2347,7 @@
         targetY = e.clientY - rect.top;
         currentX = targetX;
         currentY = targetY;
+        punch = 0;
         applyPos();
         card.classList.add("is-hovered");
         startTick();
@@ -2340,8 +2355,12 @@
 
       media.addEventListener("mousemove", (e) => {
         const rect = media.getBoundingClientRect();
-        targetX = e.clientX - rect.left;
-        targetY = e.clientY - rect.top;
+        const nextX = e.clientX - rect.left;
+        const nextY = e.clientY - rect.top;
+        const speed = Math.hypot(nextX - targetX, nextY - targetY);
+        punch = Math.min(punch + speed * 0.012, 1);
+        targetX = nextX;
+        targetY = nextY;
         startTick();
       });
 

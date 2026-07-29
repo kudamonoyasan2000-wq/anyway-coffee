@@ -307,6 +307,7 @@
     height: var(--header-nav-line-height, 42px);
     transform: scaleY(var(--header-nav-line-scale, 0));
     transform-origin: top center;
+    filter: url(#roughRectEdge);
     transition:
       opacity 0.14s ease,
       transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
@@ -321,6 +322,7 @@
     height: 42px;
     transform: scaleX(var(--header-bag-line-scale, 0));
     transform-origin: right center;
+    filter: url(#roughRectEdge);
     transition:
       opacity 0.14s ease,
       transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
@@ -541,15 +543,7 @@
   /* ---------- Hero ---------- */
   .hero {
     --hero-bg-image: url("hero-top-bg.png");
-    --hero-sweep-progress: 0;
-    --hero-sweep-opacity: 0;
-    --hero-sweep-top: 0px;
-    --hero-sweep-height: 100%;
-    --hero-emotion-band-height: clamp(50px, 4.4vw, 58px);
     --hero-title-opacity: 0;
-    --hero-title-clip: 100%;
-    --hero-title-line-width: min(92vw, 1169px);
-    --hero-title-line-height: clamp(42px, 4.4vw, 58px);
     position: relative;
     min-height: 68vh;
     display: flex;
@@ -615,7 +609,6 @@
     color: var(--c-ink);
     white-space: nowrap;
     opacity: 1;
-    clip-path: inset(0 var(--hero-title-clip) 0 0);
     transform: translateY(0) scaleX(1) scaleY(1);
     transform-origin: center center;
   }
@@ -623,22 +616,36 @@
     display: inline-block;
     padding-right: 0.02em;
   }
-  .hero__headline-logo,
   .hero__headline-svg {
-    display: block;
+    display: none;
     width: min(92vw, 1169px);
     max-width: 100%;
     height: auto;
+    overflow: visible;
     user-select: none;
     pointer-events: none;
   }
   .hero__headline-logo {
     display: block;
-    opacity: var(--hero-title-opacity);
+    position: relative;
+    width: min(92vw, 1169px);
+    max-width: 100%;
+    aspect-ratio: 1169.09 / 302.4;
+    user-select: none;
+    pointer-events: none;
   }
-  .hero__headline-svg {
-    display: none;
-    overflow: visible;
+  .hero__logo-slice {
+    position: absolute;
+    top: 0;
+    will-change: transform, opacity;
+  }
+  .hero__logo-lead-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: var(--c-acid);
+    opacity: 0;
+    will-change: transform, opacity;
   }
   .hero__svg-title {
     font-family: FoundersGrotesk-Regular, var(--font-display);
@@ -718,85 +725,6 @@
     align-items: center;
     justify-content: center;
   }
-  .hero__emotion-field {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
-    height: var(--hero-emotion-band-height);
-    z-index: 3;
-    pointer-events: none;
-    overflow: visible;
-    transform: translateY(-50%);
-  }
-  .hero__emotion {
-    position: absolute;
-    left: var(--emotion-x);
-    top: var(--emotion-y);
-    display: inline-flex;
-    align-items: center;
-    min-height: 1.08em;
-    padding: 0.04em 0.2em 0.08em;
-    font-family: var(--font-display);
-    font-size: var(--emotion-size);
-    font-style: normal;
-    font-weight: 400;
-    line-height: 0.82;
-    letter-spacing: -0.04em;
-    color: var(--c-ink);
-    opacity: var(--emotion-alpha, 0);
-    white-space: nowrap;
-    transform:
-      translate(0, -50%)
-      rotate(var(--emotion-rotate))
-      scale(var(--emotion-scale, 1));
-    transform-origin: left center;
-    transition: opacity 0.18s ease;
-    filter: blur(var(--emotion-blur, 0));
-  }
-  .hero__letter {
-    display: inline-block;
-    position: relative;
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotate(0deg);
-    transform-origin: center bottom;
-  }
-  .hero__letter.is-falling {
-    z-index: 4;
-    animation: heroLetterFall var(--letter-fall-duration, 1.18s) cubic-bezier(0.28, 0.03, 0.2, 1) var(--letter-fall-delay, 0s) both;
-    will-change: transform;
-  }
-  .hero__letter.has-landed {
-    visibility: hidden;
-  }
-  .hero__emotion::before {
-    content: none;
-    position: absolute;
-    inset: 0.08em -0.08em 0;
-    z-index: -1;
-    background: var(--c-acid);
-    transform: scaleX(0);
-    transform-origin: left center;
-    animation: heroEmotionBand 0.72s cubic-bezier(0.16, 1, 0.3, 1) var(--band-delay) forwards;
-  }
-  .hero__sweep {
-    position: absolute;
-    left: 0;
-    top: var(--hero-sweep-top);
-    z-index: 2;
-    width: 100%;
-    height: var(--hero-sweep-height);
-    background: var(--c-acid);
-    opacity: var(--hero-sweep-opacity);
-    transform: scaleX(var(--hero-sweep-progress));
-    transform-origin: left center;
-    pointer-events: none;
-  }
-  .hero.is-title-sweep-running .hero__sweep,
-  .hero.is-title-sweep-done .hero__sweep {
-    opacity: 0;
-  }
-
   .hero__brace-giant {
     position: absolute;
     top: 50%;
@@ -1047,11 +975,6 @@
         scale(var(--emotion-scale, 1));
     }
   }
-  @keyframes heroEmotionBand {
-    to {
-      transform: scaleX(1);
-    }
-  }
   @keyframes heroEmotionClean {
     0% {
       clip-path: inset(0 0 0 0);
@@ -1132,18 +1055,6 @@
       transform: translateY(0) scaleY(1);
     }
   }
-  @keyframes heroLetterFall {
-    0% {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) rotate(0deg);
-    }
-    100% {
-      opacity: 1;
-      transform:
-        translate3d(var(--letter-fall-x, 0px), var(--letter-fall-y, 560px), 0)
-        rotate(var(--letter-fall-r, 18deg));
-    }
-  }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1155,12 +1066,6 @@
   @media (max-width: 767px) {
     .hero__stage {
       min-height: 300px;
-    }
-    .hero__emotion-field {
-      height: clamp(50px, 14vw, 58px);
-    }
-    .hero__emotion {
-      font-size: calc(var(--emotion-size) * 0.72);
     }
     .hero__headline {
       width: 100vw;
@@ -1324,6 +1229,7 @@
     opacity: 0;
     transform: translateY(-50%) scaleX(0);
     transform-origin: left center;
+    filter: url(#roughRectEdge);
     transition:
       opacity 0.12s ease,
       transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1347,6 +1253,7 @@
     background: var(--c-acid);
     transform: translateY(-50%) scaleX(var(--filter-line-scale));
     transform-origin: left center;
+    filter: url(#roughRectEdge);
     transition: transform 0.44s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: -1;
   }
@@ -1616,7 +1523,7 @@
   }
   .card.is-hovered .card__cursor {
     opacity: 1;
-    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(1);
+    transform: translate(var(--cur-x, -50%), var(--cur-y, -50%)) scale(calc(1 + var(--cur-punch, 0) * 0.16));
   }
   .card__cursor span {
     position: relative;
@@ -1638,6 +1545,10 @@
     align-items: center;
     padding: 0 8px;
     transform: translateY(1px);
+  }
+  .webgl-line-active .card-hover-line {
+    opacity: 0 !important;
+    pointer-events: none;
   }
   .card-hover-line {
     position: fixed;
@@ -1804,6 +1715,7 @@
     background: var(--c-acid);
     transform: scaleX(0);
     transform-origin: left center;
+    filter: url(#roughRectEdge);
     z-index: -1;
   }
   .about__eyebrow-text {
@@ -1951,52 +1863,6 @@
     transform: translateX(4px);
   }
 
-  .fallen-letter-floor {
-    position: relative;
-    min-height: clamp(160px, 22vw, 260px);
-    overflow: hidden;
-    background: transparent;
-    pointer-events: none;
-  }
-  .fallen-letter-floor__letter {
-    position: absolute;
-    left: var(--floor-x);
-    bottom: var(--floor-y);
-    font-family: var(--font-display);
-    font-size: var(--floor-size);
-    font-weight: 300;
-    line-height: 0.82;
-    letter-spacing: -0.04em;
-    color: var(--c-ink);
-    opacity: 0.28;
-    transform:
-      translate3d(var(--floor-push-x, 0px), var(--floor-push-y, 0px), 0)
-      rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
-    transform-origin: center;
-    transition:
-      opacity 0.28s ease,
-      transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform;
-  }
-  .fallen-letter-floor__letter--landed {
-    animation: floorLetterSettle 0.46s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @keyframes floorLetterSettle {
-    from {
-      opacity: 0.52;
-      transform:
-        translate3d(var(--floor-push-x, 0px), calc(var(--floor-push-y, 0px) - 28px), 0)
-        rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
-    }
-    to {
-      opacity: 0.38;
-      transform:
-        translate3d(var(--floor-push-x, 0px), var(--floor-push-y, 0px), 0)
-        rotate(calc(var(--floor-rotate) + var(--floor-push-r, 0deg)));
-    }
-  }
-
   /* ---------- Footer ---------- */
   .footer {
     padding: 56px 16px 20px;
@@ -2133,11 +1999,6 @@
       display: none;
       animation: none;
     }
-    .hero__emotion-field,
-    .hero__sweep {
-      display: none;
-      animation: none;
-    }
     .hero__headline {
       opacity: 1;
       clip-path: inset(0 0 0 0);
@@ -2171,6 +2032,13 @@
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <filter id="roughRectEdge" x="-20%" y="-120%" width="140%" height="340%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.11" numOctaves="2" seed="7" result="rre-noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="rre-noise" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <!-- Header -->
 <header class="header">
@@ -2227,13 +2095,12 @@
 <section class="hero">
   <div class="hero__copy">
       <div class="hero__stage">
-      <div class="hero__emotion-field" aria-hidden="true"></div>
-      <div class="hero__sweep" aria-hidden="true"></div>
       <div class="hero__title-sweeps" aria-hidden="true">
         <span class="hero__title-sweep-line"></span>
       </div>
       <h1 class="hero__headline" aria-label="Anyway">
-        <img class="hero__headline-logo" src="assets/anyway-mv-title.svg" alt="">
+        <div class="hero__logo-lead-bar" aria-hidden="true"></div>
+        <div class="hero__headline-logo" aria-hidden="true"></div>
         <svg class="hero__headline-svg" viewBox="0 0 1169.09 302.4" role="img" aria-label="ANYWAY">
           <text class="hero__svg-title hero__svg-title--final" transform="translate(0 244.5)">
             <tspan x="0" y="0">AN</tspan><tspan x="382.19" y="0">Y</tspan><tspan x="578.39" y="0">W</tspan><tspan x="803.69" y="0">A</tspan><tspan x="949.49" y="0">Y</tspan><tspan x="1116.29" y="0">.</tspan>
@@ -2293,8 +2160,7 @@
   </div>
 </section>
 
-<div class="fallen-letter-floor" aria-hidden="true"></div>
-
+<script src="assets/vendor/gsap.min.js"></script>
 <script>
   /* ---------- Product data (CMS差し替えポイント) ---------- */
   /* この配列をCMSのAPIから取得するように差し替えれば、
@@ -2347,37 +2213,6 @@
     { en: "back to myself", jp: "自分に戻ろ" },
     { en: "let it soften", jp: "ふわっといこ" },
   ];
-  const HERO_EMOTION_WORDS = [
-    "restless",
-    "hopeful",
-    "calm",
-    "messy",
-    "light",
-    "tired",
-    "overthinking",
-    "soft",
-    "new start",
-    "cloudy",
-    "quiet",
-    "anxious",
-    "awake",
-    "nervous",
-    "slow",
-    "heavy",
-    "bright",
-    "wired",
-    "loose",
-    "blue",
-    "steady",
-    "unready",
-    "fine",
-    "blank",
-    "alive",
-    "gentle",
-    "too much",
-    "almost",
-    "okay",
-  ];
   const HERO_REPLY_POSITIONS = [
     { x: "52%", y: "8%" },
     { x: "79%", y: "20%" },
@@ -2423,183 +2258,17 @@
     setupHeroReplyInteraction(tail);
   }
 
-  function setupHeroEmotionIntro() {
-    const field = document.querySelector(".hero__emotion-field");
-    if (!field) return;
-
-    const isMobile = window.innerWidth <= 767;
-    const emotionCount = isMobile ? 6 : 16;
-    const words = shuffle(HERO_EMOTION_WORDS).slice(0, emotionCount);
-    const columns = isMobile ? 3 : 8;
-    const rows = Math.ceil(emotionCount / columns);
-    const gridLeft = isMobile ? 5 : 2;
-    const gridTop = isMobile ? 26 : 32;
-    const gridWidth = isMobile ? 88 : 96;
-    const gridHeight = isMobile ? 48 : 36;
-
-    const renderLetters = (word) => [...word].map((char, charIndex) => {
-      const safeChar = char === " " ? "&nbsp;" : char;
-      const dropBase = window.innerHeight + (isMobile ? 360 : 520);
-      const drop = dropBase + Math.random() * (isMobile ? 420 : 620);
-      const drift = -64 + Math.random() * 128;
-      const rotate = -42 + Math.random() * 84;
-      const delay = Math.random() * 0.12;
-      const duration = 1.24 + Math.random() * 0.86;
-      return `<span class="hero__letter" data-letter-index="${charIndex}" data-letter-delay="${delay.toFixed(3)}" style="--letter-fall-y:${drop.toFixed(1)}px; --letter-fall-x:${drift.toFixed(1)}px; --letter-fall-r:${rotate.toFixed(1)}deg; --letter-fall-delay:${delay.toFixed(3)}s; --letter-fall-duration:${duration.toFixed(2)}s;">${safeChar}</span>`;
-    }).join("");
-
-    field.innerHTML = words.map((word, index) => {
-      const col = index % columns;
-      const row = Math.floor(index / columns);
-      const cellX = gridLeft + (col / Math.max(1, columns - 1)) * gridWidth;
-      const cellY = gridTop + (row / Math.max(1, rows - 1)) * gridHeight;
-      const baseSize = 18 + Math.random() * (isMobile ? 7 : 10);
-      const cellWidthPx = window.innerWidth * (gridWidth / columns / 100);
-      const size = Math.min(baseSize, Math.max(isMobile ? 16 : 18, cellWidthPx / Math.max(word.length * 0.68, 4.2)));
-      const estimatedWidth = (word.length * size * 0.68 / window.innerWidth) * 100;
-      const x = Math.max(1.8, Math.min(98 - estimatedWidth, cellX + (-1.4 + Math.random() * 2.8)));
-      const y = cellY + (-4 + Math.random() * 8);
-      const rotate = -1.2 + Math.random() * 2.4;
-      const delay = 0.06 + Math.random() * 0.9 + row * 0.08;
-      const bandDelay = 1.22 + Math.random() * 0.58 + row * 0.04;
-      const scale = 0.92 + Math.random() * 0.16;
-      const opacity = 0.62 + Math.random() * 0.3;
-      const blur = Math.random() > 0.82 ? "0.4px" : "0";
-
-      return `<span class="hero__emotion" data-emotion-opacity="${opacity.toFixed(2)}" data-emotion-delay="${delay.toFixed(2)}" style="--emotion-x:${x.toFixed(2)}%; --emotion-y:${y.toFixed(2)}%; --emotion-rotate:${rotate.toFixed(2)}deg; --emotion-size:${size.toFixed(2)}px; --emotion-delay:${delay.toFixed(2)}s; --band-delay:${bandDelay.toFixed(2)}s; --emotion-scale:${scale.toFixed(2)}; --emotion-opacity:${opacity.toFixed(2)}; --emotion-blur:${blur};">${renderLetters(word)}</span>`;
-    }).join("");
-
-    field.querySelectorAll(".hero__emotion").forEach((node) => {
-      const delay = Number(node.dataset.emotionDelay || 0);
-      window.setTimeout(() => {
-        node.dataset.emotionVisible = "1";
-        node.style.setProperty("--emotion-alpha", node.dataset.emotionOpacity || "0.78");
-      }, delay * 1000);
-    });
-
-    setupFallenLetterFloor(words);
-  }
-
-  function setupFallenLetterFloor(words) {
-    const floor = document.querySelector(".fallen-letter-floor");
-    if (!floor) return;
-
-    const letters = words.join("").replace(/\s/g, "").split("");
-    const visibleLetters = shuffle(letters).slice(0, Math.min(letters.length, 72));
-
-    floor.innerHTML = "";
-    visibleLetters.forEach((char, index) => {
-      addLetterToFloor(floor, char, index);
-    });
-    setupFloorLetterInteraction(floor);
-  }
-
-  function addLetterToFloor(floor, char, index, isLanded = false) {
-    if (!floor || !char || floor.children.length >= 220) return;
-    const floorIndex = Number.isFinite(index) ? index : floor.children.length;
-
-    const letter = document.createElement("span");
-    const x = 2 + Math.random() * 94;
-    const y = Math.random() * 28 + (floorIndex % 5) * 9;
-    const size = 12 + Math.random() * 28;
-    const rotate = -38 + Math.random() * 76;
-
-    letter.className = `fallen-letter-floor__letter${isLanded ? " fallen-letter-floor__letter--landed" : ""}`;
-    letter.textContent = char;
-    letter.style.setProperty("--floor-x", `${x.toFixed(2)}%`);
-    letter.style.setProperty("--floor-y", `${y.toFixed(2)}px`);
-    letter.style.setProperty("--floor-size", `${size.toFixed(2)}px`);
-    letter.style.setProperty("--floor-rotate", `${rotate.toFixed(2)}deg`);
-    letter.style.setProperty("--floor-push-x", "0px");
-    letter.style.setProperty("--floor-push-y", "0px");
-    letter.style.setProperty("--floor-push-r", "0deg");
-    floor.appendChild(letter);
-  }
-
-  function setupFloorLetterInteraction(floor) {
-    if (!floor || floor.dataset.interactionReady === "1") return;
-    floor.dataset.interactionReady = "1";
-
-    let rafId = null;
-    let pointer = { x: -9999, y: -9999 };
-    const radius = 150;
-
-    const resetLetters = () => {
-      floor.querySelectorAll(".fallen-letter-floor__letter").forEach((letter) => {
-        letter.style.setProperty("--floor-push-x", "0px");
-        letter.style.setProperty("--floor-push-y", "0px");
-        letter.style.setProperty("--floor-push-r", "0deg");
-      });
-    };
-
-    const updateLetters = () => {
-      const floorRect = floor.getBoundingClientRect();
-      const pointerNearFloor =
-        pointer.x >= floorRect.left - radius &&
-        pointer.x <= floorRect.right + radius &&
-        pointer.y >= floorRect.top - radius &&
-        pointer.y <= floorRect.bottom + radius;
-
-      if (!pointerNearFloor) {
-        resetLetters();
-        rafId = null;
-        return;
-      }
-
-      floor.querySelectorAll(".fallen-letter-floor__letter").forEach((letter) => {
-        const rect = letter.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = cx - pointer.x;
-        const dy = cy - pointer.y;
-        const distance = Math.hypot(dx, dy);
-
-        if (distance > radius || distance === 0) {
-          letter.style.setProperty("--floor-push-x", "0px");
-          letter.style.setProperty("--floor-push-y", "0px");
-          letter.style.setProperty("--floor-push-r", "0deg");
-          return;
-        }
-
-        const force = Math.pow(1 - distance / radius, 1.7);
-        const angle = Math.atan2(dy, dx);
-        const pushX = Math.cos(angle) * force * 58;
-        const pushY = Math.sin(angle) * force * 44 - force * 20;
-        const pushR = (dx >= 0 ? 1 : -1) * force * 18;
-
-        letter.style.setProperty("--floor-push-x", `${pushX.toFixed(1)}px`);
-        letter.style.setProperty("--floor-push-y", `${pushY.toFixed(1)}px`);
-        letter.style.setProperty("--floor-push-r", `${pushR.toFixed(1)}deg`);
-      });
-
-      rafId = null;
-    };
-
-    window.addEventListener("pointermove", (event) => {
-      pointer = { x: event.clientX, y: event.clientY };
-      if (rafId === null) rafId = requestAnimationFrame(updateLetters);
-    }, { passive: true });
-    window.addEventListener("pointerleave", resetLetters);
-  }
-
   function setupHeroScrollIntro() {
     const hero = document.querySelector(".hero");
-    const sweep = document.querySelector(".hero__sweep");
-    const floor = document.querySelector(".fallen-letter-floor");
-    const emotions = [...document.querySelectorAll(".hero__emotion")];
     const titleLines = [...document.querySelectorAll(".hero__title-sweep-line")];
-    if (!hero || !sweep || !emotions.length) return;
+    if (!hero) return;
 
     let rafId = null;
     let introLocked = false;
-    let sweepCompleted = false;
-    let titleRevealProgress = 0;
-    let titleLineSequenceStarted = false;
-    const SWEEP_COMPLETE_PROGRESS = 0.38;
+    let logoRevealProgress = 0;
     const TITLE_LINE_END_PROGRESS = 0.96;
     const TITLE_REVEAL_END_PROGRESS = 0.98;
     const clamp01 = (value) => Math.max(0, Math.min(1, value));
-    const easeOutCubic = (value) => 1 - Math.pow(1 - clamp01(value), 3);
     const easeInOutCubic = (value) => {
       const p = clamp01(value);
       return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
@@ -2609,28 +2278,160 @@
       return p * p * (3 - 2 * p);
     };
     const titlePassBlueprints = [
-      { x: 0.5, y: 0.62, angle: 0, thick: 0.54, dir: -1, delay: 0, duration: 0.98, lead: true },
+      { x: 0.5, y: 0.62, angle: 0, thick: 0.54, dir: -1, delay: 0, duration: 0.40, lead: true },
     ];
 
-    function measureSweepBounds() {
-      const stage = document.querySelector(".hero__stage");
-      const field = document.querySelector(".hero__emotion-field");
-      const headlineLogo = document.querySelector(".hero__headline-logo");
-      if (!stage || !field) return;
+    const headlineLogo = document.querySelector(".hero__headline-logo");
+    const logoLeadBar = document.querySelector(".hero__logo-lead-bar");
+    let lastRawProgress = 0;
+    let scrollSpeed = 0;
+    let logoSlices = [];
+    let logoNativeWidth = 0;
+    let logoNativeHeight = 0;
+    const LEAD_BAR_WIDTH_RATIO = 1.06; // ロゴ幅より少し太く(広く)
+    const LEAD_BAR_THICKNESS_RATIO = 0.08; // キャップハイトに対する太さ
+    const LEAD_BAR_PROGRESS_LEAD = 0.05; // ロゴより少し先に動く量
 
-      const stageRect = stage.getBoundingClientRect();
-      const fieldRect = field.getBoundingClientRect();
-      const top = fieldRect.top - stageRect.top;
+    // 文字ごとに書き出された独立SVG（assets/letters/）を読み込み、自然な文字幅で
+    // 横に並べる。AとYは2回使うので、5ファイルで7文字ぶんをまかなう。
+    const LETTER_ASSET_MAP = {
+      A: "assets/letters/letter-A.svg",
+      N: "assets/letters/letter-N.svg",
+      Y: "assets/letters/letter-Y.svg",
+      W: "assets/letters/letter-W.svg",
+      ".": "assets/letters/letter-dot.svg",
+    };
+    const WORDMARK = ["A", "N", "Y", "W", "A", "Y", "."];
+    const CAP_HEIGHT = 189; // A/N/Y/Wの共通viewBox高さ
+    const DOT_HEIGHT_RATIO = 0.16; // ピリオドの高さ（キャップハイトに対する比率）
+    // 本来のロゴ（assets/anyway-mv-title.svg）のtspan x座標そのもの（フォントに依存しない
+    // 文字ごとの実際の座標（元ロゴのtspan位置）は、新しく用意した文字パーツと
+    // 実寸の比率が微妙に食い違うため（場所によって詰まったり重なったりした）、
+    // 均等な間隔で並べる方式にしている。
+    const LETTER_GAP = CAP_HEIGHT * 0.08;
 
-      hero.style.setProperty("--hero-sweep-top", `${top.toFixed(1)}px`);
-      hero.style.setProperty("--hero-sweep-height", `${Math.max(42, fieldRect.height).toFixed(1)}px`);
-      if (headlineLogo) {
-        const logoRect = headlineLogo.getBoundingClientRect();
-        const lineWidth = Math.max(240, logoRect.width);
-        const lineHeight = Math.max(42, Math.min(72, fieldRect.height));
-        hero.style.setProperty("--hero-title-line-width", `${lineWidth.toFixed(1)}px`);
-        hero.style.setProperty("--hero-title-line-height", `${lineHeight.toFixed(1)}px`);
+    async function loadLetterTemplates() {
+      const cache = {};
+      const uniqueSrcs = [...new Set(Object.values(LETTER_ASSET_MAP))];
+      await Promise.all(uniqueSrcs.map(async (src) => {
+        const res = await fetch(src);
+        const text = await res.text();
+        const doc = new DOMParser().parseFromString(text, "image/svg+xml");
+        cache[src] = doc.documentElement;
+      }));
+      return cache;
+    }
+
+    async function buildLogoSlices() {
+      if (!headlineLogo) return;
+      const templates = await loadLetterTemplates();
+      headlineLogo.innerHTML = "";
+
+      let cursorX = 0;
+      logoSlices = WORDMARK.map((ch) => {
+        const src = LETTER_ASSET_MAP[ch];
+        const template = templates[src];
+        const svgEl = template.cloneNode(true);
+        const viewBoxParts = (svgEl.getAttribute("viewBox") || `0 0 ${CAP_HEIGHT} ${CAP_HEIGHT}`).split(/\s+/).map(Number);
+        const nativeW = viewBoxParts[2];
+        const nativeH = viewBoxParts[3];
+        const isDot = ch === ".";
+        const renderH = isDot ? CAP_HEIGHT * DOT_HEIGHT_RATIO : CAP_HEIGHT;
+        const renderW = nativeW * (renderH / nativeH);
+
+        svgEl.querySelectorAll("path").forEach((p) => p.setAttribute("fill", "currentColor"));
+        svgEl.style.position = "absolute";
+        svgEl.style.left = "0";
+        svgEl.style.overflow = "visible";
+        svgEl.style.display = "block";
+
+        const wrap = document.createElement("span");
+        wrap.className = "hero__logo-slice";
+        wrap.style.color = "var(--c-ink)";
+        wrap.appendChild(svgEl);
+        headlineLogo.appendChild(wrap);
+        gsap.set(wrap, { transformOrigin: "50% 50%" });
+
+        const x0 = cursorX;
+        cursorX += renderW + LETTER_GAP;
+        return { el: wrap, svgEl, x0, x1: x0 + renderW, renderW, renderH };
+      });
+      logoNativeWidth = cursorX - LETTER_GAP;
+      logoNativeHeight = CAP_HEIGHT;
+      logoSlices.forEach((s) => {
+        s.centerT = (s.x0 + (s.x1 - s.x0) / 2) / logoNativeWidth;
+      });
+      syncLogoSliceSizing();
+    }
+
+    function syncLogoSliceSizing() {
+      if (!headlineLogo || !logoSlices.length || !logoNativeWidth) return;
+      headlineLogo.style.aspectRatio = `${logoNativeWidth} / ${logoNativeHeight}`;
+      const rect = headlineLogo.getBoundingClientRect();
+      if (!rect.width) return;
+      const scale = rect.width / logoNativeWidth;
+      logoSlices.forEach((s) => {
+        const w = s.renderW * scale;
+        const h = s.renderH * scale;
+        s.el.style.left = `${(s.x0 * scale).toFixed(2)}px`;
+        s.el.style.top = "0px";
+        s.el.style.width = `${w.toFixed(2)}px`;
+        s.el.style.height = `${(logoNativeHeight * scale).toFixed(2)}px`;
+        s.svgEl.style.top = `${((logoNativeHeight - s.renderH) * scale).toFixed(2)}px`;
+        s.svgEl.style.width = `${w.toFixed(2)}px`;
+        s.svgEl.style.height = `${h.toFixed(2)}px`;
+      });
+      if (logoLeadBar) {
+        const barW = logoNativeWidth * LEAD_BAR_WIDTH_RATIO * scale;
+        const barH = logoNativeHeight * LEAD_BAR_THICKNESS_RATIO * scale;
+        logoLeadBar.style.width = `${barW.toFixed(2)}px`;
+        logoLeadBar.style.height = `${barH.toFixed(2)}px`;
+        logoLeadBar.style.marginLeft = `${(-barW / 2).toFixed(2)}px`;
+        logoLeadBar.style.marginTop = `${(-barH / 2).toFixed(2)}px`;
       }
+    }
+
+    // 「スクロールが速いほど波が大きくうねる」を再現するため、区間キーフレームを
+    // 繋ぐのではなく単一の連続したsin波の式でx/y/rotationを毎フレーム計算する。
+    // 文字ごとに水平位置（centerT）で位相をずらすことで、波が右から左へ
+    // 伝わっていくように見せる（リファレンスのtextPathと同じ見た目の考え方）。
+    function applyLogoWave(p) {
+      if (!headlineLogo || !window.gsap || !logoSlices.length) return;
+      const envelope = 1 - clamp01(p);
+      const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
+      logoSlices.forEach((s) => {
+        const t = s.centerT;
+        const angle = 2 * Math.PI * (p * 1.4 + t * 0.8);
+        const x = envelope * 260;
+        const y = Math.sin(angle) * 78 * envelope * waveScale;
+        const rotation = Math.sin(angle + 0.4) * 15 * envelope * waveScale;
+        const opacity = clamp01((p - t * 0.12) / 0.34);
+        gsap.set(s.el, { x, y, rotation, opacity });
+      });
+    }
+
+    // ロゴと全く同じ波の式を、1本の剤体（帯）に適用する。
+    // ロゴより少し早く動き出す（＝少し先にresolveする）ように進行度をずらす。
+    function applyLeadBarWave(p) {
+      if (!logoLeadBar || !window.gsap) return;
+      const leadP = clamp01(p + LEAD_BAR_PROGRESS_LEAD);
+      const envelope = 1 - leadP;
+      const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
+      const t = 0.5;
+      const angle = 2 * Math.PI * (leadP * 1.4 + t * 0.8);
+      const x = envelope * 260;
+      const y = Math.sin(angle) * 78 * envelope * waveScale;
+      const rotation = Math.sin(angle + 0.4) * 15 * envelope * waveScale;
+      const opacity = clamp01((leadP - t * 0.12) / 0.34);
+      gsap.set(logoLeadBar, { x, y, rotation, opacity });
+    }
+    if (headlineLogo && window.gsap) {
+      gsap.set(logoLeadBar, { transformOrigin: "50% 50%" });
+      buildLogoSlices().then(() => {
+        applyLogoWave(introLocked ? 1 : logoRevealProgress);
+        applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
+      });
+      window.addEventListener("resize", syncLogoSliceSizing);
     }
 
     function syncTitleLines(lineProgress) {
@@ -2661,7 +2462,7 @@
         const passOffset = direction * passDistance * (1 - passProgress * 2);
         const moveX = axisX * passOffset;
         const moveY = axisY * passOffset;
-        const globalLineFade = 1 - smoothStep((lineProgress - 0.88) / 0.1);
+        const globalLineFade = 1 - smoothStep((lineProgress - 0.40) / 0.08);
         const entryFade = smoothStep(localProgress / 0.08);
         const exitFade = 1 - smoothStep((localProgress - 0.84) / 0.16);
         const leadWeight = blueprint.lead ? 1 : smoothStep((lineProgress - 0.14) / 0.18);
@@ -2679,69 +2480,34 @@
     }
 
     function update() {
-      measureSweepBounds();
       const heroRect = hero.getBoundingClientRect();
       const stickyTravel = Math.max(hero.offsetHeight - window.innerHeight, 1);
       const rawProgress = clamp01((0 - heroRect.top) / stickyTravel);
       const progress = rawProgress < 0.02 ? 0 : rawProgress;
-      const activeSweepProgress = introLocked || sweepCompleted
-        ? 1
-        : clamp01(progress / SWEEP_COMPLETE_PROGRESS);
-      const lineProgress = introLocked
-        ? 1
-        : clamp01((progress - SWEEP_COMPLETE_PROGRESS) / (TITLE_LINE_END_PROGRESS - SWEEP_COMPLETE_PROGRESS));
-      let needsTitleFrame = false;
+      const rawSpeed = Math.abs(rawProgress - lastRawProgress) * 26;
+      lastRawProgress = rawProgress;
+      scrollSpeed += (rawSpeed - scrollSpeed) * 0.18;
 
-      if (activeSweepProgress >= 0.995 && !sweepCompleted) {
-        sweepCompleted = true;
-        hero.dataset.sweepCompleted = "1";
-        titleLineSequenceStarted = true;
-        hero.classList.add("is-title-sweep-running");
-      }
+      const lineProgress = introLocked ? 1 : clamp01(progress / TITLE_LINE_END_PROGRESS);
 
-      titleRevealProgress = introLocked
+      logoRevealProgress = introLocked
         ? 1
-        : easeOutCubic((lineProgress - 0.26) / 0.38);
-      needsTitleFrame = !introLocked && titleRevealProgress > 0 && titleRevealProgress < 1;
+        : clamp01((lineProgress - 0.58) / 0.42);
+      const linePassActive = lineProgress > 0 && lineProgress < 0.40;
+      const logoRevealActive = logoRevealProgress > 0 && logoRevealProgress < 1;
+      const needsTitleFrame = !introLocked && (linePassActive || logoRevealActive);
 
-      if (titleRevealProgress >= 0.995) {
+      if (logoRevealProgress >= 0.995) {
         introLocked = true;
         hero.dataset.introLocked = "1";
-        hero.classList.remove("is-title-sweep-running");
-        hero.classList.add("is-title-sweep-done");
       }
 
-      const sweepProgress = activeSweepProgress;
-      const visibleTitleProgress = introLocked ? 1 : titleRevealProgress;
-
-      hero.style.setProperty("--hero-sweep-progress", sweepProgress.toFixed(4));
-      hero.style.setProperty("--hero-sweep-opacity", sweepProgress > 0 && !titleLineSequenceStarted ? "1" : "0");
-
-      hero.style.setProperty("--hero-title-opacity", visibleTitleProgress.toFixed(4));
-      hero.style.setProperty("--hero-title-clip", "0%");
+      if (headlineLogo) {
+        applyLogoWave(introLocked ? 1 : logoRevealProgress);
+        applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
+      }
+      syncLogoSliceSizing();
       syncTitleLines(lineProgress);
-
-      emotions.forEach((node) => {
-        const baseOpacity = node.dataset.emotionVisible === "1"
-          ? Number(node.dataset.emotionOpacity || 0.78)
-          : 0;
-
-        node.style.setProperty("--emotion-alpha", baseOpacity.toFixed(3));
-        node.querySelectorAll(".hero__letter").forEach((letter) => {
-          if (letter.dataset.fallTriggered === "1") return;
-          if (progress < 0.015) return;
-
-          const rect = letter.getBoundingClientRect();
-          const threshold = clamp01(rect.left / Math.max(window.innerWidth, 1));
-          const charIndex = Number(letter.dataset.letterIndex || 0);
-          const contactProgress = activeSweepProgress + 0.012 - charIndex * 0.002;
-
-          if (node.dataset.emotionVisible === "1" && contactProgress >= threshold) {
-            letter.dataset.fallTriggered = "1";
-            letter.classList.add("is-falling");
-          }
-        });
-      });
 
       rafId = needsTitleFrame ? requestAnimationFrame(update) : null;
     }
@@ -2752,16 +2518,6 @@
 
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
-    emotions.forEach((node) => {
-      node.querySelectorAll(".hero__letter").forEach((letter) => {
-        letter.addEventListener("animationend", (event) => {
-          if (event.animationName !== "heroLetterFall" || letter.dataset.landed === "1") return;
-          letter.dataset.landed = "1";
-          letter.classList.add("has-landed");
-          addLetterToFloor(floor, letter.textContent || "", undefined, true);
-        });
-      });
-    });
     window.setTimeout(requestUpdate, 1200);
     update();
   }
@@ -3143,19 +2899,25 @@
 
   /* ---------- Card cursor: マウス追従の "View more" ---------- */
   function setupCardCursors() {
+    // 画面外から飛んでくるラインはWebGL版（assets/hover-warp.js）に切り替える。
+    // import成功時は body に webgl-line-active を付与してCSS版を非表示にする。
+    // 失敗時（未対応ブラウザ等）は何もせず、既存のCSSベース .card-hover-line がそのまま動く。
+    let lineWarp = null;
+    import("./assets/hover-warp.js")
+      .then(({ initLineWarp }) => {
+        lineWarp = initLineWarp();
+        document.body.classList.add("webgl-line-active");
+      })
+      .catch(() => {
+        lineWarp = null;
+      });
+
     let hoverLine = document.querySelector(".card-hover-line");
     if (!hoverLine) {
       hoverLine = document.createElement("div");
       hoverLine.className = "card-hover-line";
       hoverLine.setAttribute("aria-hidden", "true");
       document.body.appendChild(hoverLine);
-    }
-    let hoverLabel = document.querySelector(".card-hover-label");
-    if (!hoverLabel) {
-      hoverLabel = document.createElement("div");
-      hoverLabel.className = "card-hover-label";
-      hoverLabel.setAttribute("aria-hidden", "true");
-      document.body.appendChild(hoverLabel);
     }
 
     let lineStartX = 0;
@@ -3166,8 +2928,10 @@
     let lineCurrentY = -100;
     let lineRevealProgress = 0;
     let lineRevealTarget = 0;
+    let linePunch = 0;
     let lineActive = false;
     let lineRafId = null;
+    const HOVER_EASE = 0.12;
 
     function applyHoverLine() {
       const deltaX = lineCurrentX - lineStartX;
@@ -3181,22 +2945,24 @@
       hoverLine.style.setProperty("--hover-line-angle", `${angle.toFixed(2)}deg`);
       hoverLine.style.setProperty("--hover-line-opacity", lineActive || lineRevealProgress > 0.03 ? "1" : "0");
       hoverLine.style.setProperty("--hover-line-scale", easedReveal.toFixed(3));
-      hoverLine.style.setProperty("--hover-line-thickness", (0.86 + easedReveal * 0.14).toFixed(3));
+      hoverLine.style.setProperty("--hover-line-thickness", (0.86 + easedReveal * 0.14 + linePunch * 0.1).toFixed(3));
     }
 
     function tickHoverLine() {
-      const ease = lineActive ? 0.105 : 0.26;
-      lineCurrentX += (lineTargetX - lineCurrentX) * ease;
-      lineCurrentY += (lineTargetY - lineCurrentY) * (lineActive ? 0.15 : 0.26);
-      lineRevealProgress += (lineRevealTarget - lineRevealProgress) * (lineActive ? 0.055 : 0.22);
+      lineCurrentX += (lineTargetX - lineCurrentX) * HOVER_EASE;
+      lineCurrentY += (lineTargetY - lineCurrentY) * HOVER_EASE;
+      lineRevealProgress += (lineRevealTarget - lineRevealProgress) * HOVER_EASE;
+      linePunch += (0 - linePunch) * 0.25;
       applyHoverLine();
 
       if (
         Math.abs(lineTargetX - lineCurrentX) < 0.4 &&
         Math.abs(lineTargetY - lineCurrentY) < 0.4 &&
-        Math.abs(lineRevealTarget - lineRevealProgress) < 0.01
+        Math.abs(lineRevealTarget - lineRevealProgress) < 0.01 &&
+        linePunch < 0.002
       ) {
         lineRevealProgress = lineRevealTarget;
+        linePunch = 0;
         applyHoverLine();
         lineRafId = null;
         return;
@@ -3220,6 +2986,10 @@
     function moveHoverLine(event, isEntering = false) {
       const nextX = event.clientX;
       const nextY = event.clientY;
+      if (!isEntering) {
+        const speed = Math.hypot(nextX - lineTargetX, nextY - lineTargetY);
+        linePunch = Math.min(linePunch + speed * 0.01, 1);
+      }
       lineTargetX = nextX;
       lineTargetY = nextY;
       if (!lineActive || isEntering) {
@@ -3229,6 +2999,7 @@
         lineCurrentX = lineStartX;
         lineCurrentY = lineStartY;
         lineRevealProgress = 0;
+        linePunch = 0;
       }
       lineActive = true;
       lineRevealTarget = 1;
@@ -3252,6 +3023,7 @@
 
       let targetX = 0, targetY = 0;
       let currentX = 0, currentY = 0;
+      let punch = 0;
       let isHovering = false;
       let rafId = null;
 
@@ -3266,15 +3038,19 @@
           : Math.min(Math.max(currentY, cursorHeight / 2), media.clientHeight - cursorHeight / 2);
         cursor.style.setProperty("--cur-x", `calc(${safeX}px - 50%)`);
         cursor.style.setProperty("--cur-y", `calc(${safeY}px - 50%)`);
+        cursor.style.setProperty("--cur-punch", punch.toFixed(3));
       }
 
       function tick() {
-        const ease = 0.28;
+        const ease = 0.12;
         currentX += (targetX - currentX) * ease;
         currentY += (targetY - currentY) * ease;
+        punch += (0 - punch) * 0.25;
         applyPos();
 
-        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1) {
+        if (Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1 && punch < 0.002) {
+          punch = 0;
+          applyPos();
           rafId = null;
           return;
         }
@@ -3289,12 +3065,14 @@
         isHovering = true;
         card.classList.add("is-hovered");
         moveHoverLine(e, true);
+        lineWarp?.onEnter(e);
         const rect = media.getBoundingClientRect();
         targetX = e.clientX - rect.left;
         targetY = e.clientY - rect.top;
         // 初期位置を即時セット（カーソルがジャンプしないように）
         currentX = targetX;
         currentY = targetY;
+        punch = 0;
         applyPos();
         startTick();
       });
@@ -3305,9 +3083,14 @@
           card.classList.add("is-hovered");
         }
         moveHoverLine(e);
+        lineWarp?.onMove(e);
         const rect = media.getBoundingClientRect();
-        targetX = e.clientX - rect.left;
-        targetY = e.clientY - rect.top;
+        const nextX = e.clientX - rect.left;
+        const nextY = e.clientY - rect.top;
+        const speed = Math.hypot(nextX - targetX, nextY - targetY);
+        punch = Math.min(punch + speed * 0.012, 1);
+        targetX = nextX;
+        targetY = nextY;
         startTick();
       });
 
@@ -3315,6 +3098,7 @@
         isHovering = false;
         card.classList.remove("is-hovered");
         hideHoverLine();
+        lineWarp?.onLeave();
       });
     });
   }
@@ -3544,7 +3328,6 @@
 
   /* ---------- Init ---------- */
   async function initPage() {
-    setupHeroEmotionIntro();
     setupHeroScrollIntro();
     setupHeroReplies();
     setupAboutTriangles();
