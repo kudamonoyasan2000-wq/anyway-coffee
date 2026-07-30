@@ -106,7 +106,7 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
 
   body {
     --scroll-glow: 0;
@@ -581,7 +581,7 @@
   }
 
   .hero {
-    min-height: 420vh;
+    min-height: 220vh;
     align-items: flex-start;
     padding: 0;
     background: transparent;
@@ -628,9 +628,11 @@
   .hero__headline-logo {
     display: block;
     position: relative;
+    z-index: 2;
     width: min(92vw, 1169px);
     max-width: 100%;
     aspect-ratio: 1169.09 / 302.4;
+    opacity: 0;
     user-select: none;
     pointer-events: none;
   }
@@ -641,11 +643,23 @@
   }
   .hero__logo-lead-bar {
     position: absolute;
+    z-index: 1;
     left: 50%;
     top: 50%;
-    background: var(--c-acid);
+    background: transparent;
     opacity: 0;
+    overflow: visible;
     will-change: transform, opacity;
+  }
+  .hero__logo-lead-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .hero__logo-lead-path {
+    fill: var(--c-acid);
+    will-change: d;
   }
   .hero__svg-title {
     font-family: FoundersGrotesk-Regular, var(--font-display);
@@ -661,25 +675,6 @@
   .hero__svg-pass-line {
     fill: var(--c-acid);
     opacity: 0;
-    will-change: transform, opacity;
-  }
-  .hero__title-sweeps {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    pointer-events: none;
-    overflow: visible;
-  }
-  .hero__title-sweep-line {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: max(170vw, 1800px);
-    height: var(--line-thickness, 48px);
-    background: var(--c-acid);
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(var(--line-angle, 0deg));
-    transform-origin: center;
     will-change: transform, opacity;
   }
   @media (min-width: 768px) {
@@ -997,51 +992,6 @@
       transform: scaleX(1);
     }
   }
-  @keyframes heroTitleLinePass {
-    0% {
-      opacity: 0;
-      transform:
-        translate(-50%, -50%)
-        translate(var(--line-pass-start-x), var(--line-pass-start-y))
-        rotate(var(--line-angle))
-        scaleX(1);
-    }
-    10% {
-      opacity: 1;
-    }
-    54% {
-      opacity: 1;
-      transform:
-        translate(-50%, -50%)
-        translate(0, 0)
-        rotate(var(--line-angle))
-        scaleX(1);
-    }
-    72% {
-      opacity: 1;
-      transform:
-        translate(-50%, -50%)
-        translate(var(--line-pass-end-x), var(--line-pass-end-y))
-        rotate(var(--line-angle))
-        scaleX(1);
-    }
-    86% {
-      opacity: 1;
-      transform:
-        translate(-50%, -50%)
-        translate(0, 0)
-        rotate(var(--line-angle))
-        scaleX(0.16);
-    }
-    100% {
-      opacity: 0.92;
-      transform:
-        translate(-50%, -50%)
-        translate(0, 0)
-        rotate(var(--line-angle))
-        scaleX(0.16);
-    }
-  }
   @keyframes heroHeadlineReveal {
     0% {
       color: var(--c-ink);
@@ -1062,6 +1012,64 @@
   @keyframes aboutMarkerIn {
     from { transform: scaleX(0); }
     to { transform: scaleX(1); }
+  }
+  @keyframes aboutBlockPass {
+    0% {
+      opacity: 1;
+      transform: translateX(-112%);
+    }
+    44% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    58% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(112%);
+    }
+  }
+  @keyframes aboutTextBlockPass {
+    0% {
+      opacity: 1;
+      transform: translateX(-112%);
+    }
+    30% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    46% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(112%);
+    }
+  }
+  @keyframes aboutBlockTextShow {
+    to { opacity: 1; }
+  }
+  @keyframes aboutBlockTextSettle {
+    from { transform: translateY(0.42em); }
+    to { transform: translateY(0); }
+  }
+  @keyframes aboutPhotoLineIn {
+    0% { transform: scaleX(0); }
+    68% { transform: scaleX(1.018); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes aboutPhotoSlotIn {
+    from {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   @media (max-width: 767px) {
     .hero__stage {
@@ -1666,15 +1674,15 @@
   /* ---------- About strip ---------- */
   .about {
     background: transparent;
-    padding: 110px 16px;
+    padding: 110px 16px 0;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
   @media (min-width: 768px) {
-    .about { padding: 150px 20px; }
+    .about { padding: 150px 20px 0; }
   }
   @media (min-width: 1280px) {
-    .about { padding: 180px 24px; }
+    .about { padding: 180px 24px 0; }
   }
 
   .about__inner {
@@ -1718,22 +1726,40 @@
     filter: url(#roughRectEdge);
     z-index: -1;
   }
+  .about__eyebrow::after {
+    content: "";
+    position: absolute;
+    inset: -0.08em -0.22em -0.12em;
+    background: var(--c-acid);
+    filter: url(#roughRectEdge);
+    transform: translateX(-112%);
+    opacity: 0;
+    z-index: 1;
+    will-change: transform, opacity;
+  }
   .about__eyebrow-text {
+    position: relative;
+    z-index: 2;
     display: inline-block;
     opacity: 0;
-    transform: translateX(-10px);
-    clip-path: inset(0 100% 0 0);
+    transform: translateY(0.32em);
   }
   .about__eyebrow.in::before {
-    animation: aboutMarkerIn 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: aboutMarkerIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .about__eyebrow.in::after {
+    animation: aboutBlockPass 0.92s cubic-bezier(0.77, 0, 0.175, 1) 0.08s forwards;
   }
   .about__eyebrow.in .about__eyebrow-text {
     animation:
-      heroReplyIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) 0.76s forwards,
-      heroReplyType 0.62s steps(22, end) 0.9s forwards;
+      aboutBlockTextShow 0.01s linear 0.52s forwards,
+      aboutBlockTextSettle 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.52s forwards;
   }
 
   .about__text {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
     font-family: var(--font-serif);
     font-weight: 400;
     font-size: clamp(24px, 2.5vw, 28px);
@@ -1741,95 +1767,147 @@
     letter-spacing: -0.005em;
     color: var(--c-ink);
   }
-  .about__triangles {
-    width: min(100%, 1120px);
-    margin-top: clamp(36px, 7vw, 92px);
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: clamp(6px, 1.2vw, 18px);
-    align-items: end;
-    opacity: 0;
-    transform: translateY(38px);
-    transition:
-      opacity 0.52s ease,
-      transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .about__triangles.in {
+  .about__text.reveal {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+    transition: none;
   }
-  .about__triangle {
-    --triangle-rotate: 0deg;
-    --triangle-y: 0px;
-    --triangle-shape: polygon(50% 0%, 100% 100%, 0% 100%);
+  .about__text-line {
+    --line-delay: 0s;
     position: relative;
-    aspect-ratio: var(--triangle-ratio, 1 / 1.08);
+    display: block;
     overflow: hidden;
-    clip-path: var(--triangle-shape);
+    padding: 0 0.18em;
+    margin-inline: -0.18em;
+    isolation: isolate;
+  }
+  .about__text-line::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     background: var(--c-acid);
-    transform:
-      translateY(calc(var(--triangle-y) + 28px))
-      rotate(var(--triangle-rotate))
-      scale(0.72);
-    transform-origin: 50% 72%;
+    filter: url(#roughRectEdge);
+    transform: translateX(-112%);
     opacity: 0;
-    transition:
-      opacity 0.44s ease,
-      transform 1.08s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc(var(--triangle-index) * 72ms);
+    z-index: 2;
     will-change: transform, opacity;
   }
-  .about__triangle[data-letter="A"] {
-    --triangle-ratio: 0.82 / 1;
-    --triangle-shape: polygon(50% 4%, 95% 100%, 5% 100%);
+  .about__text-line-copy {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.42em);
+    will-change: transform, opacity;
   }
-  .about__triangle[data-letter="N"] {
-    --triangle-ratio: 0.72 / 1;
-    --triangle-shape: polygon(0% 0%, 100% 100%, 56% 100%, 0% 36%);
+  .about__text.in .about__text-line::before {
+    animation: aboutTextBlockPass 1.45s cubic-bezier(0.77, 0, 0.175, 1) calc(0.12s + var(--line-delay)) forwards;
   }
-  .about__triangle[data-letter="Y"] {
-    --triangle-ratio: 0.92 / 1;
-    --triangle-shape: polygon(50% 4%, 100% 100%, 0% 100%);
+  .about__text.in .about__text-line-copy {
+    animation:
+      aboutBlockTextShow 0.01s linear calc(0.52s + var(--line-delay)) forwards,
+      aboutBlockTextSettle 0.52s cubic-bezier(0.22, 1, 0.36, 1) calc(0.52s + var(--line-delay)) forwards;
   }
-  .about__triangle[data-letter="W"] {
-    --triangle-ratio: 1.15 / 1;
-    --triangle-shape: polygon(50% 5%, 73% 100%, 27% 100%);
+  .about__gallery-scroll {
+    width: 100vw;
+    margin-top: clamp(72px, 10vw, 140px);
+    margin-bottom: 0;
+    margin-left: calc(50% - 50vw);
+    height: 100vh;
+    position: relative;
+    overflow: visible;
   }
-  .about__triangle[data-shape="A2"] {
-    --triangle-ratio: 0.82 / 1;
-    --triangle-shape: polygon(49% 2%, 88% 100%, 11% 100%);
+  .about__triangles {
+    width: 100%;
+    margin: 0;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 0;
+    overflow: hidden;
+    background: var(--c-acid);
+    transform: scaleX(0);
+    transform-origin: left center;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    will-change: transform;
   }
-  .about__triangle[data-shape="Y2"] {
-    --triangle-ratio: 0.78 / 1;
-    --triangle-shape: polygon(0% 0%, 100% 0%, 52% 100%);
+  .about__triangles.in {
+    animation: aboutPhotoLineIn 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+  .about__photo-track {
+    --gallery-x: 0px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(24px, 3vw, 56px);
+    width: max-content;
+    min-width: 220vw;
+    padding-inline: clamp(48px, 9vw, 152px);
+    transform: translate3d(var(--gallery-x), -50%, 0);
+    will-change: transform;
+  }
+  .about__triangle {
+    --gallery-media-height: clamp(280px, 60vh, 620px);
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(373px, 80vh, 827px);
+    height: var(--gallery-media-height);
+    overflow: hidden;
+    background: transparent;
+    transform: translateX(0) scale(1);
+    transform-origin: center;
+    opacity: 0;
+    will-change: transform, opacity;
   }
   .about__triangles.in .about__triangle {
-    opacity: 1;
-    transform:
-      translateY(var(--triangle-y))
-      rotate(var(--triangle-rotate))
-      scale(1);
+    animation: aboutPhotoSlotIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) calc(0.34s + var(--triangle-index) * 70ms) forwards;
   }
   .about__triangle::before {
     content: "";
     position: absolute;
-    inset: -12%;
+    top: 0;
+    left: -12.5%;
+    width: 125%;
+    height: 100%;
     background-image: var(--triangle-photo);
     background-size: cover;
     background-position: center;
-    transform: scale(1.08);
+    transform: translate3d(var(--photo-parallax, 0%), 0, 0);
     transition:
       background-image 0.01s linear,
-      transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+      filter 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
   }
   .about__triangle.is-flipping::before {
-    transform: scale(1.18) rotate(1.2deg);
+    filter: saturate(1.16) contrast(1.04);
   }
   @media (max-width: 767px) {
     .about__triangles {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100vw;
+      margin: 0;
+      gap: 8px;
+      height: 100vh;
+      min-height: 100vh;
+      padding: 0;
+    }
+    .about__gallery-scroll {
+      width: 100vw;
+      height: 100vh;
+      margin-top: 58px;
+      margin-bottom: 0;
+    }
+    .about__photo-track {
+      min-width: 260vw;
       gap: 10px;
-      margin-top: 40px;
+      padding-inline: 16px;
+    }
+    .about__triangle {
+      width: 78vw;
+      height: min(54vh, 420px);
     }
   }
 
@@ -2095,9 +2173,6 @@
 <section class="hero">
   <div class="hero__copy">
       <div class="hero__stage">
-      <div class="hero__title-sweeps" aria-hidden="true">
-        <span class="hero__title-sweep-line"></span>
-      </div>
       <h1 class="hero__headline" aria-label="Anyway">
         <div class="hero__logo-lead-bar" aria-hidden="true"></div>
         <div class="hero__headline-logo" aria-hidden="true"></div>
@@ -2145,17 +2220,31 @@
   <div class="about__inner">
     <div class="about__eyebrow"><span class="about__eyebrow-text">まあ、まずはコーヒーでも。</span></div>
     <p class="about__text reveal">
-      毎日忙しく過ごしたり、何もせずにグダっとしたり。<br>
-      いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。<br>
-      ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。
+      <span class="about__text-line" style="--line-delay: 0s;">
+        <span class="about__text-line-copy">毎日忙しく過ごしたり、何もせずにグダっとしたり。</span>
+      </span>
+      <span class="about__text-line" style="--line-delay: 0.16s;">
+        <span class="about__text-line-copy">いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。</span>
+      </span>
+      <span class="about__text-line" style="--line-delay: 0.32s;">
+        <span class="about__text-line-copy">ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。</span>
+      </span>
     </p>
-    <div class="about__triangles reveal" aria-label="ANYWAY photo fragments">
-      <span class="about__triangle" data-letter="A" style="--triangle-index: 0; --triangle-y: 18px; --triangle-rotate: -7deg;"></span>
-      <span class="about__triangle" data-letter="N" style="--triangle-index: 1; --triangle-y: -10px; --triangle-rotate: 4deg;"></span>
-      <span class="about__triangle" data-letter="Y" style="--triangle-index: 2; --triangle-y: 12px; --triangle-rotate: -3deg;"></span>
-      <span class="about__triangle" data-letter="W" style="--triangle-index: 3; --triangle-y: -18px; --triangle-rotate: 5deg;"></span>
-      <span class="about__triangle" data-letter="A" data-shape="A2" style="--triangle-index: 4; --triangle-y: 8px; --triangle-rotate: -5deg;"></span>
-      <span class="about__triangle" data-letter="Y" data-shape="Y2" style="--triangle-index: 5; --triangle-y: -6px; --triangle-rotate: 7deg;"></span>
+  </div>
+  <div class="about__gallery-scroll">
+    <div class="about__triangles reveal" aria-label="ANYWAY photo line">
+      <div class="about__photo-track">
+        <span class="about__triangle" style="--triangle-index: 0;"></span>
+        <span class="about__triangle" style="--triangle-index: 1;"></span>
+        <span class="about__triangle" style="--triangle-index: 2;"></span>
+        <span class="about__triangle" style="--triangle-index: 3;"></span>
+        <span class="about__triangle" style="--triangle-index: 4;"></span>
+        <span class="about__triangle" style="--triangle-index: 5;"></span>
+        <span class="about__triangle" style="--triangle-index: 6;"></span>
+        <span class="about__triangle" style="--triangle-index: 7;"></span>
+        <span class="about__triangle" style="--triangle-index: 8;"></span>
+        <span class="about__triangle" style="--triangle-index: 9;"></span>
+      </div>
     </div>
   </div>
 </section>
@@ -2260,27 +2349,24 @@
 
   function setupHeroScrollIntro() {
     const hero = document.querySelector(".hero");
-    const titleLines = [...document.querySelectorAll(".hero__title-sweep-line")];
     if (!hero) return;
 
     let rafId = null;
     let introLocked = false;
     let logoRevealProgress = 0;
-    const TITLE_LINE_END_PROGRESS = 0.96;
-    const TITLE_REVEAL_END_PROGRESS = 0.98;
+    let leadBarPointerActive = false;
+    let leadBarPointerFrame = null;
+    let latestLeadBarPointer = null;
+    const TITLE_REVEAL_END_PROGRESS = 0.62;
     const clamp01 = (value) => Math.max(0, Math.min(1, value));
     const easeInOutCubic = (value) => {
       const p = clamp01(value);
       return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
     };
-    const smoothStep = (value) => {
+    const easeOutSoft = (value) => {
       const p = clamp01(value);
-      return p * p * (3 - 2 * p);
+      return 1 - Math.pow(1 - p, 3.2);
     };
-    const titlePassBlueprints = [
-      { x: 0.5, y: 0.62, angle: 0, thick: 0.54, dir: -1, delay: 0, duration: 0.40, lead: true },
-    ];
-
     const headlineLogo = document.querySelector(".hero__headline-logo");
     const logoLeadBar = document.querySelector(".hero__logo-lead-bar");
     let lastRawProgress = 0;
@@ -2288,9 +2374,13 @@
     let logoSlices = [];
     let logoNativeWidth = 0;
     let logoNativeHeight = 0;
-    const LEAD_BAR_WIDTH_RATIO = 1.06; // ロゴ幅より少し太く(広く)
-    const LEAD_BAR_THICKNESS_RATIO = 0.08; // キャップハイトに対する太さ
-    const LEAD_BAR_PROGRESS_LEAD = 0.05; // ロゴより少し先に動く量
+    const LEAD_BAR_WIDTH_RATIO = 1.18; // ロゴ幅より少し広く
+    const LEAD_BAR_THICKNESS_RATIO = 1.36; // 文字が上下に抜けないよう少し厚めにする
+    const LEAD_BAR_PROGRESS_LEAD = 0; // ロゴと同じタイミングで動かす
+    const LEAD_SVG_W = 1000;
+    const LEAD_SVG_H = 120;
+    let logoLeadPath = null;
+    const leadBarPathState = { bend: 0, wave: 0, pullX: 0, pullY: 0 };
 
     // 文字ごとに書き出された独立SVG（assets/letters/）を読み込み、自然な文字幅で
     // 横に並べる。AとYは2回使うので、5ファイルで7文字ぶんをまかなう。
@@ -2326,6 +2416,14 @@
       if (!headlineLogo) return;
       const templates = await loadLetterTemplates();
       headlineLogo.innerHTML = "";
+      if (logoLeadBar) {
+        logoLeadBar.innerHTML = `
+          <svg class="hero__logo-lead-svg" viewBox="0 0 ${LEAD_SVG_W} ${LEAD_SVG_H}" preserveAspectRatio="none" aria-hidden="true">
+            <path class="hero__logo-lead-path"></path>
+          </svg>
+        `;
+        logoLeadPath = logoLeadBar.querySelector(".hero__logo-lead-path");
+      }
 
       let cursorX = 0;
       logoSlices = WORDMARK.map((ch) => {
@@ -2393,38 +2491,192 @@
 
     // 「スクロールが速いほど波が大きくうねる」を再現するため、区間キーフレームを
     // 繋ぐのではなく単一の連続したsin波の式でx/y/rotationを毎フレーム計算する。
-    // 文字ごとに水平位置（centerT）で位相をずらすことで、波が右から左へ
-    // 伝わっていくように見せる（リファレンスのtextPathと同じ見た目の考え方）。
+    function makeLeadBarPath({ bend = 0, wave = 0, pullX = 0, pullY = 0 } = {}) {
+      const w = LEAD_SVG_W;
+      const h = LEAD_SVG_H;
+      const pad = 24;
+      const topBase = 7;
+      const bottomBase = h - 7;
+      const centerPullY = pullY * 0.42;
+      const edgePullY = pullY * 0.08;
+      const lean = pullX * 0.03;
+      const wobble = wave * 5.6;
+      const topL = topBase + edgePullY + Math.sin(bend) * wobble * 0.38;
+      const topC1 = topBase + centerPullY * 0.28 + Math.sin(bend + 0.55) * wobble * 0.52;
+      const topC2 = topBase + centerPullY + Math.sin(bend + 1.1) * wobble * 0.72;
+      const topC3 = topBase + centerPullY * 0.34 + Math.sin(bend + 1.65) * wobble * 0.48;
+      const topR = topBase - edgePullY + Math.sin(bend + 2.2) * wobble * 0.34;
+      const botR = bottomBase - edgePullY + Math.sin(bend + 2.0) * wobble * 0.34;
+      const botC3 = bottomBase + centerPullY * 0.34 + Math.sin(bend + 1.5) * wobble * 0.48;
+      const botC2 = bottomBase + centerPullY + Math.sin(bend + 0.95) * wobble * 0.72;
+      const botC1 = bottomBase + centerPullY * 0.28 + Math.sin(bend + 0.4) * wobble * 0.52;
+      const botL = bottomBase + edgePullY + Math.sin(bend - 0.1) * wobble * 0.38;
+
+      return [
+        `M ${-pad} ${topL.toFixed(2)}`,
+        `C ${(w * 0.16 + lean).toFixed(2)} ${topC1.toFixed(2)}, ${(w * 0.34 + pullX * 0.18).toFixed(2)} ${topC2.toFixed(2)}, ${(w * 0.5 + pullX * 0.24).toFixed(2)} ${topC2.toFixed(2)}`,
+        `C ${(w * 0.66 + pullX * 0.18).toFixed(2)} ${topC3.toFixed(2)}, ${(w * 0.84 + lean).toFixed(2)} ${topR.toFixed(2)}, ${w + pad} ${topR.toFixed(2)}`,
+        `L ${w + pad} ${botR.toFixed(2)}`,
+        `C ${(w * 0.84 + lean).toFixed(2)} ${botR.toFixed(2)}, ${(w * 0.66 + pullX * 0.18).toFixed(2)} ${botC3.toFixed(2)}, ${(w * 0.5 + pullX * 0.24).toFixed(2)} ${botC2.toFixed(2)}`,
+        `C ${(w * 0.34 + pullX * 0.18).toFixed(2)} ${botC2.toFixed(2)}, ${(w * 0.16 + lean).toFixed(2)} ${botC1.toFixed(2)}, ${-pad} ${botL.toFixed(2)}`,
+        "Z",
+      ].join(" ");
+    }
+
+    function renderLeadBarPath() {
+      if (!logoLeadPath) return;
+      logoLeadPath.setAttribute("d", makeLeadBarPath(leadBarPathState));
+    }
+
+    function setLeadBarPath(options = {}) {
+      Object.assign(leadBarPathState, options);
+      renderLeadBarPath();
+    }
+
+    function getLogoEntryX(rect) {
+      const logoLeft = rect?.left || 0;
+      const logoWidth = rect?.width || window.innerWidth;
+      return window.innerWidth - logoLeft + logoWidth * 0.08 + 56;
+    }
+
+    // 単語全体は右画面外から左へ入れ、柔らかさはy/rotationの波だけで足す。
+    // 透明度で出すと途中からフェードして見えるため、初期フレーム以外は常に不透明にする。
     function applyLogoWave(p) {
       if (!headlineLogo || !window.gsap || !logoSlices.length) return;
       const envelope = 1 - clamp01(p);
       const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
+      const rect = headlineLogo.getBoundingClientRect();
+      const enterX = getLogoEntryX(rect);
+      const baseX = envelope * enterX;
       logoSlices.forEach((s) => {
         const t = s.centerT;
-        const angle = 2 * Math.PI * (p * 1.4 + t * 0.8);
-        const x = envelope * 260;
-        const y = Math.sin(angle) * 78 * envelope * waveScale;
-        const rotation = Math.sin(angle + 0.4) * 15 * envelope * waveScale;
-        const opacity = clamp01((p - t * 0.12) / 0.34);
+        const angle = 2 * Math.PI * (p * 1.18 + t * 0.9);
+        const x = baseX + Math.sin(angle - 0.5) * 26 * envelope * waveScale;
+        const y = Math.sin(angle) * 124 * envelope * waveScale;
+        const rotation = Math.sin(angle + 0.4) * 22 * envelope * waveScale;
+        const opacity = p <= 0.001 ? 0 : 1;
         gsap.set(s.el, { x, y, rotation, opacity });
       });
     }
 
-    // ロゴと全く同じ波の式を、1本の剤体（帯）に適用する。
-    // ロゴより少し早く動き出す（＝少し先にresolveする）ように進行度をずらす。
+    // ラインは文字列中央と同じ位相・振れ幅で動かす。
+    // 独自のスキューを強く入れると文字とズレて見えるため、形状揺れは控えめにする。
     function applyLeadBarWave(p) {
       if (!logoLeadBar || !window.gsap) return;
       const leadP = clamp01(p + LEAD_BAR_PROGRESS_LEAD);
-      const envelope = 1 - leadP;
+      const travel = easeOutSoft(leadP);
+      const envelope = 1 - travel;
+      const followThrough = Math.sin(leadP * Math.PI);
       const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
-      const t = 0.5;
-      const angle = 2 * Math.PI * (leadP * 1.4 + t * 0.8);
-      const x = envelope * 260;
-      const y = Math.sin(angle) * 78 * envelope * waveScale;
-      const rotation = Math.sin(angle + 0.4) * 15 * envelope * waveScale;
-      const opacity = clamp01((leadP - t * 0.12) / 0.34);
-      gsap.set(logoLeadBar, { x, y, rotation, opacity });
+      const rect = headlineLogo?.getBoundingClientRect?.() || { width: 0 };
+      const enterX = getLogoEntryX(rect);
+      const baseX = envelope * enterX;
+      const lineT = 0.5;
+      const angle = 2 * Math.PI * (leadP * 1.18 + lineT * 0.9);
+      const leftwardDrag = -followThrough * 42 * waveScale;
+      const verticalArc = Math.sin((leadP * 1.08 - 0.08) * Math.PI) * followThrough * 78 * waveScale;
+      const verticalFloat = Math.sin(angle) * 46 * envelope * waveScale;
+      const x = baseX + leftwardDrag + Math.sin(angle - 0.5) * 18 * envelope * waveScale;
+      const y = verticalFloat + verticalArc;
+      const rotation = Math.sin(angle + 0.4) * 7 * envelope * waveScale + followThrough * -2.2 + verticalArc * 0.012;
+      const skewX = Math.sin(angle - 0.7) * 1.5 * envelope * waveScale + followThrough * -4.2 + verticalArc * 0.006;
+      const scaleX = 1 + followThrough * 0.018;
+      const scaleY = 1 + Math.sin(angle + 1.1) * 0.018 * envelope + followThrough * 0.014;
+      const opacity = leadP <= 0.001 ? 0 : 1;
+      setLeadBarPath({
+        bend: angle,
+        wave: (envelope * 0.42 + followThrough * 0.28) * waveScale,
+        pullX: Math.sin(angle - 0.5) * 52 * envelope * waveScale - followThrough * 210,
+        pullY: Math.sin(angle) * 72 * envelope * waveScale + verticalArc * 1.25,
+      });
+      gsap.set(logoLeadBar, {
+        x,
+        y,
+        rotation,
+        skewX,
+        scaleX,
+        scaleY,
+        opacity,
+      });
     }
+
+    function setLeadBarPointerShape(dx, dy, influence) {
+      const pullScale = Math.max(logoLeadBar?.getBoundingClientRect?.().width || 1, 1);
+      setLeadBarPath({
+        bend: performance.now() * 0.004,
+        wave: influence * 0.9,
+        pullX: clamp01(Math.abs(dx) / pullScale) * Math.sign(dx) * 300 * influence,
+        pullY: dy * 1.12 * influence,
+      });
+    }
+
+    function releaseLeadBarPointer() {
+      if (!logoLeadBar || !window.gsap || !introLocked) return;
+      leadBarPointerActive = false;
+      gsap.to(logoLeadBar, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        skewX: 0,
+        scaleY: 1,
+        duration: 1.15,
+        ease: "elastic.out(1, 0.34)",
+      });
+      gsap.to(leadBarPathState, {
+        bend: 0,
+        wave: 0,
+        pullX: 0,
+        pullY: 0,
+        duration: 1.15,
+        ease: "elastic.out(1, 0.34)",
+        onUpdate: renderLeadBarPath,
+        onComplete: renderLeadBarPath,
+      });
+    }
+
+    function updateLeadBarPointer() {
+      leadBarPointerFrame = null;
+      if (!logoLeadBar || !window.gsap || !introLocked || !latestLeadBarPointer) return;
+      const rect = logoLeadBar.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = latestLeadBarPointer.clientX - centerX;
+      const dy = latestLeadBarPointer.clientY - centerY;
+      const verticalRange = Math.max(rect.height * 0.92, 180);
+      const influence = clamp01(1 - Math.abs(dy) / verticalRange);
+
+      if (influence < 0.05) {
+        if (leadBarPointerActive) releaseLeadBarPointer();
+        return;
+      }
+
+      leadBarPointerActive = true;
+      const pullX = dx * 0.026 * influence;
+      const pullY = dy * 0.46 * influence;
+      const rotation = dx * 0.012 * influence;
+      const skewX = dx * 0.016 * influence;
+      const scaleY = 1 + influence * 0.045;
+      setLeadBarPointerShape(dx, dy, influence);
+      gsap.to(logoLeadBar, {
+        x: pullX,
+        y: pullY,
+        rotation,
+        skewX,
+        scaleY,
+        duration: 0.32,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    }
+
+    function handleLeadBarPointerMove(event) {
+      if (!introLocked || !logoLeadBar) return;
+      latestLeadBarPointer = event;
+      if (leadBarPointerFrame === null) {
+        leadBarPointerFrame = requestAnimationFrame(updateLeadBarPointer);
+      }
+    }
+
     if (headlineLogo && window.gsap) {
       gsap.set(logoLeadBar, { transformOrigin: "50% 50%" });
       buildLogoSlices().then(() => {
@@ -2432,51 +2684,8 @@
         applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
       });
       window.addEventListener("resize", syncLogoSliceSizing);
-    }
-
-    function syncTitleLines(lineProgress) {
-      const stage = document.querySelector(".hero__stage");
-      const headlineLogo = document.querySelector(".hero__headline-logo");
-      if (!stage || !headlineLogo || !titleLines.length) return;
-
-      const stageRect = stage.getBoundingClientRect();
-      const logoRect = headlineLogo.getBoundingClientRect();
-      const passDistance = Math.max(window.innerWidth, window.innerHeight) * 1.7;
-      const fullLength = Math.hypot(window.innerWidth, window.innerHeight) * 2.05;
-      const baseThickness = Math.max(28, Math.min(52, logoRect.height * 0.18));
-
-      titleLines.forEach((line, index) => {
-        const blueprint = titlePassBlueprints[index];
-        if (!blueprint) {
-          line.style.opacity = "0";
-          return;
-        }
-        const localProgress = clamp01((lineProgress - blueprint.delay) / (blueprint.duration || 0.82));
-        const passProgress = easeInOutCubic(localProgress);
-        const direction = blueprint.dir || (index % 2 === 0 ? -1 : 1);
-        const angleRad = blueprint.angle * Math.PI / 180;
-        const axisX = Math.cos(angleRad);
-        const axisY = Math.sin(angleRad);
-        const centerX = logoRect.left - stageRect.left + logoRect.width * blueprint.x;
-        const centerY = logoRect.top - stageRect.top + logoRect.height * blueprint.y;
-        const passOffset = direction * passDistance * (1 - passProgress * 2);
-        const moveX = axisX * passOffset;
-        const moveY = axisY * passOffset;
-        const globalLineFade = 1 - smoothStep((lineProgress - 0.40) / 0.08);
-        const entryFade = smoothStep(localProgress / 0.08);
-        const exitFade = 1 - smoothStep((localProgress - 0.84) / 0.16);
-        const leadWeight = blueprint.lead ? 1 : smoothStep((lineProgress - 0.14) / 0.18);
-        const passOpacity = lineProgress <= 0
-          ? 0
-          : entryFade * exitFade * globalLineFade * leadWeight;
-
-        line.style.left = `${centerX.toFixed(1)}px`;
-        line.style.top = `${centerY.toFixed(1)}px`;
-        line.style.width = `${fullLength.toFixed(1)}px`;
-        line.style.height = `${(baseThickness * blueprint.thick).toFixed(1)}px`;
-        line.style.opacity = passOpacity.toFixed(3);
-        line.style.transform = `translate(-50%, -50%) translate(${moveX.toFixed(1)}px, ${moveY.toFixed(1)}px) rotate(${blueprint.angle}deg)`;
-      });
+      hero.addEventListener("pointermove", handleLeadBarPointerMove, { passive: true });
+      hero.addEventListener("pointerleave", releaseLeadBarPointer);
     }
 
     function update() {
@@ -2488,14 +2697,11 @@
       lastRawProgress = rawProgress;
       scrollSpeed += (rawSpeed - scrollSpeed) * 0.18;
 
-      const lineProgress = introLocked ? 1 : clamp01(progress / TITLE_LINE_END_PROGRESS);
-
       logoRevealProgress = introLocked
         ? 1
-        : clamp01((lineProgress - 0.58) / 0.42);
-      const linePassActive = lineProgress > 0 && lineProgress < 0.40;
+        : easeInOutCubic(clamp01(progress / TITLE_REVEAL_END_PROGRESS));
       const logoRevealActive = logoRevealProgress > 0 && logoRevealProgress < 1;
-      const needsTitleFrame = !introLocked && (linePassActive || logoRevealActive);
+      const needsTitleFrame = !introLocked && logoRevealActive;
 
       if (logoRevealProgress >= 0.995) {
         introLocked = true;
@@ -2507,7 +2713,6 @@
         applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
       }
       syncLogoSliceSizing();
-      syncTitleLines(lineProgress);
 
       rafId = needsTitleFrame ? requestAnimationFrame(update) : null;
     }
@@ -3256,49 +3461,138 @@
 
   function setupAboutTriangles() {
     const group = document.querySelector(".about__triangles");
-    const triangles = Array.from(document.querySelectorAll(".about__triangle"));
-    if (!group || !triangles.length) return;
+    const scrollArea = group?.closest(".about__gallery-scroll");
+    const track = group?.querySelector(".about__photo-track");
+    if (!group || !scrollArea || !track) return;
+
+    const baseTriangles = Array.from(track.querySelectorAll(".about__triangle"));
+    if (!track.dataset.looped) {
+      baseTriangles.forEach((triangle) => {
+        const clone = triangle.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        track.appendChild(clone);
+      });
+      track.dataset.looped = "true";
+    }
+    const triangles = Array.from(track.querySelectorAll(".about__triangle"));
+    if (!triangles.length) return;
 
     const photos = [
       "assets/triangle-photo-1.png",
       "assets/triangle-photo-2.png",
       "assets/triangle-photo-3.png",
       "assets/triangle-photo-4.png",
+      "assets/triangle-photo-1.png",
+      "assets/triangle-photo-2.png",
+      "assets/triangle-photo-3.png",
+      "assets/triangle-photo-4.png",
+      "assets/triangle-photo-1.png",
+      "assets/triangle-photo-2.png",
     ];
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const setPhoto = (triangle, offset = 0) => {
-      const current = Number(triangle.dataset.photoIndex || 0);
-      const next = (current + 1 + offset) % photos.length;
-      triangle.dataset.photoIndex = String(next);
-      triangle.style.setProperty("--triangle-photo", `url("${photos[next]}")`);
-      triangle.classList.add("is-flipping");
-      window.setTimeout(() => triangle.classList.remove("is-flipping"), 110);
-    };
 
     triangles.forEach((triangle, index) => {
       triangle.dataset.photoIndex = String(index % photos.length);
+      triangle.style.setProperty("--triangle-index", index);
       triangle.style.setProperty("--triangle-photo", `url("${photos[index % photos.length]}")`);
     });
 
     if (prefersReduced) return;
 
+    let rafId = null;
+    let isActive = false;
+    let currentOffset = 0;
+    let targetOffset = 0;
+    let loopWidth = 1;
+
+    function measureLoopWidth() {
+      const firstTriangle = triangles[0];
+      const firstClone = track.querySelector('.about__triangle[aria-hidden="true"]');
+      loopWidth = firstClone && firstTriangle
+        ? Math.max(1, firstClone.offsetLeft - firstTriangle.offsetLeft)
+        : Math.max(1, track.scrollWidth / 2);
+    }
+
+    function updateTargetFromScroll() {
+      measureLoopWidth();
+      const sectionTop = scrollArea.getBoundingClientRect().top + window.scrollY;
+      const rawProgress = (window.scrollY - sectionTop + window.innerHeight) / window.innerHeight;
+      const progress = Math.max(0, Math.min(1, rawProgress));
+      const eased = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+      targetOffset = Math.max(targetOffset, eased * loopWidth * 0.32);
+    }
+
+    function renderParallax() {
+      rafId = null;
+      currentOffset += (targetOffset - currentOffset) * 0.075;
+      const wrappedOffset = loopWidth ? currentOffset % loopWidth : currentOffset;
+      track.style.setProperty("--gallery-x", `${(-wrappedOffset).toFixed(1)}px`);
+
+      triangles.forEach((triangle) => {
+        const tRect = triangle.getBoundingClientRect();
+        const centerProgress = ((tRect.left + tRect.width / 2) / window.innerWidth) - 0.5;
+        const parallax = Math.max(-10, Math.min(10, centerProgress * -14));
+        triangle.style.setProperty("--photo-parallax", `${parallax.toFixed(2)}%`);
+        if (isActive) {
+          triangle.style.opacity = "1";
+          triangle.style.transform = "translate3d(0, 0, 0)";
+        }
+      });
+
+      if (isActive && Math.abs(targetOffset - currentOffset) > 0.18) {
+        rafId = requestAnimationFrame(renderParallax);
+      }
+    }
+
+    function requestParallax() {
+      if (rafId === null) rafId = requestAnimationFrame(renderParallax);
+    }
+
+    function handleGalleryScroll() {
+      if (!isActive) return;
+      updateTargetFromScroll();
+      requestParallax();
+    }
+
+    function isGalleryVisible() {
+      const rect = scrollArea.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    }
+
+    function handleGalleryWheel(event) {
+      if (!isActive || !isGalleryVisible()) return;
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      if (delta <= 0) return;
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const atPageBottom = window.scrollY >= maxScroll - 2;
+      if (!atPageBottom) return;
+
+      event.preventDefault();
+      targetOffset += delta * 0.42;
+      requestParallax();
+    }
+
     let hasStarted = false;
     const start = () => {
       if (hasStarted) return;
       hasStarted = true;
-
+      isActive = true;
       triangles.forEach((triangle, index) => {
-        let flips = 0;
-        const burst = window.setInterval(() => {
-          setPhoto(triangle, index + flips);
-          flips += 1;
-          if (flips > 9 + index) window.clearInterval(burst);
-        }, 92 + index * 13);
-
-        window.setInterval(() => {
-          setPhoto(triangle, index + Math.floor(Math.random() * photos.length));
-        }, 1800 + index * 290);
+        triangle.style.animationDelay = `${(0.22 + index * 0.055).toFixed(3)}s`;
       });
+      measureLoopWidth();
+      updateTargetFromScroll();
+      window.addEventListener("scroll", handleGalleryScroll, { passive: true });
+      window.addEventListener("wheel", handleGalleryWheel, { passive: false });
+      window.addEventListener("resize", () => {
+        measureLoopWidth();
+        updateTargetFromScroll();
+        requestParallax();
+      });
+      requestParallax();
     };
 
     const triangleObserver = new IntersectionObserver((entries) => {
