@@ -581,7 +581,7 @@
   }
 
   .hero {
-    min-height: 220vh;
+    min-height: 340vh;
     align-items: flex-start;
     padding: 0;
     background: transparent;
@@ -660,6 +660,59 @@
   .hero__logo-lead-path {
     fill: var(--c-acid);
     will-change: d;
+  }
+  .hero__word-cluster {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: min(70vw, 460px);
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    will-change: opacity;
+  }
+  .hero__word-block {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--c-ink);
+    background: var(--c-acid);
+    padding: 0.18em 0.4em;
+    line-height: 1.3;
+    will-change: transform;
+    animation-name: wordBlockShake;
+    animation-duration: var(--shake-dur, 0.5s);
+    animation-delay: var(--shake-delay, 0s);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .hero__word-block--alt {
+    animation-name: wordBlockShakeReverse;
+  }
+  .hero__word-block--touched {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  @keyframes wordBlockShake {
+    0%   { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-50%, -50%) translate(1px, -2px) rotate(-2deg); }
+    40%  { transform: translate(-50%, -50%) translate(-2px, 1px) rotate(3deg); }
+    60%  { transform: translate(-50%, -50%) translate(2px, 2px) rotate(-3deg); }
+    80%  { transform: translate(-50%, -50%) translate(-1px, -1px) rotate(2deg); }
+    100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
+  }
+  @keyframes wordBlockShakeReverse {
+    0%   { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
+    20%  { transform: translate(-50%, -50%) translate(-1px, 2px) rotate(2deg); }
+    40%  { transform: translate(-50%, -50%) translate(2px, -1px) rotate(-3deg); }
+    60%  { transform: translate(-50%, -50%) translate(-2px, -2px) rotate(3deg); }
+    80%  { transform: translate(-50%, -50%) translate(1px, 1px) rotate(-2deg); }
+    100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
   }
   .hero__svg-title {
     font-family: FoundersGrotesk-Regular, var(--font-display);
@@ -2173,6 +2226,7 @@
 <section class="hero">
   <div class="hero__copy">
       <div class="hero__stage">
+      <div class="hero__word-cluster" aria-hidden="true"></div>
       <h1 class="hero__headline" aria-label="Anyway">
         <div class="hero__logo-lead-bar" aria-hidden="true"></div>
         <div class="hero__headline-logo" aria-hidden="true"></div>
@@ -2357,25 +2411,35 @@
     let leadBarPointerActive = false;
     let leadBarPointerFrame = null;
     let latestLeadBarPointer = null;
-    const TITLE_REVEAL_END_PROGRESS = 0.62;
+    const WORD_GROWTH_END_PROGRESS = 0.34;
+    const LOGO_PHASE_START_PROGRESS = 0.42;
+    const TITLE_REVEAL_END_PROGRESS = 0.86;
     const clamp01 = (value) => Math.max(0, Math.min(1, value));
+    const windowProgress = (value, start, end) => {
+      if (end <= start) return value >= end ? 1 : 0;
+      return clamp01((value - start) / (end - start));
+    };
     const easeInOutCubic = (value) => {
       const p = clamp01(value);
       return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
     };
-    const easeOutSoft = (value) => {
+    // 最初はゆっくり溜めて、終盤だけ一気にシュッと動く（指数関数的なease-in）
+    const easeInSnap = (value) => {
       const p = clamp01(value);
-      return 1 - Math.pow(1 - p, 3.2);
+      if (p <= 0) return 0;
+      if (p >= 1) return 1;
+      return Math.pow(2, 8 * (p - 1));
     };
     const headlineLogo = document.querySelector(".hero__headline-logo");
     const logoLeadBar = document.querySelector(".hero__logo-lead-bar");
     let lastRawProgress = 0;
+    let smoothedProgress = 0;
     let scrollSpeed = 0;
     let logoSlices = [];
     let logoNativeWidth = 0;
     let logoNativeHeight = 0;
     const LEAD_BAR_WIDTH_RATIO = 1.18; // ロゴ幅より少し広く
-    const LEAD_BAR_THICKNESS_RATIO = 1.36; // 文字が上下に抜けないよう少し厚めにする
+    const LEAD_BAR_THICKNESS_RATIO = 1.5; // 基本の太さ。単語クラスターを覆う分の太さはsyncLogoSliceSizing側で別途確保する
     const LEAD_BAR_PROGRESS_LEAD = 0; // ロゴと同じタイミングで動かす
     const LEAD_SVG_W = 1000;
     const LEAD_SVG_H = 120;
@@ -2481,7 +2545,13 @@
       });
       if (logoLeadBar) {
         const barW = logoNativeWidth * LEAD_BAR_WIDTH_RATIO * scale;
-        const barH = logoNativeHeight * LEAD_BAR_THICKNESS_RATIO * scale;
+        // .hero__word-cluster は独自のvw/px基準でサイズが決まり、ロゴ側と
+        // 完全には比例しないため、実測したクラスターの高さを基準に太さを
+        // 決める（単語がラインで隠れずに残ってしまうのを防ぐ）。
+        const baseBarH = logoNativeHeight * LEAD_BAR_THICKNESS_RATIO * scale;
+        const clusterRect = wordClusterEl ? wordClusterEl.getBoundingClientRect() : null;
+        const coverBarH = clusterRect && clusterRect.height ? clusterRect.height * 1.2 : 0;
+        const barH = Math.max(baseBarH, coverBarH);
         logoLeadBar.style.width = `${barW.toFixed(2)}px`;
         logoLeadBar.style.height = `${barH.toFixed(2)}px`;
         logoLeadBar.style.marginLeft = `${(-barW / 2).toFixed(2)}px`;
@@ -2564,7 +2634,7 @@
     function applyLeadBarWave(p) {
       if (!logoLeadBar || !window.gsap) return;
       const leadP = clamp01(p + LEAD_BAR_PROGRESS_LEAD);
-      const travel = easeOutSoft(leadP);
+      const travel = easeInSnap(leadP);
       const envelope = 1 - travel;
       const followThrough = Math.sin(leadP * Math.PI);
       const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
@@ -2574,7 +2644,7 @@
       const lineT = 0.5;
       const angle = 2 * Math.PI * (leadP * 1.18 + lineT * 0.9);
       const leftwardDrag = -followThrough * 42 * waveScale;
-      const verticalArc = Math.sin((leadP * 1.08 - 0.08) * Math.PI) * followThrough * 78 * waveScale;
+      const verticalArc = Math.sin((leadP * 1.08 - 0.08) * Math.PI) * followThrough * 42 * waveScale;
       const verticalFloat = Math.sin(angle) * 46 * envelope * waveScale;
       const x = baseX + leftwardDrag + Math.sin(angle - 0.5) * 18 * envelope * waveScale;
       const y = verticalFloat + verticalArc;
@@ -2688,6 +2758,324 @@
       hero.addEventListener("pointerleave", releaseLeadBarPointer);
     }
 
+    /* ---------- Word cluster: コーヒーの形に育つ単語 ---------- */
+    const MOOD_WORDS = [
+      "restless", "hopeful", "calm", "messy", "light", "tired", "overthinking",
+      "soft", "new start", "cloudy", "quiet", "anxious", "awake", "nervous",
+      "slow", "heavy", "bright", "wired", "loose", "blue", "steady", "unready",
+      "fine", "blank", "alive", "gentle", "too much", "almost", "okay",
+    ];
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    const wordClusterEl = document.querySelector(".hero__word-cluster");
+    const WORD_GRID_N = 16;
+    const NATIVE_SIZE = 100;
+    const CELL_SIZE = NATIVE_SIZE / WORD_GRID_N;
+    const WORD_FONT_SIZE_NATIVE = 3.4;
+    const AVG_CHAR_WIDTH_NATIVE = WORD_FONT_SIZE_NATIVE * 0.52;
+    const WORD_LINE_HEIGHT_NATIVE = WORD_FONT_SIZE_NATIVE * 1.3;
+    const WORD_PAD_NATIVE = 0.6;
+    let wordGrowthOrder = [];
+    let wordGrowthCursor = 0;
+    let placedWordRects = [];
+    let wordClusterAppended = [];
+    let lapWords = shuffleArray(MOOD_WORDS);
+    let wordClusterNativeWidth = NATIVE_SIZE;
+
+    // 単語の実サイズをネイティブ座標系で概算し、既に置かれた単語と重なる場合は
+    // そのマスは飛ばす（文字が被らないようにする）。
+    function estimateWordNativeRect(text, centerX, centerY) {
+      // 背景チップのpadding（0.4em/0.18em）ぶんも見た目の箱として重なり判定に含める
+      const chipPadX = WORD_FONT_SIZE_NATIVE * 0.4;
+      const chipPadY = WORD_FONT_SIZE_NATIVE * 0.18;
+      const halfW = (text.length * AVG_CHAR_WIDTH_NATIVE) / 2 + chipPadX + WORD_PAD_NATIVE;
+      const halfH = WORD_LINE_HEIGHT_NATIVE / 2 + chipPadY + WORD_PAD_NATIVE;
+      return { left: centerX - halfW, right: centerX + halfW, top: centerY - halfH, bottom: centerY + halfH };
+    }
+    function rectsOverlap(a, b) {
+      return !(a.right < b.left || b.right < a.left || a.bottom < b.top || b.bottom < a.top);
+    }
+
+    function cellCenterNative(col, row) {
+      return { x: (col + 0.5) * CELL_SIZE, y: (row + 0.5) * CELL_SIZE };
+    }
+
+    function drawCupMask(ctx) {
+      ctx.beginPath();
+      ctx.moveTo(24, 26);
+      ctx.quadraticCurveTo(24, 22, 30, 22);
+      ctx.lineTo(62, 22);
+      ctx.quadraticCurveTo(68, 22, 68, 26);
+      ctx.lineTo(64, 78);
+      ctx.quadraticCurveTo(63, 86, 54, 88);
+      ctx.lineTo(38, 88);
+      ctx.quadraticCurveTo(29, 86, 28, 78);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.arc(69, 50, 14, -Math.PI * 0.55, Math.PI * 0.55);
+      ctx.stroke();
+    }
+
+    function drawBeanMask(ctx) {
+      ctx.save();
+      ctx.translate(50, 52);
+      ctx.rotate(-0.2);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 32, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(50, 32);
+      ctx.quadraticCurveTo(50, 52, 50, 72);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawSteamMask(ctx) {
+      ctx.lineCap = "round";
+      ctx.lineWidth = 8.5;
+      const ribbons = [
+        { x0: 34, amp: 9, phase: 0 },
+        { x0: 50, amp: 10, phase: 1.4 },
+        { x0: 66, amp: 9, phase: 2.6 },
+      ];
+      ribbons.forEach(({ x0, amp, phase }) => {
+        ctx.beginPath();
+        ctx.moveTo(x0, 88);
+        for (let step = 1; step <= 6; step += 1) {
+          const y0 = 88 - (step - 1) * 12;
+          const y1 = 88 - step * 12;
+          const dir = Math.sin(phase + step * 1.1) * amp;
+          ctx.quadraticCurveTo(x0 + dir, (y0 + y1) / 2, x0, y1);
+        }
+        ctx.stroke();
+      });
+    }
+
+    const SHAPE_DRAWERS = { cup: drawCupMask, bean: drawBeanMask, steam: drawSteamMask };
+
+    function rasterizeShapeToGrid(drawFn) {
+      const CANVAS_SIZE = 400;
+      const SUBSAMPLES = 5;
+      const canvas = document.createElement("canvas");
+      canvas.width = CANVAS_SIZE;
+      canvas.height = CANVAS_SIZE;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const canvasScale = CANVAS_SIZE / NATIVE_SIZE;
+      ctx.save();
+      ctx.scale(canvasScale, canvasScale);
+      ctx.fillStyle = "#000";
+      ctx.strokeStyle = "#000";
+      drawFn(ctx);
+      ctx.restore();
+
+      const { data } = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+      const inside = [];
+      for (let row = 0; row < WORD_GRID_N; row += 1) {
+        inside[row] = [];
+        for (let col = 0; col < WORD_GRID_N; col += 1) {
+          const { x, y } = cellCenterNative(col, row);
+          let covered = 0;
+          for (let sy = 0; sy < SUBSAMPLES; sy += 1) {
+            for (let sx = 0; sx < SUBSAMPLES; sx += 1) {
+              const nx = x + (sx / (SUBSAMPLES - 1) - 0.5) * CELL_SIZE * 0.8;
+              const ny = y + (sy / (SUBSAMPLES - 1) - 0.5) * CELL_SIZE * 0.8;
+              const px = Math.min(CANVAS_SIZE - 1, Math.max(0, Math.round(nx * canvasScale)));
+              const py = Math.min(CANVAS_SIZE - 1, Math.max(0, Math.round(ny * canvasScale)));
+              if (data[(py * CANVAS_SIZE + px) * 4 + 3] > 127) covered += 1;
+            }
+          }
+          inside[row][col] = covered / (SUBSAMPLES * SUBSAMPLES) >= 0.5;
+        }
+      }
+      return inside;
+    }
+
+    const NEIGHBORS_8 = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+
+    function findConnectedComponents(insideGrid) {
+      const visited = Array.from({ length: WORD_GRID_N }, () => Array(WORD_GRID_N).fill(false));
+      const components = [];
+      for (let r = 0; r < WORD_GRID_N; r += 1) {
+        for (let c = 0; c < WORD_GRID_N; c += 1) {
+          if (!insideGrid[r][c] || visited[r][c]) continue;
+          const stack = [[r, c]];
+          visited[r][c] = true;
+          const cells = [];
+          while (stack.length) {
+            const [cr, cc] = stack.pop();
+            cells.push({ row: cr, col: cc });
+            NEIGHBORS_8.forEach(([dr, dc]) => {
+              const nr = cr + dr;
+              const nc = cc + dc;
+              if (nr < 0 || nr >= WORD_GRID_N || nc < 0 || nc >= WORD_GRID_N) return;
+              if (!insideGrid[nr][nc] || visited[nr][nc]) return;
+              visited[nr][nc] = true;
+              stack.push([nr, nc]);
+            });
+          }
+          components.push(cells);
+        }
+      }
+      return components;
+    }
+
+    function pickSeedForComponent(cells) {
+      const avgRow = cells.reduce((s, c) => s + c.row, 0) / cells.length;
+      const avgCol = cells.reduce((s, c) => s + c.col, 0) / cells.length;
+      let best = cells[0];
+      let bestDist = Infinity;
+      cells.forEach((cell) => {
+        const d = (cell.row - avgRow) ** 2 + (cell.col - avgCol) ** 2;
+        if (d < bestDist) {
+          bestDist = d;
+          best = cell;
+        }
+      });
+      return best;
+    }
+
+    function buildGrowthOrder(insideGrid) {
+      const components = findConnectedComponents(insideGrid);
+      if (!components.length) return [];
+      const revealed = Array.from({ length: WORD_GRID_N }, () => Array(WORD_GRID_N).fill(false));
+      const order = [];
+
+      function addNeighborsToFrontier(cell, frontier) {
+        NEIGHBORS_8.forEach(([dr, dc]) => {
+          const r = cell.row + dr;
+          const c = cell.col + dc;
+          if (r < 0 || r >= WORD_GRID_N || c < 0 || c >= WORD_GRID_N) return;
+          if (!insideGrid[r][c] || revealed[r][c]) return;
+          frontier.set(`${r},${c}`, { row: r, col: c });
+        });
+      }
+
+      const frontiers = components.map((cells) => {
+        const seed = pickSeedForComponent(cells);
+        revealed[seed.row][seed.col] = true;
+        order.push(seed);
+        const frontier = new Map();
+        addNeighborsToFrontier(seed, frontier);
+        return frontier;
+      });
+
+      while (frontiers.some((f) => f.size > 0)) {
+        const nonEmpty = frontiers.filter((f) => f.size > 0);
+        const chosen = nonEmpty[Math.floor(Math.random() * nonEmpty.length)];
+        const keys = [...chosen.keys()];
+        const key = keys[Math.floor(Math.random() * keys.length)];
+        const cell = chosen.get(key);
+        chosen.delete(key);
+        if (revealed[cell.row][cell.col]) continue;
+        revealed[cell.row][cell.col] = true;
+        order.push(cell);
+        addNeighborsToFrontier(cell, chosen);
+      }
+      return order;
+    }
+
+    function wordForIndex(index) {
+      if (index > 0 && index % MOOD_WORDS.length === 0) {
+        lapWords = shuffleArray(MOOD_WORDS);
+      }
+      return lapWords[index % MOOD_WORDS.length];
+    }
+
+    function tryPlaceWord(cursorIndex) {
+      const cell = wordGrowthOrder[cursorIndex];
+      const { x, y } = cellCenterNative(cell.col, cell.row);
+      const text = wordForIndex(cursorIndex);
+      const rect = estimateWordNativeRect(text, x, y);
+      const collides = placedWordRects.some((r) => rectsOverlap(r, rect));
+      if (collides) return null;
+
+      const el = document.createElement("span");
+      el.className = "hero__word-block";
+      if (Math.random() < 0.5) el.classList.add("hero__word-block--alt");
+      el.style.setProperty("--shake-dur", `${(0.45 + Math.random() * 0.2).toFixed(3)}s`);
+      el.style.setProperty("--shake-delay", `${(-Math.random() * 0.5).toFixed(3)}s`);
+      el.textContent = text;
+      wordClusterEl.appendChild(el);
+      placedWordRects.push(rect);
+      return { el, col: cell.col, row: cell.row, cursorIndex, touched: false };
+    }
+
+    function syncWordClusterSizing() {
+      if (!wordClusterEl || !wordClusterAppended.length) return;
+      const rect = wordClusterEl.getBoundingClientRect();
+      if (!rect.width) return;
+      const scale = rect.width / wordClusterNativeWidth;
+      wordClusterAppended.forEach(({ el, col, row }) => {
+        const { x, y } = cellCenterNative(col, row);
+        el.style.left = `${(x * scale).toFixed(2)}px`;
+        el.style.top = `${(y * scale).toFixed(2)}px`;
+        el.style.fontSize = `${(WORD_FONT_SIZE_NATIVE * scale).toFixed(2)}px`;
+      });
+    }
+
+    function applyWordClusterGrowth(growthProgress, locked) {
+      if (!wordClusterEl || !wordGrowthOrder.length) return;
+      const desiredCursor = locked ? 0 : Math.floor(clamp01(growthProgress) * wordGrowthOrder.length);
+
+      if (desiredCursor < wordGrowthCursor) {
+        // スクロールを戻した場合：対象より後に置いたブロックだけ取り除き、
+        // 重なり判定用の矩形リストも残ったブロックだけで作り直す。
+        wordClusterAppended = wordClusterAppended.filter((entry) => {
+          if (entry.cursorIndex >= desiredCursor) {
+            entry.el.remove();
+            return false;
+          }
+          return true;
+        });
+        placedWordRects = wordClusterAppended.map((entry) => {
+          const { x, y } = cellCenterNative(entry.col, entry.row);
+          return estimateWordNativeRect(entry.el.textContent, x, y);
+        });
+        wordGrowthCursor = desiredCursor;
+      } else {
+        while (wordGrowthCursor < desiredCursor) {
+          const placed = tryPlaceWord(wordGrowthCursor);
+          if (placed) wordClusterAppended.push(placed);
+          wordGrowthCursor += 1;
+        }
+      }
+
+      syncWordClusterSizing();
+      // 単語は自分ではフェードアウトしない。ライン/ロゴがz-indexで上から
+      // かぶさって隠す（「上書きする」見た目）ので、intro完了後だけ非表示にする。
+      wordClusterEl.style.opacity = locked ? "0" : "1";
+    }
+
+    function initWordCluster() {
+      if (!wordClusterEl) return;
+      const shapeKeys = Object.keys(SHAPE_DRAWERS);
+      const chosenKey = shapeKeys[Math.floor(Math.random() * shapeKeys.length)];
+      const insideGrid = rasterizeShapeToGrid(SHAPE_DRAWERS[chosenKey]);
+      wordGrowthOrder = buildGrowthOrder(insideGrid);
+      wordClusterNativeWidth = NATIVE_SIZE;
+      applyWordClusterGrowth(0, false);
+      window.addEventListener("resize", syncWordClusterSizing);
+    }
+
+    if (wordClusterEl) {
+      initWordCluster();
+    }
+
     function update() {
       const heroRect = hero.getBoundingClientRect();
       const stickyTravel = Math.max(hero.offsetHeight - window.innerHeight, 1);
@@ -2695,13 +3083,27 @@
       const progress = rawProgress < 0.02 ? 0 : rawProgress;
       const rawSpeed = Math.abs(rawProgress - lastRawProgress) * 26;
       lastRawProgress = rawProgress;
-      scrollSpeed += (rawSpeed - scrollSpeed) * 0.18;
+      // ホイールは1ノッチずつ飛び飛びに来るため、係数を緩めて
+      // scrollSpeedの急な跳ね上がり（＝波の振幅の急変=カクつき）を抑える
+      scrollSpeed += (rawSpeed - scrollSpeed) * 0.08;
+      // ホイールスクロールは1ノッチずつ飛び飛びに進むため、progressをそのまま
+      // 波の計算に使うとその都度カクッと段差ができる。毎フレーム目標値へ
+      // なめらかに追従させることで、実際のスクロールが止まっていても
+      // アニメーションだけは滑らかに追いつく。
+      smoothedProgress += (progress - smoothedProgress) * 0.16;
+      const progressSettled = Math.abs(progress - smoothedProgress) < 0.0015;
+
+      const wordGrowthLocalProgress = introLocked
+        ? 1
+        : windowProgress(smoothedProgress, 0, WORD_GROWTH_END_PROGRESS);
+      applyWordClusterGrowth(wordGrowthLocalProgress, introLocked);
 
       logoRevealProgress = introLocked
         ? 1
-        : easeInOutCubic(clamp01(progress / TITLE_REVEAL_END_PROGRESS));
+        : easeInOutCubic(windowProgress(smoothedProgress, LOGO_PHASE_START_PROGRESS, TITLE_REVEAL_END_PROGRESS));
       const logoRevealActive = logoRevealProgress > 0 && logoRevealProgress < 1;
-      const needsTitleFrame = !introLocked && logoRevealActive;
+      const wordGrowthActive = !introLocked && smoothedProgress < WORD_GROWTH_END_PROGRESS;
+      const needsTitleFrame = !introLocked && (logoRevealActive || wordGrowthActive || !progressSettled);
 
       if (logoRevealProgress >= 0.995) {
         introLocked = true;
@@ -2712,9 +3114,32 @@
         applyLogoWave(introLocked ? 1 : logoRevealProgress);
         applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
       }
+      updateWordTouchState();
       syncLogoSliceSizing();
 
       rafId = needsTitleFrame ? requestAnimationFrame(update) : null;
+    }
+
+    // 形での被覆に頼らず、ラインの現在位置と単語ブロックが実際に重なったら
+    // その単語を消す（一度触れたら戻らない）。
+    function updateWordTouchState() {
+      if (!logoLeadBar || !wordClusterAppended.length) return;
+      const barRect = logoLeadBar.getBoundingClientRect();
+      if (!barRect.width || !barRect.height) return;
+      wordClusterAppended.forEach((entry) => {
+        if (entry.touched) return;
+        const elRect = entry.el.getBoundingClientRect();
+        const overlap = !(
+          elRect.right < barRect.left ||
+          barRect.right < elRect.left ||
+          elRect.bottom < barRect.top ||
+          barRect.bottom < elRect.top
+        );
+        if (overlap) {
+          entry.touched = true;
+          entry.el.classList.add("hero__word-block--touched");
+        }
+      });
     }
 
     const requestUpdate = () => {
