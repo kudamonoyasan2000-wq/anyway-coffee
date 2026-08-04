@@ -249,6 +249,60 @@
     color: var(--c-ink);
   }
 
+  .typo-reveal {
+    --typo-delay: 0ms;
+    --typo-hold: 180ms;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: baseline;
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translateX(-0.16em);
+    will-change: clip-path, opacity, transform;
+  }
+  .typo-reveal__inner {
+    display: inline-block;
+    transform: translateX(-0.64em) skewX(-7deg);
+    transform-origin: left center;
+    will-change: transform;
+  }
+  .typo-reveal.is-in,
+  .in .typo-reveal {
+    animation: typoRevealWindow 0.92s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--typo-hold) + var(--typo-delay)) forwards;
+  }
+  .typo-reveal.is-in .typo-reveal__inner,
+  .in .typo-reveal .typo-reveal__inner {
+    animation: typoRevealText 0.92s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--typo-hold) + var(--typo-delay)) forwards;
+  }
+  .typo-block.reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  @keyframes typoRevealWindow {
+    0% {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-0.16em);
+    }
+    18% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0);
+    }
+  }
+  @keyframes typoRevealText {
+    0% {
+      transform: translateX(-0.64em) skewX(-7deg);
+    }
+    100% {
+      transform: translateX(0) skewX(0);
+    }
+  }
+
   .header__bag {
     display: flex;
     align-items: center;
@@ -626,13 +680,14 @@
     pointer-events: none;
   }
   .hero__headline-logo {
-    display: block;
+    display: none;
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: min(92vw, 1169px);
     max-width: 100%;
     aspect-ratio: 1169.09 / 302.4;
     opacity: 0;
+    clip-path: inset(0 100% 0 0);
     user-select: none;
     pointer-events: none;
   }
@@ -661,6 +716,38 @@
     fill: var(--c-acid);
     will-change: d;
   }
+  .hero__scan-bars {
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .hero__scan-bars::after {
+    content: none;
+  }
+  .hero__scan-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .hero__scan-cutout-text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 0.82;
+    letter-spacing: -0.035em;
+  }
+  .hero__scan-word-window {
+    transition: none;
+  }
+  .hero__scan-piece {
+    fill: var(--c-acid);
+    will-change: transform, opacity;
+  }
   .hero__word-cluster {
     position: absolute;
     left: 50%;
@@ -671,6 +758,7 @@
     transform: translate(-50%, -50%);
     pointer-events: none;
     opacity: 0;
+    display: none;
     will-change: opacity;
   }
   .hero__word-block {
@@ -768,7 +856,8 @@
   .hero__stage {
     position: relative;
     width: 100vw;
-    min-height: clamp(240px, 38vw, 520px);
+    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1111,17 +1200,24 @@
   }
   @keyframes aboutPhotoLineIn {
     0% { transform: scaleX(0); }
-    68% { transform: scaleX(1.018); }
     100% { transform: scaleX(1); }
   }
   @keyframes aboutPhotoSlotIn {
-    from {
+    0% {
       opacity: 0;
-      transform: translateX(0);
+      transform: translate3d(42px, 0, 0) scale(0.965);
     }
-    to {
+    34% {
       opacity: 1;
-      transform: translateX(0);
+      transform: translate3d(-10px, 0, 0) scale(1.01);
+    }
+    62% {
+      opacity: 1;
+      transform: translate3d(4px, 0, 0) scale(0.997);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
     }
   }
   @media (max-width: 767px) {
@@ -1471,8 +1567,8 @@
   }
   .card__tag,
   .card__info {
-    opacity: 0;
-    transform: translateY(12px);
+    opacity: 1;
+    transform: none;
   }
   .card:not(.in) .card__media::before,
   .card:not(.in) .card__art,
@@ -1499,8 +1595,7 @@
   }
   .card.in .card__tag,
   .card.in .card__info {
-    animation: cardMetaIn 0.72s var(--ease-out) forwards;
-    animation-delay: calc(var(--reveal-index, 0) * 135ms + 210ms);
+    animation: none;
   }
   .card.has-hover-image:hover .card__image {
     transform: scale(1.02);
@@ -1767,7 +1862,7 @@
     z-index: 1;
   }
   .about__eyebrow::before {
-    content: "";
+    content: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -1780,7 +1875,7 @@
     z-index: -1;
   }
   .about__eyebrow::after {
-    content: "";
+    content: none;
     position: absolute;
     inset: -0.08em -0.22em -0.12em;
     background: var(--c-acid);
@@ -1794,19 +1889,17 @@
     position: relative;
     z-index: 2;
     display: inline-block;
-    opacity: 0;
-    transform: translateY(0.32em);
+    opacity: 1;
+    transform: none;
   }
   .about__eyebrow.in::before {
-    animation: aboutMarkerIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: none;
   }
   .about__eyebrow.in::after {
-    animation: aboutBlockPass 0.92s cubic-bezier(0.77, 0, 0.175, 1) 0.08s forwards;
+    animation: none;
   }
   .about__eyebrow.in .about__eyebrow-text {
-    animation:
-      aboutBlockTextShow 0.01s linear 0.52s forwards,
-      aboutBlockTextSettle 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.52s forwards;
+    animation: none;
   }
 
   .about__text {
@@ -1835,7 +1928,7 @@
     isolation: isolate;
   }
   .about__text-line::before {
-    content: "";
+    content: none;
     position: absolute;
     inset: 0;
     background: var(--c-acid);
@@ -1849,17 +1942,15 @@
     position: relative;
     z-index: 1;
     display: inline-block;
-    opacity: 0;
-    transform: translateY(0.42em);
+    opacity: 1;
+    transform: none;
     will-change: transform, opacity;
   }
   .about__text.in .about__text-line::before {
-    animation: aboutTextBlockPass 1.45s cubic-bezier(0.77, 0, 0.175, 1) calc(0.12s + var(--line-delay)) forwards;
+    animation: none;
   }
   .about__text.in .about__text-line-copy {
-    animation:
-      aboutBlockTextShow 0.01s linear calc(0.52s + var(--line-delay)) forwards,
-      aboutBlockTextSettle 0.52s cubic-bezier(0.22, 1, 0.36, 1) calc(0.52s + var(--line-delay)) forwards;
+    animation: none;
   }
   .about__gallery-scroll {
     width: 100vw;
@@ -1887,7 +1978,7 @@
     will-change: transform;
   }
   .about__triangles.in {
-    animation: aboutPhotoLineIn 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+    animation: aboutPhotoLineIn 1.05s cubic-bezier(0.72, 0, 0.2, 1) forwards;
   }
   .about__photo-track {
     --gallery-x: 0px;
@@ -1917,7 +2008,7 @@
     will-change: transform, opacity;
   }
   .about__triangles.in .about__triangle {
-    animation: aboutPhotoSlotIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) calc(0.34s + var(--triangle-index) * 70ms) forwards;
+    animation: aboutPhotoSlotIn 1.18s cubic-bezier(0.18, 0.9, 0.2, 1) calc(0.46s + var(--triangle-index) * 88ms) forwards;
   }
   .about__triangle::before {
     content: "";
@@ -2191,13 +2282,13 @@
       </svg>
     </a>
     <nav class="nav" aria-label="メイン">
-      <a href="#shop">Shop</a>
-      <a href="#about">About</a>
+      <a href="#shop" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="120">Shop</a>
+      <a href="#about" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="220">About</a>
     </nav>
     <div class="header__bag">
       <button class="bag-btn" aria-label="カートを開く">
-        <span>Bag</span>
-        <span class="count">(0)</span>
+        <span data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="320">Bag</span>
+        <span class="count" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="390">(0)</span>
       </button>
     </div>
   </div>
@@ -2227,6 +2318,7 @@
   <div class="hero__copy">
       <div class="hero__stage">
       <div class="hero__word-cluster" aria-hidden="true"></div>
+      <div class="hero__scan-bars" aria-hidden="true"></div>
       <h1 class="hero__headline" aria-label="Anyway">
         <div class="hero__logo-lead-bar" aria-hidden="true"></div>
         <div class="hero__headline-logo" aria-hidden="true"></div>
@@ -2254,14 +2346,14 @@
 
 <!-- Shop -->
 <section id="shop">
-  <div class="filter" role="tablist" aria-label="商品カテゴリ">
-    <button class="active" data-cat="all" role="tab">All</button>
-    <button data-cat="coffee" role="tab">Coffee</button>
-    <button data-cat="goods" role="tab">Goods</button>
+  <div class="filter reveal typo-block" role="tablist" aria-label="商品カテゴリ">
+    <button class="active" data-cat="all" role="tab" data-typo-reveal data-typo-delay="0">All</button>
+    <button data-cat="coffee" role="tab" data-typo-reveal data-typo-delay="80">Coffee</button>
+    <button data-cat="goods" role="tab" data-typo-reveal data-typo-delay="160">Goods</button>
   </div>
 
   <div class="section-intro">
-    <p class="section-intro__text reveal" id="shopIntroText">
+    <p class="section-intro__text reveal typo-block" id="shopIntroText" data-typo-reveal data-typo-delay="80">
       毎日に寄り添う一杯。気分に合わせて、選んでください。
     </p>
   </div>
@@ -2272,16 +2364,16 @@
 <!-- About -->
 <section class="about" id="about">
   <div class="about__inner">
-    <div class="about__eyebrow"><span class="about__eyebrow-text">まあ、まずはコーヒーでも。</span></div>
+    <div class="about__eyebrow"><span class="about__eyebrow-text" data-typo-reveal data-typo-delay="0">まあ、まずはコーヒーでも。</span></div>
     <p class="about__text reveal">
       <span class="about__text-line" style="--line-delay: 0s;">
-        <span class="about__text-line-copy">毎日忙しく過ごしたり、何もせずにグダっとしたり。</span>
+        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="120">毎日忙しく過ごしたり、何もせずにグダっとしたり。</span>
       </span>
       <span class="about__text-line" style="--line-delay: 0.16s;">
-        <span class="about__text-line-copy">いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。</span>
+        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="220">いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。</span>
       </span>
       <span class="about__text-line" style="--line-delay: 0.32s;">
-        <span class="about__text-line-copy">ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。</span>
+        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="320">ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。</span>
       </span>
     </p>
   </div>
@@ -2423,6 +2515,16 @@
       const p = clamp01(value);
       return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
     };
+    const easeScanIn = (value) => {
+      const p = clamp01(value);
+      if (p < 0.18) return Math.pow(p / 0.18, 2) * 0.06;
+      if (p < 0.72) return 0.06 + (1 - Math.pow(1 - (p - 0.18) / 0.54, 3.8)) * 0.78;
+      return 0.84 + (1 - Math.pow(1 - (p - 0.72) / 0.28, 2.2)) * 0.16;
+    };
+    const easeScanExit = (value) => {
+      const p = clamp01(value);
+      return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    };
     // 最初はゆっくり溜めて、終盤だけ一気にシュッと動く（指数関数的なease-in）
     const easeInSnap = (value) => {
       const p = clamp01(value);
@@ -2432,6 +2534,7 @@
     };
     const headlineLogo = document.querySelector(".hero__headline-logo");
     const logoLeadBar = document.querySelector(".hero__logo-lead-bar");
+    const scanBars = document.querySelector(".hero__scan-bars");
     let lastRawProgress = 0;
     let smoothedProgress = 0;
     let scrollSpeed = 0;
@@ -2445,6 +2548,30 @@
     const LEAD_SVG_H = 120;
     let logoLeadPath = null;
     const leadBarPathState = { bend: 0, wave: 0, pullX: 0, pullY: 0 };
+    const SCAN_GRID_ROWS = Array.from({ length: 24 }, (_, rowIndex) => -8 + rowIndex * 5);
+    const SCAN_SEGMENT_PATTERNS = [
+      [[-18, 34], [20, 24], [50, 36], [92, 28], [126, 24]],
+      [[-26, 28], [7, 40], [55, 22], [83, 42], [132, 18]],
+      [[-12, 46], [39, 20], [65, 30], [101, 18], [123, 36]],
+      [[-30, 38], [14, 26], [45, 34], [86, 34], [127, 24]],
+    ];
+    const SCAN_PIECE_BLUEPRINTS = SCAN_GRID_ROWS.flatMap((y, rowIndex) => {
+      const pattern = SCAN_SEGMENT_PATTERNS[rowIndex % SCAN_SEGMENT_PATTERNS.length];
+      const rowDelay = rowIndex * 0.012 + ((rowIndex * 7) % 9) * 0.006;
+      return pattern.map(([x, w], pieceIndex) => ({
+        x,
+        y,
+        w,
+        h: 5.48,
+        delay: rowDelay + pieceIndex * 0.018 + ((rowIndex + pieceIndex * 3) % 4) * 0.008,
+        dur: 0.42 + ((rowIndex + pieceIndex) % 4) * 0.035,
+        rowIndex,
+        pieceIndex,
+      }));
+    });
+    const SCAN_MASK_ID = `heroScanCutout-${Math.random().toString(36).slice(2)}`;
+    const SCAN_WORD_CLIP_PREFIX = `${SCAN_MASK_ID}-slice`;
+    const SCAN_WORD_SLICE_COUNT = 9;
 
     // 文字ごとに書き出された独立SVG（assets/letters/）を読み込み、自然な文字幅で
     // 横に並べる。AとYは2回使うので、5ファイルで7文字ぶんをまかなう。
@@ -2559,6 +2686,99 @@
       }
     }
 
+    function buildScanBars() {
+      if (!scanBars || scanBars.dataset.ready === "1") return;
+      const rect = scanBars.getBoundingClientRect();
+      const svgW = Math.max(1, Math.round(rect.width || window.innerWidth));
+      const svgH = Math.max(1, Math.round(rect.height || window.innerHeight));
+      const cutoutSize = Math.min(Math.max(74, svgW * 0.18), 260);
+      const wordW = Math.min(svgW * 0.9, cutoutSize * 3.88);
+      const wordH = cutoutSize * 0.9;
+      const wordX = (svgW - wordW) / 2;
+      const wordY = (svgH - wordH) / 2;
+      const wordSliceH = wordH / SCAN_WORD_SLICE_COUNT;
+      const wordClipMarkup = Array.from({ length: SCAN_WORD_SLICE_COUNT }, (_, index) => {
+        const y = wordY + index * wordSliceH - 1.5;
+        return `
+          <clipPath id="${SCAN_WORD_CLIP_PREFIX}-${index}" clipPathUnits="userSpaceOnUse">
+            <rect class="hero__scan-word-window" data-slice="${index}" x="${wordX.toFixed(2)}" y="${y.toFixed(2)}" width="0" height="${(wordSliceH + 3).toFixed(2)}"></rect>
+          </clipPath>
+        `;
+      }).join("");
+      const wordTextMarkup = Array.from({ length: SCAN_WORD_SLICE_COUNT }, (_, index) => `
+        <text class="hero__scan-cutout-text" clip-path="url(#${SCAN_WORD_CLIP_PREFIX}-${index})" x="${svgW / 2}" y="${svgH / 2}" text-anchor="middle" dominant-baseline="central" font-size="${cutoutSize.toFixed(2)}" fill="black" fill-opacity="1">ANYWAY</text>
+      `).join("");
+      const barsMarkup = SCAN_PIECE_BLUEPRINTS.map((bar, index) => {
+        const y = svgH * (bar.y / 100);
+        const h = svgH * (bar.h / 100);
+        const w = svgW * (bar.w / 100);
+        return `
+          <g class="hero__scan-piece" data-index="${index}" opacity="0">
+            <rect x="0" y="${y.toFixed(2)}" width="${w.toFixed(2)}" height="${h.toFixed(2)}"></rect>
+          </g>
+        `;
+      }).join("");
+      scanBars.innerHTML = `
+        <svg class="hero__scan-svg" viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            ${wordClipMarkup}
+            <mask id="${SCAN_MASK_ID}" maskUnits="userSpaceOnUse" x="0" y="0" width="${svgW}" height="${svgH}">
+              <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="white"></rect>
+              ${wordTextMarkup}
+            </mask>
+          </defs>
+          <g class="hero__scan-layer" mask="url(#${SCAN_MASK_ID})">
+            ${barsMarkup}
+          </g>
+        </svg>
+      `;
+      scanBars.dataset.svgW = String(svgW);
+      scanBars.dataset.svgH = String(svgH);
+      scanBars.dataset.wordX = String(wordX);
+      scanBars.dataset.wordW = String(wordW);
+      scanBars.dataset.ready = "1";
+    }
+
+    function applyScanBars(progressValue) {
+      if (!scanBars) return;
+      const bars = Array.from(scanBars.querySelectorAll(".hero__scan-piece"));
+      const cutoutWindows = Array.from(scanBars.querySelectorAll(".hero__scan-word-window"));
+      const svgW = Number(scanBars.dataset.svgW) || window.innerWidth;
+      const wordW = Number(scanBars.dataset.wordW) || svgW * 0.82;
+      const scanProgress = windowProgress(progressValue, 0.02, 0.82);
+      const exitProgress = windowProgress(progressValue, 0.74, 0.94);
+      const wordRevealProgress = windowProgress(progressValue, 0.05, 0.68);
+      const offscreenX = -svgW * 1.46;
+
+      cutoutWindows.forEach((rect, index) => {
+        const delay = index * 0.018 + ((index * 5) % 4) * 0.012;
+        const sliceProgress = easeInOutCubic(windowProgress(wordRevealProgress, delay, delay + 0.56));
+        rect.setAttribute("width", (wordW * sliceProgress).toFixed(2));
+      });
+
+      bars.forEach((bar, index) => {
+        const blueprint = SCAN_PIECE_BLUEPRINTS[index];
+        if (!blueprint) return;
+        const local = windowProgress(scanProgress, blueprint.delay, blueprint.delay + blueprint.dur);
+        const entered = easeScanIn(local);
+        const exit = easeScanExit(exitProgress);
+        const pieceSlip = Math.sin((blueprint.rowIndex * 0.72 + blueprint.pieceIndex * 1.28) * Math.PI) * 3.4 * Math.sin(Math.min(1, local) * Math.PI);
+        const x = svgW * (blueprint.x / 100);
+        const travel = offscreenX * (1 - entered) + pieceSlip + svgW * 0.18 * exit;
+        const scale = 0.04 + entered * 1.08;
+        const opacity = entered <= 0.001 ? 0 : (1 - exit);
+        bar.setAttribute("transform", `translate(${(x + travel).toFixed(2)} 0) scale(${scale.toFixed(3)} 1)`);
+        bar.setAttribute("opacity", opacity.toFixed(3));
+      });
+    }
+
+    function syncScanBars() {
+      if (!scanBars) return;
+      scanBars.dataset.ready = "0";
+      buildScanBars();
+      applyScanBars(introLocked ? 1 : smoothedProgress);
+    }
+
     // 「スクロールが速いほど波が大きくうねる」を再現するため、区間キーフレームを
     // 繋ぐのではなく単一の連続したsin波の式でx/y/rotationを毎フレーム計算する。
     function makeLeadBarPath({ bend = 0, wave = 0, pullX = 0, pullY = 0 } = {}) {
@@ -2613,19 +2833,16 @@
     // 透明度で出すと途中からフェードして見えるため、初期フレーム以外は常に不透明にする。
     function applyLogoWave(p) {
       if (!headlineLogo || !window.gsap || !logoSlices.length) return;
-      const envelope = 1 - clamp01(p);
-      const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
-      const rect = headlineLogo.getBoundingClientRect();
-      const enterX = getLogoEntryX(rect);
-      const baseX = envelope * enterX;
+      const reveal = easeInOutCubic(clamp01(p));
+      headlineLogo.style.opacity = reveal <= 0.001 ? "0" : "1";
+      headlineLogo.style.clipPath = `inset(0 ${(100 - reveal * 100).toFixed(2)}% 0 0)`;
       logoSlices.forEach((s) => {
-        const t = s.centerT;
-        const angle = 2 * Math.PI * (p * 1.18 + t * 0.9);
-        const x = baseX + Math.sin(angle - 0.5) * 26 * envelope * waveScale;
-        const y = Math.sin(angle) * 124 * envelope * waveScale;
-        const rotation = Math.sin(angle + 0.4) * 22 * envelope * waveScale;
-        const opacity = p <= 0.001 ? 0 : 1;
-        gsap.set(s.el, { x, y, rotation, opacity });
+        gsap.set(s.el, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          opacity: reveal <= 0.001 ? 0 : 1,
+        });
       });
     }
 
@@ -2633,6 +2850,8 @@
     // 独自のスキューを強く入れると文字とズレて見えるため、形状揺れは控えめにする。
     function applyLeadBarWave(p) {
       if (!logoLeadBar || !window.gsap) return;
+      gsap.set(logoLeadBar, { opacity: 0 });
+      return;
       const leadP = clamp01(p + LEAD_BAR_PROGRESS_LEAD);
       const travel = easeInSnap(leadP);
       const envelope = 1 - travel;
@@ -2746,6 +2965,10 @@
         leadBarPointerFrame = requestAnimationFrame(updateLeadBarPointer);
       }
     }
+
+    buildScanBars();
+    applyScanBars(0);
+    window.addEventListener("resize", syncScanBars);
 
     if (headlineLogo && window.gsap) {
       gsap.set(logoLeadBar, { transformOrigin: "50% 50%" });
@@ -3097,23 +3320,20 @@
         ? 1
         : windowProgress(smoothedProgress, 0, WORD_GROWTH_END_PROGRESS);
       applyWordClusterGrowth(wordGrowthLocalProgress, introLocked);
+      applyScanBars(introLocked ? 1 : smoothedProgress);
 
-      logoRevealProgress = introLocked
-        ? 1
-        : easeInOutCubic(windowProgress(smoothedProgress, LOGO_PHASE_START_PROGRESS, TITLE_REVEAL_END_PROGRESS));
-      const logoRevealActive = logoRevealProgress > 0 && logoRevealProgress < 1;
+      logoRevealProgress = 0;
+      const logoRevealActive = false;
       const wordGrowthActive = !introLocked && smoothedProgress < WORD_GROWTH_END_PROGRESS;
-      const needsTitleFrame = !introLocked && (logoRevealActive || wordGrowthActive || !progressSettled);
+      const scanActive = !introLocked && smoothedProgress < 0.96;
+      const needsTitleFrame = !introLocked && (scanActive || wordGrowthActive || !progressSettled);
 
-      if (logoRevealProgress >= 0.995) {
+      if (smoothedProgress >= 0.96 && progress >= 0.96) {
         introLocked = true;
         hero.dataset.introLocked = "1";
       }
 
-      if (headlineLogo) {
-        applyLogoWave(introLocked ? 1 : logoRevealProgress);
-        applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
-      }
+      if (headlineLogo) applyLogoWave(0);
       updateWordTouchState();
       syncLogoSliceSizing();
 
@@ -3218,6 +3438,40 @@
     });
   }
 
+  function escapeHTML(value = "") {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function typoRevealHTML(content, delay = 0) {
+    return `<span class="typo-reveal" style="--typo-delay:${delay}ms;"><span class="typo-reveal__inner">${content}</span></span>`;
+  }
+
+  function prepareTypoRevealElement(element, { force = false } = {}) {
+    if (!element || (!force && element.dataset.typoReady === "1")) return;
+    const delay = Number(element.dataset.typoDelay || 0);
+    const hold = Number(element.dataset.typoHold || 180);
+    const content = escapeHTML(element.textContent.trim());
+    element.innerHTML = typoRevealHTML(content, delay);
+    element.querySelector(".typo-reveal")?.style.setProperty("--typo-hold", `${hold}ms`);
+    element.dataset.typoReady = "1";
+    if (element.hasAttribute("data-typo-immediate")) {
+      requestAnimationFrame(() => {
+        element.querySelector(".typo-reveal")?.classList.add("is-in");
+      });
+    }
+  }
+
+  function setupStaticTypoReveals(root = document) {
+    root.querySelectorAll("[data-typo-reveal]").forEach((element) => {
+      prepareTypoRevealElement(element);
+    });
+  }
+
   function applyHeroBackground(products = []) {
     if (!heroSection) return;
     const cmsHeroImage = products.find((product) => product.heroImage)?.heroImage;
@@ -3252,6 +3506,7 @@
 
   function updateBagCount() {
     bagCount.textContent = `(${getCartCount()})`;
+    prepareTypoRevealElement(bagCount, { force: true });
   }
 
   function renderBag() {
@@ -3421,17 +3676,20 @@
     const list = category === "all" ? productsData : productsData.filter(p => p.category === category);
     if (shopIntroText) {
       shopIntroText.textContent = FILTER_COPY[category] || FILTER_COPY.all;
+      prepareTypoRevealElement(shopIntroText, { force: true });
       shopIntroText.style.display = category === "all" ? "none" : "";
     }
     grid.innerHTML = list.map((p, index) => {
-      const italicHTML = p.italic ? `<em>${p.italic}</em>` : "";
+      const nameHTML = typoRevealHTML(escapeHTML(p.name), 360);
+      const italicHTML = p.italic ? `<em>${typoRevealHTML(escapeHTML(p.italic), 500)}</em>` : "";
+      const priceHTML = typoRevealHTML(escapeHTML(yen.format(p.price)), 430);
       const sizeClass = `size-${p.size || "m"}`;
       const offsetClass = p.offset ? `offset-${p.offset}` : "";
-      const hoverLabel = p.hoverLabel || "ADD TO CART";
+      const hoverLabel = escapeHTML(p.hoverLabel || "ADD TO CART");
       const hoverImageClass = p.hoverImage ? "has-hover-image" : "";
       const imageClass = p.image ? "has-image" : "";
       return `
-        <article class="card reveal ${sizeClass} ${offsetClass} ${hoverImageClass} ${imageClass}" role="link" tabindex="0" aria-label="${p.name}の商品詳細を見る" data-href="${getProductHref(p)}" data-cat="${p.category}" style="--ph: ${p.color}; --img: ${p.image ? `url('${p.image}')` : "none"}; --img-hover: ${p.hoverImage ? `url('${p.hoverImage}')` : "none"}; --reveal-index: ${index};">
+        <article class="card reveal ${sizeClass} ${offsetClass} ${hoverImageClass} ${imageClass}" role="link" tabindex="0" aria-label="${escapeHTML(p.name)}の商品詳細を見る" data-href="${getProductHref(p)}" data-cat="${p.category}" style="--ph: ${p.color}; --img: ${p.image ? `url('${p.image}')` : "none"}; --img-hover: ${p.hoverImage ? `url('${p.hoverImage}')` : "none"}; --reveal-index: ${index};">
           <div class="card__media" aria-hidden="true">
             <div class="card__art"></div>
             <div class="card__image"></div>
@@ -3440,9 +3698,9 @@
           </div>
           <div class="card__info">
             <div>
-              <div class="card__name"><span class="card__name-main">${p.name}</span>${italicHTML}</div>
+              <div class="card__name"><span class="card__name-main">${nameHTML}</span>${italicHTML}</div>
             </div>
-            <div class="card__price">${yen.format(p.price)}</div>
+            <div class="card__price">${priceHTML}</div>
           </div>
         </article>
       `;
@@ -3951,7 +4209,7 @@
 
     function renderParallax() {
       rafId = null;
-      currentOffset += (targetOffset - currentOffset) * 0.075;
+      currentOffset += (targetOffset - currentOffset) * 0.052;
       const wrappedOffset = loopWidth ? currentOffset % loopWidth : currentOffset;
       track.style.setProperty("--gallery-x", `${(-wrappedOffset).toFixed(1)}px`);
 
@@ -3960,10 +4218,6 @@
         const centerProgress = ((tRect.left + tRect.width / 2) / window.innerWidth) - 0.5;
         const parallax = Math.max(-10, Math.min(10, centerProgress * -14));
         triangle.style.setProperty("--photo-parallax", `${parallax.toFixed(2)}%`);
-        if (isActive) {
-          triangle.style.opacity = "1";
-          triangle.style.transform = "translate3d(0, 0, 0)";
-        }
       });
 
       if (isActive && Math.abs(targetOffset - currentOffset) > 0.18) {
@@ -4006,10 +4260,10 @@
       hasStarted = true;
       isActive = true;
       triangles.forEach((triangle, index) => {
-        triangle.style.animationDelay = `${(0.22 + index * 0.055).toFixed(3)}s`;
+        triangle.style.animationDelay = `${(0.46 + index * 0.088).toFixed(3)}s`;
       });
       measureLoopWidth();
-      updateTargetFromScroll();
+      targetOffset = Math.max(targetOffset, loopWidth * 0.035);
       window.addEventListener("scroll", handleGalleryScroll, { passive: true });
       window.addEventListener("wheel", handleGalleryWheel, { passive: false });
       window.addEventListener("resize", () => {
@@ -4025,7 +4279,7 @@
         start();
         triangleObserver.disconnect();
       }
-    }, { threshold: 0.32 });
+    }, { threshold: 0.46, rootMargin: "0px 0px -8% 0px" });
 
     triangleObserver.observe(group);
   }
@@ -4041,7 +4295,7 @@
           observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -10% 0px" });
+    }, { threshold: 0.18, rootMargin: "0px 0px -24% 0px" });
     document.querySelectorAll(".reveal, .about__eyebrow").forEach(el => observer.observe(el));
   }
 
@@ -4050,6 +4304,7 @@
     setupHeroScrollIntro();
     setupHeroReplies();
     setupAboutTriangles();
+    setupStaticTypoReveals();
 
     const initialCategory = sessionStorage.getItem(FILTER_KEY) || "all";
     const initialButton = document.querySelector(`.filter button[data-cat="${initialCategory}"]`);

@@ -293,6 +293,68 @@
     color: var(--c-ink);
   }
 
+  .typo-reveal {
+    --typo-delay: 0ms;
+    --typo-hold: 180ms;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: baseline;
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translateX(-0.16em);
+    will-change: clip-path, opacity, transform;
+  }
+  .typo-reveal--block {
+    display: block;
+    width: 100%;
+  }
+  .typo-reveal__inner {
+    display: inline-block;
+    transform: translateX(-0.64em) skewX(-7deg);
+    transform-origin: left center;
+    will-change: transform;
+  }
+  .typo-reveal--block .typo-reveal__inner {
+    display: block;
+  }
+  .typo-reveal.is-in,
+  .in .typo-reveal,
+  body.is-ready .product__buy .typo-reveal,
+  body.is-ready .subbar .typo-reveal,
+  body.is-ready .related__head .typo-reveal {
+    animation: typoRevealWindow 0.92s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--typo-hold) + var(--typo-delay)) forwards;
+  }
+  .typo-reveal.is-in .typo-reveal__inner,
+  .in .typo-reveal .typo-reveal__inner,
+  body.is-ready .product__buy .typo-reveal .typo-reveal__inner,
+  body.is-ready .subbar .typo-reveal .typo-reveal__inner,
+  body.is-ready .related__head .typo-reveal .typo-reveal__inner {
+    animation: typoRevealText 0.92s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--typo-hold) + var(--typo-delay)) forwards;
+  }
+  @keyframes typoRevealWindow {
+    0% {
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(-0.16em);
+    }
+    18% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translateX(0);
+    }
+  }
+  @keyframes typoRevealText {
+    0% {
+      transform: translateX(-0.64em) skewX(-7deg);
+    }
+    100% {
+      transform: translateX(0) skewX(0);
+    }
+  }
+
   .header__bag { display: flex; align-items: center; gap: 14px; font-size: 13px; }
   .bag-btn {
     position: relative;
@@ -1167,8 +1229,9 @@
   .story__pull.reveal,
   .story__caption.reveal,
   .spec.reveal {
-    transform: translateX(-26px);
-    transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
   .story__name.reveal.in,
   .story__lead.reveal.in,
@@ -1499,11 +1562,11 @@
       </svg>
     </a>
     <nav class="nav" aria-label="メイン">
-      <a href="index.html" data-nav-direction="back" data-target-cat="all">Shop</a>
-      <a href="index.html" data-nav-direction="back">About</a>
+      <a href="index.html" data-nav-direction="back" data-target-cat="all" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="120">Shop</a>
+      <a href="index.html" data-nav-direction="back" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="220">About</a>
     </nav>
     <div class="header__bag">
-      <button class="bag-btn" aria-label="カートを開く"><span>Bag</span><span class="count">(0)</span></button>
+      <button class="bag-btn" aria-label="カートを開く"><span data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="320">Bag</span><span class="count" data-typo-reveal data-typo-immediate data-typo-hold="90" data-typo-delay="390">(0)</span></button>
     </div>
   </div>
 </header>
@@ -1519,38 +1582,38 @@
     </div>
 
     <div class="product__heading" id="productHeading">
-      <div class="product__heading-sub">Coffee · Ethiopia</div>
-      <div class="product__heading-title">Brew No.07</div>
+      <div class="product__heading-sub" data-typo-reveal data-typo-delay="180">Coffee · Ethiopia</div>
+      <div class="product__heading-title" data-typo-reveal data-typo-delay="300">Brew No.07</div>
     </div>
 
     <div class="product__buy-meta">
-      <em>Bright florals</em>
-      jasmine, citrus, a slow morning.<br>
-      朝の最初の一杯に。
+      <em data-typo-reveal data-typo-delay="420">Bright florals</em>
+      <span data-typo-reveal data-typo-delay="500">jasmine, citrus, a slow morning.<br>
+      朝の最初の一杯に。</span>
     </div>
 
-    <div class="product__price" id="totalPrice">¥1,800 <small>(税込)</small></div>
+    <div class="product__price" id="totalPrice" data-typo-reveal data-typo-delay="580">¥1,800 <small>(税込)</small></div>
 
     <div class="product__options">
       <div>
-        <div class="option__label">Size</div>
+        <div class="option__label" data-typo-reveal data-typo-delay="660">Size</div>
         <div class="option__choices" data-option="size">
-          <button class="option__choice is-selected" data-value="200" data-price="1800">200g</button>
-          <button class="option__choice" data-value="500" data-price="4200">500g</button>
+          <button class="option__choice is-selected" data-value="200" data-price="1800" data-typo-reveal data-typo-delay="720">200g</button>
+          <button class="option__choice" data-value="500" data-price="4200" data-typo-reveal data-typo-delay="780">500g</button>
         </div>
       </div>
       <div>
-        <div class="option__label">Grind</div>
+        <div class="option__label" data-typo-reveal data-typo-delay="840">Grind</div>
         <div class="option__choices" data-option="grind">
-          <button class="option__choice is-selected" data-value="whole">Whole bean</button>
-          <button class="option__choice" data-value="medium">Medium grind</button>
+          <button class="option__choice is-selected" data-value="whole" data-typo-reveal data-typo-delay="900">Whole bean</button>
+          <button class="option__choice" data-value="medium" data-typo-reveal data-typo-delay="960">Medium grind</button>
         </div>
       </div>
     </div>
 
     <button class="add-to-bag" id="addBtn">
       <span class="add-to-bag__brace add-to-bag__brace--left">{</span>
-      <span class="add-to-bag__label"><span class="add-to-bag__text">Add to bag</span><span class="arrow">→</span></span>
+      <span class="add-to-bag__label" data-typo-reveal data-typo-delay="1040"><span class="add-to-bag__text">Add to bag</span><span class="arrow">→</span></span>
       <span class="add-to-bag__brace add-to-bag__brace--right">}</span>
     </button>
   </div>
@@ -1574,8 +1637,8 @@
 <!-- Related products -->
 <section class="related">
   <div class="related__head">
-    <h2>You may also <em>like</em>.</h2>
-    <a href="index.html" data-nav-direction="back" data-target-cat="all">View all →</a>
+    <h2 data-typo-reveal data-typo-delay="120">You may also <em>like</em>.</h2>
+    <a href="index.html" data-nav-direction="back" data-target-cat="all" data-typo-reveal data-typo-delay="240">View all →</a>
   </div>
   <div class="related__grid">
     <article class="rcard reveal" style="--ph: #7a4a1f; --img: none;">
@@ -1674,6 +1737,40 @@
     { type: "pull", text: "A cup for every kind of <em>day</em>.", size: "small" },
   ];
 
+  function escapeHTML(value = "") {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function typoRevealHTML(content, delay = 0, { block = false, hold = 180 } = {}) {
+    const className = block ? "typo-reveal typo-reveal--block" : "typo-reveal";
+    return `<span class="${className}" style="--typo-delay:${delay}ms; --typo-hold:${hold}ms;"><span class="typo-reveal__inner">${content}</span></span>`;
+  }
+
+  function prepareTypoRevealElement(element, { force = false } = {}) {
+    if (!element || (!force && element.dataset.typoReady === "1")) return;
+    const delay = Number(element.dataset.typoDelay || 0);
+    const hold = Number(element.dataset.typoHold || 180);
+    const content = element.innerHTML.trim();
+    element.innerHTML = typoRevealHTML(content, delay, { hold });
+    element.dataset.typoReady = "1";
+    if (element.hasAttribute("data-typo-immediate")) {
+      requestAnimationFrame(() => {
+        element.querySelector(".typo-reveal")?.classList.add("is-in");
+      });
+    }
+  }
+
+  function setupStaticTypoReveals(root = document) {
+    root.querySelectorAll("[data-typo-reveal]").forEach((element) => {
+      prepareTypoRevealElement(element);
+    });
+  }
+
   function formatBlockText(text = "") {
     return String(text).replace(/\n\n+/g, "<br><br>").replace(/\n/g, "<br>");
   }
@@ -1689,9 +1786,9 @@
     const rows = lines.map((line) => {
       const match = line.match(/^([^:：]+)\s*[:：]\s*(.+)$/);
       if (match) {
-        return `<dt>${match[1]}</dt><dd>${match[2]}</dd>`;
+        return `<dt>${typoRevealHTML(escapeHTML(match[1]), 80)}</dt><dd>${typoRevealHTML(escapeHTML(match[2]), 160)}</dd>`;
       }
-      return `<dt></dt><dd>${line}</dd>`;
+      return `<dt></dt><dd>${typoRevealHTML(escapeHTML(line), 160)}</dd>`;
     }).join("");
 
     return `<dl class="spec reveal">${rows}</dl>`;
@@ -1700,12 +1797,12 @@
   const renderers = {
     name: (b) => `
       <div class="story__name reveal">
-        ${b.eyebrow ? `<div class="story__name-sub">${b.eyebrow}</div>` : ""}
-        <h1>${b.title}${b.titleEm ? `<br><em>${b.titleEm}</em>` : ""}</h1>
+        ${b.eyebrow ? `<div class="story__name-sub">${typoRevealHTML(escapeHTML(b.eyebrow), 80)}</div>` : ""}
+        <h1>${typoRevealHTML(`${escapeHTML(b.title)}${b.titleEm ? `<br><em>${escapeHTML(b.titleEm)}</em>` : ""}`, 180, { block: true })}</h1>
       </div>`,
-    lead: (b) => `<p class="story__lead reveal">${formatBlockText(b.text)}</p>`,
-    body: (b) => `<p class="story__body reveal">${formatBlockText(b.text)}</p>`,
-    pull: (b) => `<p class="story__pull reveal${b.size === "small" ? " is-small" : ""}">${formatBlockText(b.text)}</p>`,
+    lead: (b) => `<p class="story__lead reveal">${typoRevealHTML(formatBlockText(b.text), 120, { block: true })}</p>`,
+    body: (b) => `<p class="story__body reveal">${typoRevealHTML(formatBlockText(b.text), 120, { block: true })}</p>`,
+    pull: (b) => `<p class="story__pull reveal${b.size === "small" ? " is-small" : ""}">${typoRevealHTML(formatBlockText(b.text), 140, { block: true })}</p>`,
     imageSingle: (b) => `<div class="story__image is-${b.aspect || "wide"} reveal ${b.url ? "has-image" : ""}" style="--ph: ${b.color || "var(--c-acid)"}; --img: ${b.url ? `url('${b.url}')` : "none"};" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>`,
     imagePair: (b) => `
       <div class="story__image-grid reveal ${b.url2 ? "" : "is-single"}">
@@ -1718,12 +1815,12 @@
       }
       return `<div class="story__image is-${b.aspect || "wide"} reveal ${b.url ? "has-image" : ""}" style="--ph: ${b.color || "var(--c-acid)"}; --img: ${b.url ? `url('${b.url}')` : "none"};" aria-hidden="true"><div class="story__art"></div><div class="story__image-layer"></div></div>`;
     },
-    caption: (b) => `<div class="story__caption reveal">${formatBlockText(b.text)}</div>`,
+    caption: (b) => `<div class="story__caption reveal">${typoRevealHTML(formatBlockText(b.text), 80, { block: true })}</div>`,
     spec: (b) => {
       if (Array.isArray(b.items) && b.items.length) {
         return `
           <dl class="spec reveal">
-            ${b.items.map(item => `<dt>${item.label}</dt><dd>${item.value}</dd>`).join("")}
+            ${b.items.map(item => `<dt>${typoRevealHTML(escapeHTML(item.label), 80)}</dt><dd>${typoRevealHTML(escapeHTML(item.value), 160)}</dd>`).join("")}
           </dl>`;
       }
       return renderSpecFromText(b.text);
@@ -1824,21 +1921,21 @@
     const grindChoicesClass = product.grinds.length === 1 ? "option__choices is-single" : "option__choices";
     productOptions.innerHTML = `
       <div>
-        <div class="option__label">Size</div>
+        <div class="option__label">${typoRevealHTML("Size", 660)}</div>
         <div class="${sizeChoicesClass}" data-option="size">
           ${product.sizes.map((size, index) => `
             <button class="option__choice ${size.selected || index === 0 ? "is-selected" : ""}" data-value="${size.value}" data-price="${size.price}">
-              ${size.label}
+              ${typoRevealHTML(escapeHTML(size.label), 720 + index * 60)}
             </button>
           `).join("")}
         </div>
       </div>
       <div>
-        <div class="option__label">Grind</div>
+        <div class="option__label">${typoRevealHTML("Grind", 840)}</div>
         <div class="${grindChoicesClass}" data-option="grind">
           ${product.grinds.map((grind, index) => `
             <button class="option__choice ${grind.selected || index === 0 ? "is-selected" : ""}" data-value="${grind.value}">
-              ${grind.label}
+              ${typoRevealHTML(escapeHTML(grind.label), 900 + index * 60)}
             </button>
           `).join("")}
         </div>
@@ -1847,7 +1944,8 @@
     state.size = product.sizes.find((size) => size.selected)?.value || product.sizes[0]?.value || "200";
     state.grind = product.grinds.find((grind) => grind.selected)?.value || product.grinds[0]?.value || "whole";
     state.price = product.sizes.find((size) => size.selected)?.price || product.sizes[0]?.price || product.price || 0;
-    totalPriceEl.innerHTML = `${yen.format(state.price)} <small>(税込)</small>`;
+    totalPriceEl.innerHTML = typoRevealHTML(`${escapeHTML(yen.format(state.price))} <small>(税込)</small>`, 580);
+    totalPriceEl.dataset.typoReady = "1";
   }
 
   function renderRelatedProducts(items) {
@@ -1861,9 +1959,9 @@
         </div>
         <div class="rcard__info">
           <div>
-            <div class="rcard__name"><span class="rcard__name-main">${item.name}</span>${item.italic ? `<em>${item.italic}</em>` : ""}</div>
+            <div class="rcard__name"><span class="rcard__name-main">${typoRevealHTML(escapeHTML(item.name), 260)}</span>${item.italic ? `<em>${typoRevealHTML(escapeHTML(item.italic), 380)}</em>` : ""}</div>
           </div>
-          <div class="rcard__price">${yen.format(item.price || 0)}</div>
+          <div class="rcard__price">${typoRevealHTML(escapeHTML(yen.format(item.price || 0)), 340)}</div>
         </div>
       </article>
     `).join("");
@@ -1907,21 +2005,21 @@
     }
     if (productHeading) {
       productHeading.innerHTML = `
-        <div class="product__heading-sub">${normalizeCategoryLabel(currentProduct.category)} · ${currentProduct.italic || currentProduct.name}</div>
-        <div class="product__heading-title">${currentProduct.name}</div>
+        <div class="product__heading-sub">${typoRevealHTML(`${escapeHTML(normalizeCategoryLabel(currentProduct.category))} · ${escapeHTML(currentProduct.italic || currentProduct.name)}`, 180)}</div>
+        <div class="product__heading-title">${typoRevealHTML(escapeHTML(currentProduct.name), 300)}</div>
       `;
     }
     if (productBuyMeta) {
       productBuyMeta.innerHTML = `
-        <em>${currentProduct.buyMetaEyebrow || ""}</em>
-        ${currentProduct.buyMetaText || ""}
+        <em>${typoRevealHTML(escapeHTML(currentProduct.buyMetaEyebrow || ""), 420)}</em>
+        ${typoRevealHTML(formatBlockText(currentProduct.buyMetaText || ""), 500, { block: true })}
       `;
     }
     if (productCrumb) {
-      productCrumb.innerHTML = `<a href="index.html" data-nav-direction="back" data-target-cat="all">Shop</a> &nbsp;/&nbsp; <a href="index.html" data-nav-direction="back" data-target-cat="${String(currentProduct.category).toLowerCase()}">${normalizeCategoryLabel(currentProduct.category)}</a> &nbsp;/&nbsp; <span style="color: var(--c-ink);">${currentProduct.name}</span>`;
+      productCrumb.innerHTML = `<a href="index.html" data-nav-direction="back" data-target-cat="all">${typoRevealHTML("Shop", 60)}</a> &nbsp;/&nbsp; <a href="index.html" data-nav-direction="back" data-target-cat="${String(currentProduct.category).toLowerCase()}">${typoRevealHTML(escapeHTML(normalizeCategoryLabel(currentProduct.category)), 120)}</a> &nbsp;/&nbsp; <span style="color: var(--c-ink);">${typoRevealHTML(escapeHTML(currentProduct.name), 180)}</span>`;
     }
     if (productCode) {
-      productCode.textContent = currentProduct.code || "";
+      productCode.innerHTML = typoRevealHTML(escapeHTML(currentProduct.code || ""), 140);
     }
     renderStoryBlocks(currentProduct.blocks);
     renderOptionGroups(currentProduct);
@@ -1991,6 +2089,7 @@
 
   function updateBagCount() {
     bagCount.textContent = `(${getCartCount()})`;
+    prepareTypoRevealElement(bagCount, { force: true });
   }
 
   function renderBag() {
@@ -2379,7 +2478,8 @@
     btn.classList.add("is-selected");
     state[opt] = btn.dataset.value;
     if (btn.dataset.price) state.price = parseInt(btn.dataset.price, 10);
-    totalPriceEl.innerHTML = `${yen.format(state.price)} <small>(税込)</small>`;
+    totalPriceEl.innerHTML = typoRevealHTML(`${escapeHTML(yen.format(state.price))} <small>(税込)</small>`, 0, { hold: 0 });
+    totalPriceEl.querySelector(".typo-reveal")?.classList.add("is-in");
   });
 
   addBtn.addEventListener("click", () => {
@@ -2388,7 +2488,8 @@
        priceIdは state.size と state.grind の組み合わせで決まる */
     try {
       addCurrentProductToCart();
-      addBtnText.textContent = "Added ✓";
+      const currentAddBtnText = addBtn.querySelector(".add-to-bag__text");
+      if (currentAddBtnText) currentAddBtnText.textContent = "Added ✓";
       openBag();
       requestAnimationFrame(() => {
         openBag();
@@ -2397,7 +2498,8 @@
         }, 80);
       });
       setTimeout(() => {
-        addBtnText.textContent = "Add to bag";
+        const resetAddBtnText = addBtn.querySelector(".add-to-bag__text");
+        if (resetAddBtnText) resetAddBtnText.textContent = "Add to bag";
       }, 1600);
     } catch (error) {
       console.error("Add to bag failed", error);
@@ -2436,6 +2538,7 @@
 
   async function initPage() {
     await loadProductData(queryProductId);
+    setupStaticTypoReveals();
     observeReveals();
     setupDirectionalLinks();
     setupHeaderEdgeLines();
