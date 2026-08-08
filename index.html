@@ -102,6 +102,7 @@
 
     --ease: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-reveal: cubic-bezier(0.08, 0.9, 0.15, 1);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -596,682 +597,92 @@
 
   /* ---------- Hero ---------- */
   .hero {
-    --hero-bg-image: url("hero-top-bg.png");
-    --hero-title-opacity: 0;
     position: relative;
-    min-height: 68vh;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: -66px;
-    padding: 86px 16px 20px;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--hero-bg-image);
-    background-size: cover;
-    background-position: center 62%;
-    background-repeat: no-repeat;
-    z-index: 0;
-    transform: scale(1.01);
-  }
-  .hero::after {
-    content: none;
-  }
-  @media (min-width: 768px) {
-    .hero {
-      min-height: 74vh;
-      padding: 90px 28px 24px;
-    }
-  }
-  @media (min-width: 1280px) {
-    .hero {
-      min-height: 82vh;
-      padding: 94px 40px 28px;
-    }
-  }
-
-  .hero {
-    min-height: 340vh;
-    align-items: flex-start;
-    padding: 0;
-    background: transparent;
-    overflow: visible;
-  }
-  .hero::before,
-  .hero::after {
-    content: none;
-  }
-  .hero__copy {
-    max-width: 100%;
-  }
-  .hero__stage {
-    width: 100%;
-    min-height: 0;
-    display: block;
-  }
-  .hero__headline {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    width: 100vw;
-    flex: 0 0 100vw;
-    color: var(--c-ink);
-    white-space: nowrap;
-    opacity: 1;
-    transform: translateY(0) scaleX(1) scaleY(1);
-    transform-origin: center center;
-  }
-  .hero__headline-line {
-    display: inline-block;
-    padding-right: 0.02em;
-  }
-  .hero__headline-svg {
-    display: none;
-    width: min(92vw, 1169px);
-    max-width: 100%;
-    height: auto;
-    overflow: visible;
-    user-select: none;
-    pointer-events: none;
-  }
-  .hero__headline-logo {
-    display: none;
-    position: relative;
-    z-index: 3;
-    width: min(92vw, 1169px);
-    max-width: 100%;
-    aspect-ratio: 1169.09 / 302.4;
-    opacity: 0;
-    clip-path: inset(0 100% 0 0);
-    user-select: none;
-    pointer-events: none;
-  }
-  .hero__logo-slice {
-    position: absolute;
-    top: 0;
-    will-change: transform, opacity;
-  }
-  .hero__logo-lead-bar {
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    top: 50%;
-    background: transparent;
-    opacity: 0;
-    overflow: visible;
-    will-change: transform, opacity;
-  }
-  .hero__logo-lead-svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
-  .hero__logo-lead-path {
-    fill: var(--c-acid);
-    will-change: d;
-  }
-  .hero__scan-bars {
-    position: absolute;
-    inset: 0 0 auto 0;
-    z-index: 2;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    overflow: visible;
-  }
-  .hero__scan-bars::after {
-    content: none;
-  }
-  .hero__scan-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
-  .hero__scan-cutout-text {
-    font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 0.82;
-    letter-spacing: -0.035em;
-  }
-  .hero__scan-word-window {
-    transition: none;
-  }
-  .hero__scan-piece {
-    fill: var(--c-acid);
-    will-change: transform, opacity;
-  }
-  .hero__word-cluster {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 1;
-    width: min(70vw, 460px);
-    aspect-ratio: 1 / 1;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    opacity: 0;
-    display: none;
-    will-change: opacity;
-  }
-  .hero__word-block {
-    position: absolute;
-    left: 0;
-    top: 0;
-    white-space: nowrap;
-    font-family: var(--font-display);
-    font-weight: 500;
-    color: var(--c-ink);
-    background: var(--c-acid);
-    padding: 0.18em 0.4em;
-    line-height: 1.3;
-    will-change: transform;
-    animation-name: wordBlockShake;
-    animation-duration: var(--shake-dur, 0.5s);
-    animation-delay: var(--shake-delay, 0s);
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-  }
-  .hero__word-block--alt {
-    animation-name: wordBlockShakeReverse;
-  }
-  .hero__word-block--touched {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  @keyframes wordBlockShake {
-    0%   { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-    20%  { transform: translate(-50%, -50%) translate(1px, -2px) rotate(-2deg); }
-    40%  { transform: translate(-50%, -50%) translate(-2px, 1px) rotate(3deg); }
-    60%  { transform: translate(-50%, -50%) translate(2px, 2px) rotate(-3deg); }
-    80%  { transform: translate(-50%, -50%) translate(-1px, -1px) rotate(2deg); }
-    100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-  }
-  @keyframes wordBlockShakeReverse {
-    0%   { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-    20%  { transform: translate(-50%, -50%) translate(-1px, 2px) rotate(2deg); }
-    40%  { transform: translate(-50%, -50%) translate(2px, -1px) rotate(-3deg); }
-    60%  { transform: translate(-50%, -50%) translate(-2px, -2px) rotate(3deg); }
-    80%  { transform: translate(-50%, -50%) translate(1px, 1px) rotate(-2deg); }
-    100% { transform: translate(-50%, -50%) translate(0, 0) rotate(0deg); }
-  }
-  .hero__svg-title {
-    font-family: FoundersGrotesk-Regular, var(--font-display);
-    font-size: 300px;
-    fill: var(--c-ink);
-  }
-  .hero__svg-title--mask {
-    fill: #fff;
-  }
-  .hero__svg-title--final {
-    opacity: var(--hero-title-opacity);
-  }
-  .hero__svg-pass-line {
-    fill: var(--c-acid);
-    opacity: 0;
-    will-change: transform, opacity;
-  }
-  @media (min-width: 768px) {
-    .hero {
-      padding: 0;
-    }
-  }
-  @media (min-width: 1280px) {
-    .hero {
-      padding: 0;
-    }
-  }
-
-  .hero__copy {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100vh;
-    max-width: none;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-end;
-    padding: 120px 0 44px;
-    overflow: visible;
-  }
-  @media (min-width: 768px) {
-    .hero__copy {
-      padding: 138px 0 56px;
-    }
-  }
-  @media (min-width: 1280px) {
-    .hero__copy {
-      padding: 152px 0 64px;
-    }
-  }
-
-  .hero__stage {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .hero__brace-giant {
-    position: absolute;
-    top: 50%;
-    font-family: var(--font-display);
-    font-size: clamp(176px, 26vw, 420px);
-    font-weight: 400;
-    line-height: 0.82;
-    letter-spacing: -0.08em;
-    color: var(--c-ink);
-    opacity: 0;
-    transform: translate3d(0, -50%, 0) scaleX(0.68) scaleY(0.92);
-    animation:
-      heroBraceOpen 1.02s cubic-bezier(0.32, 0.02, 0.2, 1) 0.32s forwards,
-      heroBraceExit 0.82s cubic-bezier(0.64, 0.02, 0.78, 0.12) 3.38s forwards;
-    pointer-events: none;
-  }
-  .hero__brace-giant--left {
-    --brace-x: calc(-50% - clamp(280px, 31vw, 520px));
-    --brace-exit-x: calc(-50% - clamp(420px, 40vw, 720px));
-    --brace-collapse-x: calc(-50% - clamp(34px, 3.8vw, 56px));
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
-  }
-  .hero__brace-giant--right {
-    --brace-x: calc(-50% + clamp(280px, 31vw, 520px));
-    --brace-exit-x: calc(-50% + clamp(420px, 40vw, 720px));
-    --brace-collapse-x: calc(-50% + clamp(34px, 3.8vw, 56px));
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
-  }
-
-  .hero__opening {
-    position: relative;
-    width: min(100%, 1060px);
-    min-height: clamp(150px, 22vw, 260px);
-    transform: scaleX(0.02);
-    transform-origin: center center;
-    animation: heroOpenSpace 1.42s cubic-bezier(0.5, 0.03, 0.94, 0.38) 0.56s forwards;
-  }
-  .hero__opening::before {
-    content: none;
-  }
-
-  .hero__conversation {
-    --prompt-top: clamp(18px, 4vw, 54px);
-    --prompt-left: 17%;
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    min-height: inherit;
+    min-height: 88vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 24px;
-    padding-top: var(--prompt-top);
-    opacity: 0;
-    transform: none;
-    animation: heroConversationIn 0.34s linear 2.08s forwards;
+    align-items: stretch;
+    justify-content: flex-end;
+    padding: 86px 16px 20px 0;
   }
-  .hero__prompt {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.08em;
-    max-width: 100%;
+  .hero__reveal-label {
+    display: block;
+    margin: 0 0 clamp(10px, 2vw, 24px) 0;
+    padding-left: 16px;
     font-family: var(--font-display);
-    font-size: 13px;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    align-self: flex-start;
-    margin-left: var(--prompt-left);
-  }
-  .hero__prompt-brace {
-    display: inline-block;
-  }
-  .hero__wordmark-wrap {
-    display: inline-block;
-    overflow: hidden;
-    width: 14.6ch;
-    max-width: 14.6ch;
-    clip-path: inset(0 100% 0 0);
-    animation: typeReveal 1.18s steps(15, end) 2.16s forwards;
-  }
-  .hero__wordmark {
-    display: inline-block;
-    white-space: nowrap;
-  }
-  .hero__conversation::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--prompt-top) + 1px);
-    height: clamp(10px, 1vw, 14px);
-    left: var(--prompt-left);
-    width: 1.5px;
-    background: var(--c-ink);
-    animation:
-      caretTravel 1.04s steps(15, end) 2.16s forwards,
-      caretBlink 1.02s step-end 2,
-      caretFade 0.01s linear 3.36s forwards;
-  }
-  .hero__tail {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .hero__reply {
-    position: absolute;
-    font-family: var(--font-display);
-    font-size: 13px;
+    font-weight: 500;
+    font-size: clamp(28px, 5vw, 48px);
     letter-spacing: 0.02em;
     color: var(--c-ink);
-    white-space: nowrap;
-    display: inline-grid;
-    padding: 0.16em 0.52em 0.2em;
+  }
+  .hero__reveal-label-dot {
+    margin-left: -0.06em;
+    letter-spacing: normal;
+  }
+  @media (min-width: 768px) {
+    .hero {
+      min-height: 92vh;
+      padding: 90px 28px 24px 0;
+    }
+    .hero__reveal-label {
+      padding-left: 28px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .hero {
+      min-height: 98vh;
+      padding: 94px 40px 28px 0;
+    }
+    .hero__reveal-label {
+      padding-left: 40px;
+    }
+  }
+
+  .hero__reveal-clip-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .hero__reveal-band {
+    position: relative;
+    width: 100%;
+    height: clamp(240px, 48vh, 520px);
+    overflow: hidden;
     background: var(--c-acid);
     clip-path: inset(0 100% 0 0);
-    opacity: 0;
-    transform: translateX(-10px);
-    pointer-events: auto;
-    transition:
-      left 0.54s cubic-bezier(0.22, 1, 0.36, 1),
-      top 0.54s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 0.24s ease,
-      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.28s ease;
+    animation: heroBandReveal 1.6s var(--ease-reveal) 0.55s forwards;
   }
-  .hero__reply {
-    left: var(--reply-x, 60%);
-    top: var(--reply-y, 28%);
-    animation:
-      heroReplyIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--reply-delay, 2.78s) forwards,
-      heroReplyType 0.82s steps(var(--reply-steps, 12), end) var(--reply-delay, 2.78s) forwards;
-  }
-  .hero__reply.is-picked {
-    z-index: 2;
-    transform: translateY(-4px) scale(1.04);
-    box-shadow: 0 10px 24px color-mix(in srgb, var(--c-ink) 12%, transparent);
-  }
-  .hero__reply.is-refreshing {
-    opacity: 0.62;
-  }
-  .hero__reply-text {
+  .hero__reveal-image {
+    position: absolute;
+    top: 0;
+    left: -8%;
+    width: 108%;
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    grid-area: 1 / 1;
-    transition: opacity 0.18s ease, transform 0.18s ease;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.3s var(--ease-reveal);
   }
-  .hero__reply-text--jp {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  .hero__reply:hover .hero__reply-text--en,
-  .hero__reply:focus-visible .hero__reply-text--en {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-  .hero__reply:hover .hero__reply-text--jp,
-  .hero__reply:focus-visible .hero__reply-text--jp {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @keyframes typeReveal {
+  @keyframes heroBandReveal {
     from { clip-path: inset(0 100% 0 0); }
     to { clip-path: inset(0 0 0 0); }
   }
-
-  @keyframes heroBraceOpen {
-    to {
-      opacity: 1;
-      transform: translate3d(var(--brace-x, 0), -50%, 0) scaleX(0.68) scaleY(1);
-    }
+  .hero__reveal-line {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    margin-top: 0;
+    background: color-mix(in srgb, var(--c-ink) 14%, transparent);
+    overflow: hidden;
   }
-
-  @keyframes heroBraceExit {
-    to {
-      opacity: 0;
-      transform: translate3d(var(--brace-exit-x, var(--brace-x, 0)), -50%, 0) scaleX(0.68) scaleY(1);
-    }
-  }
-
-  @keyframes heroOpenSpace {
-    from { transform: scaleX(0.02); }
-    to { transform: scaleX(1); }
-  }
-
-  @keyframes heroOpenFlash {
-    0% {
-      opacity: 0;
-      transform: scaleX(0.08);
-    }
-    35% {
-      opacity: 0.95;
-      transform: scaleX(0.7);
-    }
-    100% {
-      opacity: 0;
-      transform: scaleX(1.06);
-    }
-  }
-
-  @keyframes heroConversationIn {
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes caretTravel {
-    from { left: var(--prompt-left); }
-    to { left: calc(var(--prompt-left) + 14.32ch - 2px); }
-  }
-
-  @keyframes caretBlink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  @keyframes caretFade {
-    to { opacity: 0; }
-  }
-  @keyframes heroReplyIn {
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  @keyframes heroReplyType {
-    from { clip-path: inset(0 100% 0 0); }
-    to { clip-path: inset(0 0 0 0); }
-  }
-  @keyframes heroEmotionIn {
-    from {
-      opacity: 0;
-      transform:
-        translate(0, calc(-50% + 12px))
-        rotate(calc(var(--emotion-rotate) - 7deg))
-        scale(0.82);
-    }
-    to {
-      opacity: var(--emotion-opacity, 0.82);
-    }
-  }
-  @keyframes heroEmotionPass {
-    to {
-      opacity: 0;
-      transform:
-        translate(18vw, -50%)
-        rotate(var(--emotion-rotate))
-        scale(var(--emotion-scale, 1));
-    }
-  }
-  @keyframes heroEmotionClean {
-    0% {
-      clip-path: inset(0 0 0 0);
-      opacity: 1;
-      transform: translateX(0);
-    }
-    to {
-      clip-path: inset(0 0 0 100%);
-      opacity: 0;
-      transform: translateX(8vw);
-    }
-  }
-  @keyframes heroSweep {
-    0% {
-      opacity: 0;
-      transform: scaleX(0);
-    }
-    18%, 100% {
-      opacity: 1;
-      transform: scaleX(1);
-    }
-  }
-  @keyframes heroHeadlineReveal {
-    0% {
-      color: var(--c-ink);
-      opacity: 0;
-      clip-path: inset(0 100% 0 0);
-      transform: translateY(14px) scaleY(0.96);
-    }
-    to {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
-      transform: translateY(0) scaleY(1);
-    }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes aboutMarkerIn {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
-  @keyframes aboutBlockPass {
-    0% {
-      opacity: 1;
-      transform: translateX(-112%);
-    }
-    44% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    58% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateX(112%);
-    }
-  }
-  @keyframes aboutTextBlockPass {
-    0% {
-      opacity: 1;
-      transform: translateX(-112%);
-    }
-    30% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    46% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateX(112%);
-    }
-  }
-  @keyframes aboutBlockTextShow {
-    to { opacity: 1; }
-  }
-  @keyframes aboutBlockTextSettle {
-    from { transform: translateY(0.42em); }
-    to { transform: translateY(0); }
-  }
-  @keyframes aboutPhotoLineIn {
-    0% { transform: scaleX(0); }
-    100% { transform: scaleX(1); }
-  }
-  @keyframes aboutPhotoSlotIn {
-    0% {
-      opacity: 0;
-      transform: translate3d(42px, 0, 0) scale(0.965);
-    }
-    34% {
-      opacity: 1;
-      transform: translate3d(-10px, 0, 0) scale(1.01);
-    }
-    62% {
-      opacity: 1;
-      transform: translate3d(4px, 0, 0) scale(0.997);
-    }
-    100% {
-      opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-  }
-  @media (max-width: 767px) {
-    .hero__stage {
-      min-height: 300px;
-    }
-    .hero__headline {
-      width: 100vw;
-    }
-    .hero__brace-giant {
-      font-size: 156px;
-    }
-    .hero__brace-giant--left {
-      --brace-x: calc(-50% - 152px);
-      --brace-exit-x: calc(-50% - 244px);
-      --brace-collapse-x: calc(-50% - 28px);
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
-    }
-    .hero__brace-giant--right {
-      --brace-x: calc(-50% + 152px);
-      --brace-exit-x: calc(-50% + 244px);
-      --brace-collapse-x: calc(-50% + 28px);
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0) scaleX(0.68) scaleY(0.92);
-    }
-    .hero__opening {
-      width: min(100%, 330px);
-      min-height: 180px;
-    }
-    .hero__conversation {
-      --prompt-left: 20%;
-      --prompt-top: 34px;
-      padding-top: var(--prompt-top);
-    }
-    .hero__prompt {
-      font-size: 13px;
-    }
-    .hero__wordmark-wrap {
-      width: 14.6ch;
-      max-width: 14.6ch;
-    }
-    .hero__conversation::after {
-      top: calc(50% - 20px);
-      height: 24px;
-    }
-    .hero__tail {
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-    .hero__reply {
-      font-size: 9px;
-    }
+  .hero__reveal-line-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: var(--c-acid);
   }
 
   /* ---------- Section header ---------- */
@@ -1791,20 +1202,22 @@
     gap: 12px;
   }
   .card__name {
-    font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: -0.01em;
     line-height: 1.3;
   }
   .card__name-main {
     display: block;
+    font-size: 23px;
+    letter-spacing: -0.025em;
   }
   .card__name em {
     display: block;
-    margin-top: 12px;
+    margin-top: 7px;
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
+    font-size: 12px;
   }
   .card__cat {
     font-size: 11px;
@@ -1821,237 +1234,133 @@
 
   /* ---------- About strip ---------- */
   .about {
-    background: transparent;
-    padding: 110px 16px 0;
     position: relative;
-    overflow: visible;
+    padding: clamp(80px, 12vw, 160px) 0 clamp(80px, 12vw, 160px);
   }
-  @media (min-width: 768px) {
-    .about { padding: 150px 20px 0; }
-  }
-  @media (min-width: 1280px) {
-    .about { padding: 180px 24px 0; }
-  }
-
-  .about__inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    text-align: center;
-  }
-  .about__eyebrow {
+  .about__entry {
+    position: relative;
     display: block;
-    width: max-content;
-    max-width: 100%;
-    margin: 0 auto 20px;
-    align-self: center;
-    position: relative;
-    overflow: visible;
-    padding: 0.08em 0.22em 0.14em;
-    font-family: var(--font-display);
-    font-size: clamp(24px, 3.3vw, 46px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 0.98;
-    color: var(--c-ink);
-    background: transparent;
-    isolation: isolate;
-    z-index: 1;
   }
-  .about__eyebrow::before {
-    content: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    background: var(--c-acid);
-    transform: scaleX(0);
-    transform-origin: left center;
-    filter: url(#roughRectEdge);
-    z-index: -1;
-  }
-  .about__eyebrow::after {
-    content: none;
-    position: absolute;
-    inset: -0.08em -0.22em -0.12em;
-    background: var(--c-acid);
-    filter: url(#roughRectEdge);
-    transform: translateX(-112%);
-    opacity: 0;
-    z-index: 1;
-    will-change: transform, opacity;
-  }
-  .about__eyebrow-text {
-    position: relative;
-    z-index: 2;
-    display: inline-block;
+  .about__entry.reveal {
     opacity: 1;
     transform: none;
   }
-  .about__eyebrow.in::before {
-    animation: none;
+  /* 参考レイアウトでは2枚が縦に1割ほどしか重ならないので、
+     1枚目の高さ(幅34vw ÷ 縦横比0.666 ≒ 51vw)のうち約1割ぶんだけ引き上げる。 */
+  .about__entry--2 {
+    margin-top: -5vw;
   }
-  .about__eyebrow.in::after {
-    animation: none;
-  }
-  .about__eyebrow.in .about__eyebrow-text {
-    animation: none;
-  }
-
-  .about__text {
+  /* フレームは写真とシャドウ用の四角を束ねる箱。サイズ・位置の指定はここに集約し、
+     .about__entry-media 側は常にフレームいっぱい(100%)にする。 */
+  .about__entry-frame {
     position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    font-family: var(--font-serif);
-    font-weight: 400;
-    font-size: clamp(24px, 2.5vw, 28px);
-    line-height: 1.46;
-    letter-spacing: -0.005em;
-    color: var(--c-ink);
   }
-  .about__text.reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .about__entry--1 .about__entry-frame {
+    width: 34%;
+    margin-left: 6%;
   }
-  .about__text-line {
-    --line-delay: 0s;
-    position: relative;
-    display: block;
-    overflow: hidden;
-    padding: 0 0.18em;
-    margin-inline: -0.18em;
-    isolation: isolate;
+  /* 参考レイアウトと同じく、2枚目の左端が1枚目の右端に食い込むように置く
+     （1枚目の幅の2割強ぶん重なる位置）。 */
+  .about__entry--2 .about__entry-frame {
+    width: 44%;
+    margin-left: 32%;
   }
-  .about__text-line::before {
-    content: none;
+  /* 写真と同じサイズの黄色い四角を、影のように右下へずらして背面に重ねる。
+     最初は何も見えない状態にし、黄色→帯→写真の順に出てくるようにする。 */
+  .about__entry-shadow {
     position: absolute;
     inset: 0;
     background: var(--c-acid);
-    filter: url(#roughRectEdge);
-    transform: translateX(-112%);
+    transform: translate(14px, 14px) scale(0.92);
     opacity: 0;
-    z-index: 2;
-    will-change: transform, opacity;
+    z-index: 0;
+    transform-origin: center;
   }
-  .about__text-line-copy {
+  .about__entry.in .about__entry-shadow {
+    animation: aboutShadowIn 0.72s cubic-bezier(0.32, 0.02, 0.2, 1) forwards;
+  }
+  @keyframes aboutShadowIn {
+    from {
+      opacity: 0;
+      transform: translate(14px, 14px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translate(14px, 14px) scale(1);
+    }
+  }
+  /* 商品カードと同じ「黄色い帯が横切ってから写真が現れる」演出。
+     写真ごとの縦横比をそのまま活かすため、幅だけを指定してheightはautoに任せる。 */
+  .about__entry-media {
     position: relative;
     z-index: 1;
-    display: inline-block;
-    opacity: 1;
-    transform: none;
-    will-change: transform, opacity;
-  }
-  .about__text.in .about__text-line::before {
-    animation: none;
-  }
-  .about__text.in .about__text-line-copy {
-    animation: none;
-  }
-  .about__gallery-scroll {
-    width: 100vw;
-    margin-top: clamp(72px, 10vw, 140px);
-    margin-bottom: 0;
-    margin-left: calc(50% - 50vw);
-    height: 100vh;
-    position: relative;
-    overflow: visible;
-  }
-  .about__triangles {
     width: 100%;
-    margin: 0;
-    height: 100vh;
-    min-height: 100vh;
-    padding: 0;
     overflow: hidden;
-    background: var(--c-acid);
-    transform: scaleX(0);
-    transform-origin: left center;
-    position: sticky;
-    top: 0;
-    display: flex;
-    align-items: center;
-    will-change: transform;
+    /* 背景を不透明にして、写真がclip-pathで開く途中でも背後の黄色いシャドウが
+       透けて見えないようにする（シャドウは写真の枠からはみ出た部分だけ見せたい）。 */
+    background: var(--c-bg);
   }
-  .about__triangles.in {
-    animation: aboutPhotoLineIn 1.05s cubic-bezier(0.72, 0, 0.2, 1) forwards;
+  .about__entry-photo {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
   }
-  .about__photo-track {
-    --gallery-x: 0px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    display: flex;
-    align-items: flex-start;
-    gap: clamp(24px, 3vw, 56px);
-    width: max-content;
-    min-width: 220vw;
-    padding-inline: clamp(48px, 9vw, 152px);
-    transform: translate3d(var(--gallery-x), -50%, 0);
-    will-change: transform;
-  }
-  .about__triangle {
-    --gallery-media-height: clamp(280px, 60vh, 620px);
-    position: relative;
-    flex: 0 0 auto;
-    width: clamp(373px, 80vh, 827px);
-    height: var(--gallery-media-height);
-    overflow: hidden;
-    background: transparent;
-    transform: translateX(0) scale(1);
-    transform-origin: center;
+  .about__entry:not(.in) .about__entry-photo {
     opacity: 0;
-    will-change: transform, opacity;
   }
-  .about__triangles.in .about__triangle {
-    animation: aboutPhotoSlotIn 1.18s cubic-bezier(0.18, 0.9, 0.2, 1) calc(0.46s + var(--triangle-index) * 88ms) forwards;
+  .about__entry.in .about__entry-photo {
+    /* fill-modeをbothにして、355msの遅延中も最初のキーフレーム(opacity:0)を
+       保持する。forwardsだけだと遅延中は素のCSS(opacity:1)に戻ってしまい、
+       一瞬フル表示→消える→ワイプイン、という不自然な動きになる。 */
+    animation: cardContentSlideIn 1.34s cubic-bezier(0.18, 0.94, 0.24, 1) 355ms both;
   }
-  .about__triangle::before {
-    content: "";
+  .about__entry-copy {
     position: absolute;
-    top: 0;
-    left: -12.5%;
-    width: 125%;
-    height: 100%;
-    background-image: var(--triangle-photo);
-    background-size: cover;
-    background-position: center;
-    transform: translate3d(var(--photo-parallax, 0%), 0, 0);
-    transition:
-      background-image 0.01s linear,
-      filter 0.62s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform;
+    width: min(420px, 42vw);
+    z-index: 2;
   }
-  .about__triangle.is-flipping::before {
-    filter: saturate(1.16) contrast(1.04);
+  /* 見出しは写真の右上／左下の角に食い込ませる（参考レイアウトと同じ重ね方） */
+  .about__entry--1 .about__entry-copy {
+    top: 2%;
+    left: 34%;
+  }
+  .about__entry--2 .about__entry-copy {
+    top: 62%;
+    left: 12%;
+  }
+  .about__entry-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(40px, 5.4vw, 80px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--c-acid);
+    margin-bottom: 0.06em;
+  }
+  .about__entry-text {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 1.1vw, 16px);
+    line-height: 1.65;
+    color: var(--c-ink);
+  }
+  .about__entry-text-line {
+    display: block;
   }
   @media (max-width: 767px) {
-    .about__triangles {
-      width: 100vw;
-      margin: 0;
-      gap: 8px;
-      height: 100vh;
-      min-height: 100vh;
-      padding: 0;
+    .about__entry--1 .about__entry-frame {
+      width: 72%;
     }
-    .about__gallery-scroll {
-      width: 100vw;
-      height: 100vh;
-      margin-top: 58px;
-      margin-bottom: 0;
+    .about__entry--2 .about__entry-frame {
+      width: 88%;
     }
-    .about__photo-track {
-      min-width: 260vw;
-      gap: 10px;
-      padding-inline: 16px;
+    .about__entry-copy {
+      position: static;
+      width: auto;
+      padding: 18px 16px 0;
     }
-    .about__triangle {
-      width: 78vw;
-      height: min(54vh, 420px);
+    .about__entry--2 {
+      margin-top: 48px;
     }
   }
 
@@ -2194,44 +1503,8 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
-    .hero__brace-giant {
-      opacity: 1;
-      transform: translate3d(var(--brace-x, 0), -50%, 0) scaleX(0.68) scaleY(1);
-    }
-    .hero__opening {
-      transform: scaleX(1);
+    .hero__reveal-band {
       animation: none;
-    }
-    .hero__opening::before {
-      opacity: 0;
-      animation: none;
-    }
-    .hero__conversation {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-    .hero__wordmark-wrap {
-      width: 14.6ch;
-      max-width: 14.6ch;
-      clip-path: inset(0 0 0 0);
-      animation: none;
-    }
-    .hero__conversation::after {
-      display: none;
-      animation: none;
-    }
-    .hero__headline {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
-      transform: none;
-      animation: none;
-    }
-    .hero__prompt-brace,
-    .hero__reply,
-    .hero__tail {
-      opacity: 1;
-      transform: none;
       clip-path: inset(0 0 0 0);
     }
     .card__media::before,
@@ -2315,32 +1588,19 @@
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero__copy">
-      <div class="hero__stage">
-      <div class="hero__word-cluster" aria-hidden="true"></div>
-      <div class="hero__scan-bars" aria-hidden="true"></div>
-      <h1 class="hero__headline" aria-label="Anyway">
-        <div class="hero__logo-lead-bar" aria-hidden="true"></div>
-        <div class="hero__headline-logo" aria-hidden="true"></div>
-        <svg class="hero__headline-svg" viewBox="0 0 1169.09 302.4" role="img" aria-label="ANYWAY">
-          <text class="hero__svg-title hero__svg-title--final" transform="translate(0 244.5)">
-            <tspan x="0" y="0">AN</tspan><tspan x="382.19" y="0">Y</tspan><tspan x="578.39" y="0">W</tspan><tspan x="803.69" y="0">A</tspan><tspan x="949.49" y="0">Y</tspan><tspan x="1116.29" y="0">.</tspan>
-          </text>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-          <rect class="hero__svg-pass-line"></rect>
-        </svg>
-      </h1>
-    </div>
+  <svg class="hero__reveal-clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="heroRevealClip" clipPathUnits="objectBoundingBox">
+        <path id="heroRevealClipPath" d="M0 0 Q0.5 0 1 0 Q1 0.5 1 1 Q0.5 1 0 1 Q0 0.5 0 0 Z"></path>
+      </clipPath>
+    </defs>
+  </svg>
+  <span class="hero__reveal-label">ANYWAY<span class="hero__reveal-label-dot">.</span></span>
+  <div class="hero__reveal-band">
+    <video class="hero__reveal-image" src="assets/hero-preview.mp4" muted loop playsinline aria-hidden="true"></video>
+  </div>
+  <div class="hero__reveal-line" aria-hidden="true">
+    <span class="hero__reveal-line-fill"></span>
   </div>
 </section>
 
@@ -2363,36 +1623,39 @@
 
 <!-- About -->
 <section class="about" id="about">
-  <div class="about__inner">
-    <div class="about__eyebrow"><span class="about__eyebrow-text" data-typo-reveal data-typo-delay="0">まあ、まずはコーヒーでも。</span></div>
-    <p class="about__text reveal">
-      <span class="about__text-line" style="--line-delay: 0s;">
-        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="120">毎日忙しく過ごしたり、何もせずにグダっとしたり。</span>
-      </span>
-      <span class="about__text-line" style="--line-delay: 0.16s;">
-        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="220">いろんな感情に駆られる人生だから、まあ、まずはコーヒーでも。</span>
-      </span>
-      <span class="about__text-line" style="--line-delay: 0.32s;">
-        <span class="about__text-line-copy" data-typo-reveal data-typo-delay="320">ANYWAYはひっそりと、カジュアルでスペシャルなコーヒーを提供します。</span>
-      </span>
-    </p>
-  </div>
-  <div class="about__gallery-scroll">
-    <div class="about__triangles reveal" aria-label="ANYWAY photo line">
-      <div class="about__photo-track">
-        <span class="about__triangle" style="--triangle-index: 0;"></span>
-        <span class="about__triangle" style="--triangle-index: 1;"></span>
-        <span class="about__triangle" style="--triangle-index: 2;"></span>
-        <span class="about__triangle" style="--triangle-index: 3;"></span>
-        <span class="about__triangle" style="--triangle-index: 4;"></span>
-        <span class="about__triangle" style="--triangle-index: 5;"></span>
-        <span class="about__triangle" style="--triangle-index: 6;"></span>
-        <span class="about__triangle" style="--triangle-index: 7;"></span>
-        <span class="about__triangle" style="--triangle-index: 8;"></span>
-        <span class="about__triangle" style="--triangle-index: 9;"></span>
+  <article class="about__entry about__entry--1 reveal">
+    <div class="about__entry-frame">
+      <span class="about__entry-shadow" aria-hidden="true"></span>
+      <div class="about__entry-media">
+        <img class="about__entry-photo" src="assets/about-street.jpg" alt="" aria-hidden="true">
       </div>
     </div>
-  </div>
+    <div class="about__entry-copy">
+      <h2 class="about__entry-title"><span data-typo-reveal data-typo-delay="420">SOME DAYS</span></h2>
+      <p class="about__entry-text">
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">よく晴れた日も、なんだか気が乗らない日も、</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">同じ道を歩いて、同じ一日がはじまる。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="760">機嫌のいい日ばかりじゃないから、人生はおもしろい。</span>
+      </p>
+    </div>
+  </article>
+
+  <article class="about__entry about__entry--2 reveal">
+    <div class="about__entry-frame">
+      <span class="about__entry-shadow" aria-hidden="true"></span>
+      <div class="about__entry-media">
+        <img class="about__entry-photo" src="assets/about-book.jpg" alt="" aria-hidden="true">
+      </div>
+    </div>
+    <div class="about__entry-copy">
+      <h2 class="about__entry-title"><span data-typo-reveal data-typo-delay="420">ANYWAY,</span></h2>
+      <p class="about__entry-text">
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">答えが出なくても、気分が晴れなくてもいい。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">とりあえず、一杯淹れてみる。それだけで、</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="760">今日がすこし、ちょうどよくなる気がするから。</span>
+      </p>
+    </div>
+  </article>
 </section>
 
 <script src="assets/vendor/gsap.min.js"></script>
@@ -2403,14 +1666,14 @@
      画像は `media: { url, alt }` を追加すれば対応可。
      size: s/m/l でカードのサイズ、offset: up/down/null でレイアウトのリズム。 */
   const FALLBACK_PRODUCTS = [
-    { id: "p01", name: "Brew No.07", italic: "Ethiopia", category: "coffee", price: 1800, tag: "NEW", isNew: true, color: "#B08650", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "静かな朝に" },
-    { id: "p02", name: "Daily Blend", italic: null,      category: "coffee", price: 1400, tag: "BLEND", isNew: false, color: "#7a4a1f", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "気持ちを整える" },
-    { id: "p03", name: "Decaf Slow", italic: null,       category: "coffee", price: 1500, tag: "DECAF", isNew: false, color: "#9b6f3a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "夜をやわらかく" },
-    { id: "p04", name: "Mug",         italic: "12oz",    category: "goods",  price: 2400, tag: "GOODS", isNew: false, color: "#001829", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "机の景色を変える" },
-    { id: "p05", name: "Brew No.06", italic: "Colombia", category: "coffee", price: 1700, tag: "SINGLE", isNew: false, color: "#5a3a1a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "少し前向きに" },
-    { id: "p06", name: "Tote",        italic: "everyday", category: "goods", price: 3200, tag: "GOODS", isNew: false, color: "#E6FD28", image: null, hoverImage: null, size: "l", offset: null, href: "product.html", hoverLabel: "ふらっと外へ" },
-    { id: "p07", name: "Morning Kit", italic: null,      category: "coffee", price: 3800, tag: "SET",   isNew: true, color: "#c89b6b", image: null, hoverImage: null, size: "s", offset: null, href: "product.html", hoverLabel: "朝を始めるセット" },
-    { id: "p08", name: "T-Shirt",     italic: "logo",    category: "goods",  price: 4200, tag: "GOODS", isNew: false, color: "#B2B2B2", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "今日は軽くいく" },
+    { id: "p01", name: "Brew No.07", italic: "Ethiopia", category: "coffee", price: 1800, tag: "NEW", isNew: true, color: "#B08650", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "静かな朝に", headline: "ゆっくり過ごす朝の一杯に。" },
+    { id: "p02", name: "Daily Blend", italic: null,      category: "coffee", price: 1400, tag: "BLEND", isNew: false, color: "#7a4a1f", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "気持ちを整える", headline: "何気ない毎日のための一杯に。" },
+    { id: "p03", name: "Decaf Slow", italic: null,       category: "coffee", price: 1500, tag: "DECAF", isNew: false, color: "#9b6f3a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "夜をやわらかく", headline: "眠る前の、やさしい一杯に。" },
+    { id: "p04", name: "Mug",         italic: "12oz",    category: "goods",  price: 2400, tag: "GOODS", isNew: false, color: "#001829", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "机の景色を変える", headline: "毎日の一杯を少し特別に。" },
+    { id: "p05", name: "Brew No.06", italic: "Colombia", category: "coffee", price: 1700, tag: "SINGLE", isNew: false, color: "#5a3a1a", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "少し前向きに", headline: "気分を切り替えたい日の一杯に。" },
+    { id: "p06", name: "Tote",        italic: "everyday", category: "goods", price: 3200, tag: "GOODS", isNew: false, color: "#E6FD28", image: null, hoverImage: null, size: "l", offset: null, href: "product.html", hoverLabel: "ふらっと外へ", headline: "コーヒーと一緒に出かける日に。" },
+    { id: "p07", name: "Morning Kit", italic: null,      category: "coffee", price: 3800, tag: "SET",   isNew: true, color: "#c89b6b", image: null, hoverImage: null, size: "s", offset: null, href: "product.html", hoverLabel: "朝を始めるセット", headline: "一日のはじまりをゆっくりと。" },
+    { id: "p08", name: "T-Shirt",     italic: "logo",    category: "goods",  price: 4200, tag: "GOODS", isNew: false, color: "#B2B2B2", image: null, hoverImage: null, size: "m", offset: null, href: "product.html", hoverLabel: "今日は軽くいく", headline: "気張らない日のためのひと着に。" },
   ];
 
   /* ---------- Render ---------- */
@@ -2434,1009 +1697,6 @@
     coffee: "毎日に寄り添う一杯。気分に合わせて、選んでください。",
     goods: "カップやトートなど、コーヒーの時間を少しだけ気持ちよくする日用品たちです。",
   };
-  const HERO_REPLY_POOL = [
-    { en: "slow morning", jp: "ゆっくりいこ" },
-    { en: "need a reset", jp: "ちょいリセット" },
-    { en: "a little brighter", jp: "ちょい明るめで" },
-    { en: "take it easy", jp: "力ぬいてこ" },
-    { en: "one more breath", jp: "もうひと息" },
-    { en: "late start today", jp: "今日はゆっくりで" },
-    { en: "something steady", jp: "安定感ほしい" },
-    { en: "just a small lift", jp: "ちょい上げたい" },
-    { en: "keep it gentle", jp: "やさしめで" },
-    { en: "clear my head", jp: "頭すっきりしたい" },
-    { en: "back to myself", jp: "自分に戻ろ" },
-    { en: "let it soften", jp: "ふわっといこ" },
-  ];
-  const HERO_REPLY_POSITIONS = [
-    { x: "52%", y: "8%" },
-    { x: "79%", y: "20%" },
-    { x: "36%", y: "36%" },
-    { x: "63%", y: "42%" },
-    { x: "87%", y: "58%" },
-    { x: "53%", y: "68%" },
-    { x: "74%", y: "82%" },
-    { x: "26%", y: "78%" },
-  ];
-  const heroSection = document.querySelector(".hero");
-
-  function shuffle(array) {
-    const copy = [...array];
-    for (let i = copy.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-  }
-
-  function renderHeroReplyInner(entry) {
-    return `<span class="hero__reply-text hero__reply-text--en">${entry.en} }</span><span class="hero__reply-text hero__reply-text--jp">${entry.jp} }</span>`;
-  }
-
-  function setupHeroReplies() {
-    const tail = document.querySelector(".hero__tail");
-    if (!tail) return;
-
-    const isMobile = window.innerWidth <= 767;
-    const replyCount = isMobile ? 5 : 7;
-    const replies = shuffle(HERO_REPLY_POOL).slice(0, replyCount);
-    const positions = shuffle(HERO_REPLY_POSITIONS).slice(0, replyCount);
-
-    const repliesMarkup = replies.map((reply, index) => {
-      const position = positions[index] || HERO_REPLY_POSITIONS[index % HERO_REPLY_POSITIONS.length];
-      const steps = Math.max(8, Math.min(18, reply.en.length));
-      const delay = 2.76 + index * 0.16;
-      return `<span class="hero__reply" tabindex="0" style="--reply-x:${position.x}; --reply-y:${position.y}; --reply-delay:${delay.toFixed(2)}s; --reply-steps:${steps};" data-reply-en="${reply.en}" data-reply-jp="${reply.jp}">${renderHeroReplyInner(reply)}</span>`;
-    }).join("");
-
-    tail.innerHTML = repliesMarkup;
-    setupHeroReplyInteraction(tail);
-  }
-
-  function setupHeroScrollIntro() {
-    const hero = document.querySelector(".hero");
-    if (!hero) return;
-
-    let rafId = null;
-    let introLocked = false;
-    let logoRevealProgress = 0;
-    let leadBarPointerActive = false;
-    let leadBarPointerFrame = null;
-    let latestLeadBarPointer = null;
-    const WORD_GROWTH_END_PROGRESS = 0.34;
-    const LOGO_PHASE_START_PROGRESS = 0.42;
-    const TITLE_REVEAL_END_PROGRESS = 0.86;
-    const clamp01 = (value) => Math.max(0, Math.min(1, value));
-    const windowProgress = (value, start, end) => {
-      if (end <= start) return value >= end ? 1 : 0;
-      return clamp01((value - start) / (end - start));
-    };
-    const easeInOutCubic = (value) => {
-      const p = clamp01(value);
-      return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-    };
-    const easeScanIn = (value) => {
-      const p = clamp01(value);
-      if (p < 0.18) return Math.pow(p / 0.18, 2) * 0.06;
-      if (p < 0.72) return 0.06 + (1 - Math.pow(1 - (p - 0.18) / 0.54, 3.8)) * 0.78;
-      return 0.84 + (1 - Math.pow(1 - (p - 0.72) / 0.28, 2.2)) * 0.16;
-    };
-    const easeScanExit = (value) => {
-      const p = clamp01(value);
-      return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-    };
-    // 最初はゆっくり溜めて、終盤だけ一気にシュッと動く（指数関数的なease-in）
-    const easeInSnap = (value) => {
-      const p = clamp01(value);
-      if (p <= 0) return 0;
-      if (p >= 1) return 1;
-      return Math.pow(2, 8 * (p - 1));
-    };
-    const headlineLogo = document.querySelector(".hero__headline-logo");
-    const logoLeadBar = document.querySelector(".hero__logo-lead-bar");
-    const scanBars = document.querySelector(".hero__scan-bars");
-    let lastRawProgress = 0;
-    let smoothedProgress = 0;
-    let scrollSpeed = 0;
-    let logoSlices = [];
-    let logoNativeWidth = 0;
-    let logoNativeHeight = 0;
-    const LEAD_BAR_WIDTH_RATIO = 1.18; // ロゴ幅より少し広く
-    const LEAD_BAR_THICKNESS_RATIO = 1.5; // 基本の太さ。単語クラスターを覆う分の太さはsyncLogoSliceSizing側で別途確保する
-    const LEAD_BAR_PROGRESS_LEAD = 0; // ロゴと同じタイミングで動かす
-    const LEAD_SVG_W = 1000;
-    const LEAD_SVG_H = 120;
-    let logoLeadPath = null;
-    const leadBarPathState = { bend: 0, wave: 0, pullX: 0, pullY: 0 };
-    const SCAN_GRID_ROWS = Array.from({ length: 24 }, (_, rowIndex) => -8 + rowIndex * 5);
-    const SCAN_SEGMENT_PATTERNS = [
-      [[-18, 34], [20, 24], [50, 36], [92, 28], [126, 24]],
-      [[-26, 28], [7, 40], [55, 22], [83, 42], [132, 18]],
-      [[-12, 46], [39, 20], [65, 30], [101, 18], [123, 36]],
-      [[-30, 38], [14, 26], [45, 34], [86, 34], [127, 24]],
-    ];
-    const SCAN_PIECE_BLUEPRINTS = SCAN_GRID_ROWS.flatMap((y, rowIndex) => {
-      const pattern = SCAN_SEGMENT_PATTERNS[rowIndex % SCAN_SEGMENT_PATTERNS.length];
-      const rowDelay = rowIndex * 0.012 + ((rowIndex * 7) % 9) * 0.006;
-      return pattern.map(([x, w], pieceIndex) => ({
-        x,
-        y,
-        w,
-        h: 5.48,
-        delay: rowDelay + pieceIndex * 0.018 + ((rowIndex + pieceIndex * 3) % 4) * 0.008,
-        dur: 0.42 + ((rowIndex + pieceIndex) % 4) * 0.035,
-        rowIndex,
-        pieceIndex,
-      }));
-    });
-    const SCAN_MASK_ID = `heroScanCutout-${Math.random().toString(36).slice(2)}`;
-    const SCAN_WORD_CLIP_PREFIX = `${SCAN_MASK_ID}-slice`;
-    const SCAN_WORD_SLICE_COUNT = 9;
-
-    // 文字ごとに書き出された独立SVG（assets/letters/）を読み込み、自然な文字幅で
-    // 横に並べる。AとYは2回使うので、5ファイルで7文字ぶんをまかなう。
-    const LETTER_ASSET_MAP = {
-      A: "assets/letters/letter-A.svg",
-      N: "assets/letters/letter-N.svg",
-      Y: "assets/letters/letter-Y.svg",
-      W: "assets/letters/letter-W.svg",
-      ".": "assets/letters/letter-dot.svg",
-    };
-    const WORDMARK = ["A", "N", "Y", "W", "A", "Y", "."];
-    const CAP_HEIGHT = 189; // A/N/Y/Wの共通viewBox高さ
-    const DOT_HEIGHT_RATIO = 0.16; // ピリオドの高さ（キャップハイトに対する比率）
-    // 本来のロゴ（assets/anyway-mv-title.svg）のtspan x座標そのもの（フォントに依存しない
-    // 文字ごとの実際の座標（元ロゴのtspan位置）は、新しく用意した文字パーツと
-    // 実寸の比率が微妙に食い違うため（場所によって詰まったり重なったりした）、
-    // 均等な間隔で並べる方式にしている。
-    const LETTER_GAP = CAP_HEIGHT * 0.08;
-
-    async function loadLetterTemplates() {
-      const cache = {};
-      const uniqueSrcs = [...new Set(Object.values(LETTER_ASSET_MAP))];
-      await Promise.all(uniqueSrcs.map(async (src) => {
-        const res = await fetch(src);
-        const text = await res.text();
-        const doc = new DOMParser().parseFromString(text, "image/svg+xml");
-        cache[src] = doc.documentElement;
-      }));
-      return cache;
-    }
-
-    async function buildLogoSlices() {
-      if (!headlineLogo) return;
-      const templates = await loadLetterTemplates();
-      headlineLogo.innerHTML = "";
-      if (logoLeadBar) {
-        logoLeadBar.innerHTML = `
-          <svg class="hero__logo-lead-svg" viewBox="0 0 ${LEAD_SVG_W} ${LEAD_SVG_H}" preserveAspectRatio="none" aria-hidden="true">
-            <path class="hero__logo-lead-path"></path>
-          </svg>
-        `;
-        logoLeadPath = logoLeadBar.querySelector(".hero__logo-lead-path");
-      }
-
-      let cursorX = 0;
-      logoSlices = WORDMARK.map((ch) => {
-        const src = LETTER_ASSET_MAP[ch];
-        const template = templates[src];
-        const svgEl = template.cloneNode(true);
-        const viewBoxParts = (svgEl.getAttribute("viewBox") || `0 0 ${CAP_HEIGHT} ${CAP_HEIGHT}`).split(/\s+/).map(Number);
-        const nativeW = viewBoxParts[2];
-        const nativeH = viewBoxParts[3];
-        const isDot = ch === ".";
-        const renderH = isDot ? CAP_HEIGHT * DOT_HEIGHT_RATIO : CAP_HEIGHT;
-        const renderW = nativeW * (renderH / nativeH);
-
-        svgEl.querySelectorAll("path").forEach((p) => p.setAttribute("fill", "currentColor"));
-        svgEl.style.position = "absolute";
-        svgEl.style.left = "0";
-        svgEl.style.overflow = "visible";
-        svgEl.style.display = "block";
-
-        const wrap = document.createElement("span");
-        wrap.className = "hero__logo-slice";
-        wrap.style.color = "var(--c-ink)";
-        wrap.appendChild(svgEl);
-        headlineLogo.appendChild(wrap);
-        gsap.set(wrap, { transformOrigin: "50% 50%" });
-
-        const x0 = cursorX;
-        cursorX += renderW + LETTER_GAP;
-        return { el: wrap, svgEl, x0, x1: x0 + renderW, renderW, renderH };
-      });
-      logoNativeWidth = cursorX - LETTER_GAP;
-      logoNativeHeight = CAP_HEIGHT;
-      logoSlices.forEach((s) => {
-        s.centerT = (s.x0 + (s.x1 - s.x0) / 2) / logoNativeWidth;
-      });
-      syncLogoSliceSizing();
-    }
-
-    function syncLogoSliceSizing() {
-      if (!headlineLogo || !logoSlices.length || !logoNativeWidth) return;
-      headlineLogo.style.aspectRatio = `${logoNativeWidth} / ${logoNativeHeight}`;
-      const rect = headlineLogo.getBoundingClientRect();
-      if (!rect.width) return;
-      const scale = rect.width / logoNativeWidth;
-      logoSlices.forEach((s) => {
-        const w = s.renderW * scale;
-        const h = s.renderH * scale;
-        s.el.style.left = `${(s.x0 * scale).toFixed(2)}px`;
-        s.el.style.top = "0px";
-        s.el.style.width = `${w.toFixed(2)}px`;
-        s.el.style.height = `${(logoNativeHeight * scale).toFixed(2)}px`;
-        s.svgEl.style.top = `${((logoNativeHeight - s.renderH) * scale).toFixed(2)}px`;
-        s.svgEl.style.width = `${w.toFixed(2)}px`;
-        s.svgEl.style.height = `${h.toFixed(2)}px`;
-      });
-      if (logoLeadBar) {
-        const barW = logoNativeWidth * LEAD_BAR_WIDTH_RATIO * scale;
-        // .hero__word-cluster は独自のvw/px基準でサイズが決まり、ロゴ側と
-        // 完全には比例しないため、実測したクラスターの高さを基準に太さを
-        // 決める（単語がラインで隠れずに残ってしまうのを防ぐ）。
-        const baseBarH = logoNativeHeight * LEAD_BAR_THICKNESS_RATIO * scale;
-        const clusterRect = wordClusterEl ? wordClusterEl.getBoundingClientRect() : null;
-        const coverBarH = clusterRect && clusterRect.height ? clusterRect.height * 1.2 : 0;
-        const barH = Math.max(baseBarH, coverBarH);
-        logoLeadBar.style.width = `${barW.toFixed(2)}px`;
-        logoLeadBar.style.height = `${barH.toFixed(2)}px`;
-        logoLeadBar.style.marginLeft = `${(-barW / 2).toFixed(2)}px`;
-        logoLeadBar.style.marginTop = `${(-barH / 2).toFixed(2)}px`;
-      }
-    }
-
-    function buildScanBars() {
-      if (!scanBars || scanBars.dataset.ready === "1") return;
-      const rect = scanBars.getBoundingClientRect();
-      const svgW = Math.max(1, Math.round(rect.width || window.innerWidth));
-      const svgH = Math.max(1, Math.round(rect.height || window.innerHeight));
-      const cutoutSize = Math.min(Math.max(74, svgW * 0.18), 260);
-      const wordW = Math.min(svgW * 0.9, cutoutSize * 3.88);
-      const wordH = cutoutSize * 0.9;
-      const wordX = (svgW - wordW) / 2;
-      const wordY = (svgH - wordH) / 2;
-      const wordSliceH = wordH / SCAN_WORD_SLICE_COUNT;
-      const wordClipMarkup = Array.from({ length: SCAN_WORD_SLICE_COUNT }, (_, index) => {
-        const y = wordY + index * wordSliceH - 1.5;
-        return `
-          <clipPath id="${SCAN_WORD_CLIP_PREFIX}-${index}" clipPathUnits="userSpaceOnUse">
-            <rect class="hero__scan-word-window" data-slice="${index}" x="${wordX.toFixed(2)}" y="${y.toFixed(2)}" width="0" height="${(wordSliceH + 3).toFixed(2)}"></rect>
-          </clipPath>
-        `;
-      }).join("");
-      const wordTextMarkup = Array.from({ length: SCAN_WORD_SLICE_COUNT }, (_, index) => `
-        <text class="hero__scan-cutout-text" clip-path="url(#${SCAN_WORD_CLIP_PREFIX}-${index})" x="${svgW / 2}" y="${svgH / 2}" text-anchor="middle" dominant-baseline="central" font-size="${cutoutSize.toFixed(2)}" fill="black" fill-opacity="1">ANYWAY</text>
-      `).join("");
-      const barsMarkup = SCAN_PIECE_BLUEPRINTS.map((bar, index) => {
-        const y = svgH * (bar.y / 100);
-        const h = svgH * (bar.h / 100);
-        const w = svgW * (bar.w / 100);
-        return `
-          <g class="hero__scan-piece" data-index="${index}" opacity="0">
-            <rect x="0" y="${y.toFixed(2)}" width="${w.toFixed(2)}" height="${h.toFixed(2)}"></rect>
-          </g>
-        `;
-      }).join("");
-      scanBars.innerHTML = `
-        <svg class="hero__scan-svg" viewBox="0 0 ${svgW} ${svgH}" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            ${wordClipMarkup}
-            <mask id="${SCAN_MASK_ID}" maskUnits="userSpaceOnUse" x="0" y="0" width="${svgW}" height="${svgH}">
-              <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="white"></rect>
-              ${wordTextMarkup}
-            </mask>
-          </defs>
-          <g class="hero__scan-layer" mask="url(#${SCAN_MASK_ID})">
-            ${barsMarkup}
-          </g>
-        </svg>
-      `;
-      scanBars.dataset.svgW = String(svgW);
-      scanBars.dataset.svgH = String(svgH);
-      scanBars.dataset.wordX = String(wordX);
-      scanBars.dataset.wordW = String(wordW);
-      scanBars.dataset.ready = "1";
-    }
-
-    function applyScanBars(progressValue) {
-      if (!scanBars) return;
-      const bars = Array.from(scanBars.querySelectorAll(".hero__scan-piece"));
-      const cutoutWindows = Array.from(scanBars.querySelectorAll(".hero__scan-word-window"));
-      const svgW = Number(scanBars.dataset.svgW) || window.innerWidth;
-      const wordW = Number(scanBars.dataset.wordW) || svgW * 0.82;
-      const scanProgress = windowProgress(progressValue, 0.02, 0.82);
-      const exitProgress = windowProgress(progressValue, 0.74, 0.94);
-      const wordRevealProgress = windowProgress(progressValue, 0.05, 0.68);
-      const offscreenX = -svgW * 1.46;
-
-      cutoutWindows.forEach((rect, index) => {
-        const delay = index * 0.018 + ((index * 5) % 4) * 0.012;
-        const sliceProgress = easeInOutCubic(windowProgress(wordRevealProgress, delay, delay + 0.56));
-        rect.setAttribute("width", (wordW * sliceProgress).toFixed(2));
-      });
-
-      bars.forEach((bar, index) => {
-        const blueprint = SCAN_PIECE_BLUEPRINTS[index];
-        if (!blueprint) return;
-        const local = windowProgress(scanProgress, blueprint.delay, blueprint.delay + blueprint.dur);
-        const entered = easeScanIn(local);
-        const exit = easeScanExit(exitProgress);
-        const pieceSlip = Math.sin((blueprint.rowIndex * 0.72 + blueprint.pieceIndex * 1.28) * Math.PI) * 3.4 * Math.sin(Math.min(1, local) * Math.PI);
-        const x = svgW * (blueprint.x / 100);
-        const travel = offscreenX * (1 - entered) + pieceSlip + svgW * 0.18 * exit;
-        const scale = 0.04 + entered * 1.08;
-        const opacity = entered <= 0.001 ? 0 : (1 - exit);
-        bar.setAttribute("transform", `translate(${(x + travel).toFixed(2)} 0) scale(${scale.toFixed(3)} 1)`);
-        bar.setAttribute("opacity", opacity.toFixed(3));
-      });
-    }
-
-    function syncScanBars() {
-      if (!scanBars) return;
-      scanBars.dataset.ready = "0";
-      buildScanBars();
-      applyScanBars(introLocked ? 1 : smoothedProgress);
-    }
-
-    // 「スクロールが速いほど波が大きくうねる」を再現するため、区間キーフレームを
-    // 繋ぐのではなく単一の連続したsin波の式でx/y/rotationを毎フレーム計算する。
-    function makeLeadBarPath({ bend = 0, wave = 0, pullX = 0, pullY = 0 } = {}) {
-      const w = LEAD_SVG_W;
-      const h = LEAD_SVG_H;
-      const pad = 24;
-      const topBase = 7;
-      const bottomBase = h - 7;
-      const centerPullY = pullY * 0.42;
-      const edgePullY = pullY * 0.08;
-      const lean = pullX * 0.03;
-      const wobble = wave * 5.6;
-      const topL = topBase + edgePullY + Math.sin(bend) * wobble * 0.38;
-      const topC1 = topBase + centerPullY * 0.28 + Math.sin(bend + 0.55) * wobble * 0.52;
-      const topC2 = topBase + centerPullY + Math.sin(bend + 1.1) * wobble * 0.72;
-      const topC3 = topBase + centerPullY * 0.34 + Math.sin(bend + 1.65) * wobble * 0.48;
-      const topR = topBase - edgePullY + Math.sin(bend + 2.2) * wobble * 0.34;
-      const botR = bottomBase - edgePullY + Math.sin(bend + 2.0) * wobble * 0.34;
-      const botC3 = bottomBase + centerPullY * 0.34 + Math.sin(bend + 1.5) * wobble * 0.48;
-      const botC2 = bottomBase + centerPullY + Math.sin(bend + 0.95) * wobble * 0.72;
-      const botC1 = bottomBase + centerPullY * 0.28 + Math.sin(bend + 0.4) * wobble * 0.52;
-      const botL = bottomBase + edgePullY + Math.sin(bend - 0.1) * wobble * 0.38;
-
-      return [
-        `M ${-pad} ${topL.toFixed(2)}`,
-        `C ${(w * 0.16 + lean).toFixed(2)} ${topC1.toFixed(2)}, ${(w * 0.34 + pullX * 0.18).toFixed(2)} ${topC2.toFixed(2)}, ${(w * 0.5 + pullX * 0.24).toFixed(2)} ${topC2.toFixed(2)}`,
-        `C ${(w * 0.66 + pullX * 0.18).toFixed(2)} ${topC3.toFixed(2)}, ${(w * 0.84 + lean).toFixed(2)} ${topR.toFixed(2)}, ${w + pad} ${topR.toFixed(2)}`,
-        `L ${w + pad} ${botR.toFixed(2)}`,
-        `C ${(w * 0.84 + lean).toFixed(2)} ${botR.toFixed(2)}, ${(w * 0.66 + pullX * 0.18).toFixed(2)} ${botC3.toFixed(2)}, ${(w * 0.5 + pullX * 0.24).toFixed(2)} ${botC2.toFixed(2)}`,
-        `C ${(w * 0.34 + pullX * 0.18).toFixed(2)} ${botC2.toFixed(2)}, ${(w * 0.16 + lean).toFixed(2)} ${botC1.toFixed(2)}, ${-pad} ${botL.toFixed(2)}`,
-        "Z",
-      ].join(" ");
-    }
-
-    function renderLeadBarPath() {
-      if (!logoLeadPath) return;
-      logoLeadPath.setAttribute("d", makeLeadBarPath(leadBarPathState));
-    }
-
-    function setLeadBarPath(options = {}) {
-      Object.assign(leadBarPathState, options);
-      renderLeadBarPath();
-    }
-
-    function getLogoEntryX(rect) {
-      const logoLeft = rect?.left || 0;
-      const logoWidth = rect?.width || window.innerWidth;
-      return window.innerWidth - logoLeft + logoWidth * 0.08 + 56;
-    }
-
-    // 単語全体は右画面外から左へ入れ、柔らかさはy/rotationの波だけで足す。
-    // 透明度で出すと途中からフェードして見えるため、初期フレーム以外は常に不透明にする。
-    function applyLogoWave(p) {
-      if (!headlineLogo || !window.gsap || !logoSlices.length) return;
-      const reveal = easeInOutCubic(clamp01(p));
-      headlineLogo.style.opacity = reveal <= 0.001 ? "0" : "1";
-      headlineLogo.style.clipPath = `inset(0 ${(100 - reveal * 100).toFixed(2)}% 0 0)`;
-      logoSlices.forEach((s) => {
-        gsap.set(s.el, {
-          x: 0,
-          y: 0,
-          rotation: 0,
-          opacity: reveal <= 0.001 ? 0 : 1,
-        });
-      });
-    }
-
-    // ラインは文字列中央と同じ位相・振れ幅で動かす。
-    // 独自のスキューを強く入れると文字とズレて見えるため、形状揺れは控えめにする。
-    function applyLeadBarWave(p) {
-      if (!logoLeadBar || !window.gsap) return;
-      gsap.set(logoLeadBar, { opacity: 0 });
-      return;
-      const leadP = clamp01(p + LEAD_BAR_PROGRESS_LEAD);
-      const travel = easeInSnap(leadP);
-      const envelope = 1 - travel;
-      const followThrough = Math.sin(leadP * Math.PI);
-      const waveScale = 0.7 + Math.min(scrollSpeed, 1.6) * 0.5;
-      const rect = headlineLogo?.getBoundingClientRect?.() || { width: 0 };
-      const enterX = getLogoEntryX(rect);
-      const baseX = envelope * enterX;
-      const lineT = 0.5;
-      const angle = 2 * Math.PI * (leadP * 1.18 + lineT * 0.9);
-      const leftwardDrag = -followThrough * 42 * waveScale;
-      const verticalArc = Math.sin((leadP * 1.08 - 0.08) * Math.PI) * followThrough * 42 * waveScale;
-      const verticalFloat = Math.sin(angle) * 46 * envelope * waveScale;
-      const x = baseX + leftwardDrag + Math.sin(angle - 0.5) * 18 * envelope * waveScale;
-      const y = verticalFloat + verticalArc;
-      const rotation = Math.sin(angle + 0.4) * 7 * envelope * waveScale + followThrough * -2.2 + verticalArc * 0.012;
-      const skewX = Math.sin(angle - 0.7) * 1.5 * envelope * waveScale + followThrough * -4.2 + verticalArc * 0.006;
-      const scaleX = 1 + followThrough * 0.018;
-      const scaleY = 1 + Math.sin(angle + 1.1) * 0.018 * envelope + followThrough * 0.014;
-      const opacity = leadP <= 0.001 ? 0 : 1;
-      setLeadBarPath({
-        bend: angle,
-        wave: (envelope * 0.42 + followThrough * 0.28) * waveScale,
-        pullX: Math.sin(angle - 0.5) * 52 * envelope * waveScale - followThrough * 210,
-        pullY: Math.sin(angle) * 72 * envelope * waveScale + verticalArc * 1.25,
-      });
-      gsap.set(logoLeadBar, {
-        x,
-        y,
-        rotation,
-        skewX,
-        scaleX,
-        scaleY,
-        opacity,
-      });
-    }
-
-    function setLeadBarPointerShape(dx, dy, influence) {
-      const pullScale = Math.max(logoLeadBar?.getBoundingClientRect?.().width || 1, 1);
-      setLeadBarPath({
-        bend: performance.now() * 0.004,
-        wave: influence * 0.9,
-        pullX: clamp01(Math.abs(dx) / pullScale) * Math.sign(dx) * 300 * influence,
-        pullY: dy * 1.12 * influence,
-      });
-    }
-
-    function releaseLeadBarPointer() {
-      if (!logoLeadBar || !window.gsap || !introLocked) return;
-      leadBarPointerActive = false;
-      gsap.to(logoLeadBar, {
-        x: 0,
-        y: 0,
-        rotation: 0,
-        skewX: 0,
-        scaleY: 1,
-        duration: 1.15,
-        ease: "elastic.out(1, 0.34)",
-      });
-      gsap.to(leadBarPathState, {
-        bend: 0,
-        wave: 0,
-        pullX: 0,
-        pullY: 0,
-        duration: 1.15,
-        ease: "elastic.out(1, 0.34)",
-        onUpdate: renderLeadBarPath,
-        onComplete: renderLeadBarPath,
-      });
-    }
-
-    function updateLeadBarPointer() {
-      leadBarPointerFrame = null;
-      if (!logoLeadBar || !window.gsap || !introLocked || !latestLeadBarPointer) return;
-      const rect = logoLeadBar.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = latestLeadBarPointer.clientX - centerX;
-      const dy = latestLeadBarPointer.clientY - centerY;
-      const verticalRange = Math.max(rect.height * 0.92, 180);
-      const influence = clamp01(1 - Math.abs(dy) / verticalRange);
-
-      if (influence < 0.05) {
-        if (leadBarPointerActive) releaseLeadBarPointer();
-        return;
-      }
-
-      leadBarPointerActive = true;
-      const pullX = dx * 0.026 * influence;
-      const pullY = dy * 0.46 * influence;
-      const rotation = dx * 0.012 * influence;
-      const skewX = dx * 0.016 * influence;
-      const scaleY = 1 + influence * 0.045;
-      setLeadBarPointerShape(dx, dy, influence);
-      gsap.to(logoLeadBar, {
-        x: pullX,
-        y: pullY,
-        rotation,
-        skewX,
-        scaleY,
-        duration: 0.32,
-        ease: "power3.out",
-        overwrite: true,
-      });
-    }
-
-    function handleLeadBarPointerMove(event) {
-      if (!introLocked || !logoLeadBar) return;
-      latestLeadBarPointer = event;
-      if (leadBarPointerFrame === null) {
-        leadBarPointerFrame = requestAnimationFrame(updateLeadBarPointer);
-      }
-    }
-
-    buildScanBars();
-    applyScanBars(0);
-    window.addEventListener("resize", syncScanBars);
-
-    if (headlineLogo && window.gsap) {
-      gsap.set(logoLeadBar, { transformOrigin: "50% 50%" });
-      buildLogoSlices().then(() => {
-        applyLogoWave(introLocked ? 1 : logoRevealProgress);
-        applyLeadBarWave(introLocked ? 1 : logoRevealProgress);
-      });
-      window.addEventListener("resize", syncLogoSliceSizing);
-      hero.addEventListener("pointermove", handleLeadBarPointerMove, { passive: true });
-      hero.addEventListener("pointerleave", releaseLeadBarPointer);
-    }
-
-    /* ---------- Word cluster: コーヒーの形に育つ単語 ---------- */
-    const MOOD_WORDS = [
-      "restless", "hopeful", "calm", "messy", "light", "tired", "overthinking",
-      "soft", "new start", "cloudy", "quiet", "anxious", "awake", "nervous",
-      "slow", "heavy", "bright", "wired", "loose", "blue", "steady", "unready",
-      "fine", "blank", "alive", "gentle", "too much", "almost", "okay",
-    ];
-    function shuffleArray(array) {
-      const copy = [...array];
-      for (let i = copy.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
-
-    const wordClusterEl = document.querySelector(".hero__word-cluster");
-    const WORD_GRID_N = 16;
-    const NATIVE_SIZE = 100;
-    const CELL_SIZE = NATIVE_SIZE / WORD_GRID_N;
-    const WORD_FONT_SIZE_NATIVE = 3.4;
-    const AVG_CHAR_WIDTH_NATIVE = WORD_FONT_SIZE_NATIVE * 0.52;
-    const WORD_LINE_HEIGHT_NATIVE = WORD_FONT_SIZE_NATIVE * 1.3;
-    const WORD_PAD_NATIVE = 0.6;
-    let wordGrowthOrder = [];
-    let wordGrowthCursor = 0;
-    let placedWordRects = [];
-    let wordClusterAppended = [];
-    let lapWords = shuffleArray(MOOD_WORDS);
-    let wordClusterNativeWidth = NATIVE_SIZE;
-
-    // 単語の実サイズをネイティブ座標系で概算し、既に置かれた単語と重なる場合は
-    // そのマスは飛ばす（文字が被らないようにする）。
-    function estimateWordNativeRect(text, centerX, centerY) {
-      // 背景チップのpadding（0.4em/0.18em）ぶんも見た目の箱として重なり判定に含める
-      const chipPadX = WORD_FONT_SIZE_NATIVE * 0.4;
-      const chipPadY = WORD_FONT_SIZE_NATIVE * 0.18;
-      const halfW = (text.length * AVG_CHAR_WIDTH_NATIVE) / 2 + chipPadX + WORD_PAD_NATIVE;
-      const halfH = WORD_LINE_HEIGHT_NATIVE / 2 + chipPadY + WORD_PAD_NATIVE;
-      return { left: centerX - halfW, right: centerX + halfW, top: centerY - halfH, bottom: centerY + halfH };
-    }
-    function rectsOverlap(a, b) {
-      return !(a.right < b.left || b.right < a.left || a.bottom < b.top || b.bottom < a.top);
-    }
-
-    function cellCenterNative(col, row) {
-      return { x: (col + 0.5) * CELL_SIZE, y: (row + 0.5) * CELL_SIZE };
-    }
-
-    function drawCupMask(ctx) {
-      ctx.beginPath();
-      ctx.moveTo(24, 26);
-      ctx.quadraticCurveTo(24, 22, 30, 22);
-      ctx.lineTo(62, 22);
-      ctx.quadraticCurveTo(68, 22, 68, 26);
-      ctx.lineTo(64, 78);
-      ctx.quadraticCurveTo(63, 86, 54, 88);
-      ctx.lineTo(38, 88);
-      ctx.quadraticCurveTo(29, 86, 28, 78);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.lineWidth = 7;
-      ctx.beginPath();
-      ctx.arc(69, 50, 14, -Math.PI * 0.55, Math.PI * 0.55);
-      ctx.stroke();
-    }
-
-    function drawBeanMask(ctx) {
-      ctx.save();
-      ctx.translate(50, 52);
-      ctx.rotate(-0.2);
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 32, 22, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      ctx.save();
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.lineWidth = 4.5;
-      ctx.beginPath();
-      ctx.moveTo(50, 32);
-      ctx.quadraticCurveTo(50, 52, 50, 72);
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function drawSteamMask(ctx) {
-      ctx.lineCap = "round";
-      ctx.lineWidth = 8.5;
-      const ribbons = [
-        { x0: 34, amp: 9, phase: 0 },
-        { x0: 50, amp: 10, phase: 1.4 },
-        { x0: 66, amp: 9, phase: 2.6 },
-      ];
-      ribbons.forEach(({ x0, amp, phase }) => {
-        ctx.beginPath();
-        ctx.moveTo(x0, 88);
-        for (let step = 1; step <= 6; step += 1) {
-          const y0 = 88 - (step - 1) * 12;
-          const y1 = 88 - step * 12;
-          const dir = Math.sin(phase + step * 1.1) * amp;
-          ctx.quadraticCurveTo(x0 + dir, (y0 + y1) / 2, x0, y1);
-        }
-        ctx.stroke();
-      });
-    }
-
-    const SHAPE_DRAWERS = { cup: drawCupMask, bean: drawBeanMask, steam: drawSteamMask };
-
-    function rasterizeShapeToGrid(drawFn) {
-      const CANVAS_SIZE = 400;
-      const SUBSAMPLES = 5;
-      const canvas = document.createElement("canvas");
-      canvas.width = CANVAS_SIZE;
-      canvas.height = CANVAS_SIZE;
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const canvasScale = CANVAS_SIZE / NATIVE_SIZE;
-      ctx.save();
-      ctx.scale(canvasScale, canvasScale);
-      ctx.fillStyle = "#000";
-      ctx.strokeStyle = "#000";
-      drawFn(ctx);
-      ctx.restore();
-
-      const { data } = ctx.getImageData(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-      const inside = [];
-      for (let row = 0; row < WORD_GRID_N; row += 1) {
-        inside[row] = [];
-        for (let col = 0; col < WORD_GRID_N; col += 1) {
-          const { x, y } = cellCenterNative(col, row);
-          let covered = 0;
-          for (let sy = 0; sy < SUBSAMPLES; sy += 1) {
-            for (let sx = 0; sx < SUBSAMPLES; sx += 1) {
-              const nx = x + (sx / (SUBSAMPLES - 1) - 0.5) * CELL_SIZE * 0.8;
-              const ny = y + (sy / (SUBSAMPLES - 1) - 0.5) * CELL_SIZE * 0.8;
-              const px = Math.min(CANVAS_SIZE - 1, Math.max(0, Math.round(nx * canvasScale)));
-              const py = Math.min(CANVAS_SIZE - 1, Math.max(0, Math.round(ny * canvasScale)));
-              if (data[(py * CANVAS_SIZE + px) * 4 + 3] > 127) covered += 1;
-            }
-          }
-          inside[row][col] = covered / (SUBSAMPLES * SUBSAMPLES) >= 0.5;
-        }
-      }
-      return inside;
-    }
-
-    const NEIGHBORS_8 = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
-
-    function findConnectedComponents(insideGrid) {
-      const visited = Array.from({ length: WORD_GRID_N }, () => Array(WORD_GRID_N).fill(false));
-      const components = [];
-      for (let r = 0; r < WORD_GRID_N; r += 1) {
-        for (let c = 0; c < WORD_GRID_N; c += 1) {
-          if (!insideGrid[r][c] || visited[r][c]) continue;
-          const stack = [[r, c]];
-          visited[r][c] = true;
-          const cells = [];
-          while (stack.length) {
-            const [cr, cc] = stack.pop();
-            cells.push({ row: cr, col: cc });
-            NEIGHBORS_8.forEach(([dr, dc]) => {
-              const nr = cr + dr;
-              const nc = cc + dc;
-              if (nr < 0 || nr >= WORD_GRID_N || nc < 0 || nc >= WORD_GRID_N) return;
-              if (!insideGrid[nr][nc] || visited[nr][nc]) return;
-              visited[nr][nc] = true;
-              stack.push([nr, nc]);
-            });
-          }
-          components.push(cells);
-        }
-      }
-      return components;
-    }
-
-    function pickSeedForComponent(cells) {
-      const avgRow = cells.reduce((s, c) => s + c.row, 0) / cells.length;
-      const avgCol = cells.reduce((s, c) => s + c.col, 0) / cells.length;
-      let best = cells[0];
-      let bestDist = Infinity;
-      cells.forEach((cell) => {
-        const d = (cell.row - avgRow) ** 2 + (cell.col - avgCol) ** 2;
-        if (d < bestDist) {
-          bestDist = d;
-          best = cell;
-        }
-      });
-      return best;
-    }
-
-    function buildGrowthOrder(insideGrid) {
-      const components = findConnectedComponents(insideGrid);
-      if (!components.length) return [];
-      const revealed = Array.from({ length: WORD_GRID_N }, () => Array(WORD_GRID_N).fill(false));
-      const order = [];
-
-      function addNeighborsToFrontier(cell, frontier) {
-        NEIGHBORS_8.forEach(([dr, dc]) => {
-          const r = cell.row + dr;
-          const c = cell.col + dc;
-          if (r < 0 || r >= WORD_GRID_N || c < 0 || c >= WORD_GRID_N) return;
-          if (!insideGrid[r][c] || revealed[r][c]) return;
-          frontier.set(`${r},${c}`, { row: r, col: c });
-        });
-      }
-
-      const frontiers = components.map((cells) => {
-        const seed = pickSeedForComponent(cells);
-        revealed[seed.row][seed.col] = true;
-        order.push(seed);
-        const frontier = new Map();
-        addNeighborsToFrontier(seed, frontier);
-        return frontier;
-      });
-
-      while (frontiers.some((f) => f.size > 0)) {
-        const nonEmpty = frontiers.filter((f) => f.size > 0);
-        const chosen = nonEmpty[Math.floor(Math.random() * nonEmpty.length)];
-        const keys = [...chosen.keys()];
-        const key = keys[Math.floor(Math.random() * keys.length)];
-        const cell = chosen.get(key);
-        chosen.delete(key);
-        if (revealed[cell.row][cell.col]) continue;
-        revealed[cell.row][cell.col] = true;
-        order.push(cell);
-        addNeighborsToFrontier(cell, chosen);
-      }
-      return order;
-    }
-
-    function wordForIndex(index) {
-      if (index > 0 && index % MOOD_WORDS.length === 0) {
-        lapWords = shuffleArray(MOOD_WORDS);
-      }
-      return lapWords[index % MOOD_WORDS.length];
-    }
-
-    function tryPlaceWord(cursorIndex) {
-      const cell = wordGrowthOrder[cursorIndex];
-      const { x, y } = cellCenterNative(cell.col, cell.row);
-      const text = wordForIndex(cursorIndex);
-      const rect = estimateWordNativeRect(text, x, y);
-      const collides = placedWordRects.some((r) => rectsOverlap(r, rect));
-      if (collides) return null;
-
-      const el = document.createElement("span");
-      el.className = "hero__word-block";
-      if (Math.random() < 0.5) el.classList.add("hero__word-block--alt");
-      el.style.setProperty("--shake-dur", `${(0.45 + Math.random() * 0.2).toFixed(3)}s`);
-      el.style.setProperty("--shake-delay", `${(-Math.random() * 0.5).toFixed(3)}s`);
-      el.textContent = text;
-      wordClusterEl.appendChild(el);
-      placedWordRects.push(rect);
-      return { el, col: cell.col, row: cell.row, cursorIndex, touched: false };
-    }
-
-    function syncWordClusterSizing() {
-      if (!wordClusterEl || !wordClusterAppended.length) return;
-      const rect = wordClusterEl.getBoundingClientRect();
-      if (!rect.width) return;
-      const scale = rect.width / wordClusterNativeWidth;
-      wordClusterAppended.forEach(({ el, col, row }) => {
-        const { x, y } = cellCenterNative(col, row);
-        el.style.left = `${(x * scale).toFixed(2)}px`;
-        el.style.top = `${(y * scale).toFixed(2)}px`;
-        el.style.fontSize = `${(WORD_FONT_SIZE_NATIVE * scale).toFixed(2)}px`;
-      });
-    }
-
-    function applyWordClusterGrowth(growthProgress, locked) {
-      if (!wordClusterEl || !wordGrowthOrder.length) return;
-      const desiredCursor = locked ? 0 : Math.floor(clamp01(growthProgress) * wordGrowthOrder.length);
-
-      if (desiredCursor < wordGrowthCursor) {
-        // スクロールを戻した場合：対象より後に置いたブロックだけ取り除き、
-        // 重なり判定用の矩形リストも残ったブロックだけで作り直す。
-        wordClusterAppended = wordClusterAppended.filter((entry) => {
-          if (entry.cursorIndex >= desiredCursor) {
-            entry.el.remove();
-            return false;
-          }
-          return true;
-        });
-        placedWordRects = wordClusterAppended.map((entry) => {
-          const { x, y } = cellCenterNative(entry.col, entry.row);
-          return estimateWordNativeRect(entry.el.textContent, x, y);
-        });
-        wordGrowthCursor = desiredCursor;
-      } else {
-        while (wordGrowthCursor < desiredCursor) {
-          const placed = tryPlaceWord(wordGrowthCursor);
-          if (placed) wordClusterAppended.push(placed);
-          wordGrowthCursor += 1;
-        }
-      }
-
-      syncWordClusterSizing();
-      // 単語は自分ではフェードアウトしない。ライン/ロゴがz-indexで上から
-      // かぶさって隠す（「上書きする」見た目）ので、intro完了後だけ非表示にする。
-      wordClusterEl.style.opacity = locked ? "0" : "1";
-    }
-
-    function initWordCluster() {
-      if (!wordClusterEl) return;
-      const shapeKeys = Object.keys(SHAPE_DRAWERS);
-      const chosenKey = shapeKeys[Math.floor(Math.random() * shapeKeys.length)];
-      const insideGrid = rasterizeShapeToGrid(SHAPE_DRAWERS[chosenKey]);
-      wordGrowthOrder = buildGrowthOrder(insideGrid);
-      wordClusterNativeWidth = NATIVE_SIZE;
-      applyWordClusterGrowth(0, false);
-      window.addEventListener("resize", syncWordClusterSizing);
-    }
-
-    if (wordClusterEl) {
-      initWordCluster();
-    }
-
-    function update() {
-      const heroRect = hero.getBoundingClientRect();
-      const stickyTravel = Math.max(hero.offsetHeight - window.innerHeight, 1);
-      const rawProgress = clamp01((0 - heroRect.top) / stickyTravel);
-      const progress = rawProgress < 0.02 ? 0 : rawProgress;
-      const rawSpeed = Math.abs(rawProgress - lastRawProgress) * 26;
-      lastRawProgress = rawProgress;
-      // ホイールは1ノッチずつ飛び飛びに来るため、係数を緩めて
-      // scrollSpeedの急な跳ね上がり（＝波の振幅の急変=カクつき）を抑える
-      scrollSpeed += (rawSpeed - scrollSpeed) * 0.08;
-      // ホイールスクロールは1ノッチずつ飛び飛びに進むため、progressをそのまま
-      // 波の計算に使うとその都度カクッと段差ができる。毎フレーム目標値へ
-      // なめらかに追従させることで、実際のスクロールが止まっていても
-      // アニメーションだけは滑らかに追いつく。
-      smoothedProgress += (progress - smoothedProgress) * 0.16;
-      const progressSettled = Math.abs(progress - smoothedProgress) < 0.0015;
-
-      const wordGrowthLocalProgress = introLocked
-        ? 1
-        : windowProgress(smoothedProgress, 0, WORD_GROWTH_END_PROGRESS);
-      applyWordClusterGrowth(wordGrowthLocalProgress, introLocked);
-      applyScanBars(introLocked ? 1 : smoothedProgress);
-
-      logoRevealProgress = 0;
-      const logoRevealActive = false;
-      const wordGrowthActive = !introLocked && smoothedProgress < WORD_GROWTH_END_PROGRESS;
-      const scanActive = !introLocked && smoothedProgress < 0.96;
-      const needsTitleFrame = !introLocked && (scanActive || wordGrowthActive || !progressSettled);
-
-      if (smoothedProgress >= 0.96 && progress >= 0.96) {
-        introLocked = true;
-        hero.dataset.introLocked = "1";
-      }
-
-      if (headlineLogo) applyLogoWave(0);
-      updateWordTouchState();
-      syncLogoSliceSizing();
-
-      rafId = needsTitleFrame ? requestAnimationFrame(update) : null;
-    }
-
-    // 形での被覆に頼らず、ラインの現在位置と単語ブロックが実際に重なったら
-    // その単語を消す（一度触れたら戻らない）。
-    function updateWordTouchState() {
-      if (!logoLeadBar || !wordClusterAppended.length) return;
-      const barRect = logoLeadBar.getBoundingClientRect();
-      if (!barRect.width || !barRect.height) return;
-      wordClusterAppended.forEach((entry) => {
-        if (entry.touched) return;
-        const elRect = entry.el.getBoundingClientRect();
-        const overlap = !(
-          elRect.right < barRect.left ||
-          barRect.right < elRect.left ||
-          elRect.bottom < barRect.top ||
-          barRect.bottom < elRect.top
-        );
-        if (overlap) {
-          entry.touched = true;
-          entry.el.classList.add("hero__word-block--touched");
-        }
-      });
-    }
-
-    const requestUpdate = () => {
-      if (rafId === null) rafId = requestAnimationFrame(update);
-    };
-
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    window.setTimeout(requestUpdate, 1200);
-    update();
-  }
-
-  function setupHeroReplyInteraction(tail) {
-    const replies = [...tail.querySelectorAll(".hero__reply")];
-    let isCycling = false;
-
-    function setReplyContent(reply, entry) {
-      const steps = Math.max(8, Math.min(18, entry.en.length));
-      reply.dataset.replyEn = entry.en;
-      reply.dataset.replyJp = entry.jp;
-      reply.style.setProperty("--reply-steps", steps);
-      reply.innerHTML = renderHeroReplyInner(entry);
-    }
-
-    replies.forEach((reply) => {
-      reply.addEventListener("click", () => {
-        if (isCycling) return;
-        isCycling = true;
-
-        const chosen = {
-          en: reply.dataset.replyEn,
-          jp: reply.dataset.replyJp,
-        };
-        const chosenPosition = {
-          x: reply.style.getPropertyValue("--reply-x"),
-          y: reply.style.getPropertyValue("--reply-y"),
-        };
-        const nextReplies = shuffle(
-          HERO_REPLY_POOL.filter((entry) => entry.en !== chosen.en)
-        ).slice(0, Math.max(0, replies.length - 1));
-        const nextPositions = shuffle(
-          HERO_REPLY_POSITIONS.filter(
-            (position) => position.x !== chosenPosition.x || position.y !== chosenPosition.y
-          )
-        );
-
-        replies.forEach((node) => node.classList.add("is-refreshing"));
-        reply.classList.add("is-picked");
-
-        window.setTimeout(() => {
-          let replyIndex = 0;
-          let positionIndex = 0;
-          replies.forEach((node) => {
-            if (node === reply) {
-              setReplyContent(node, chosen);
-              node.style.setProperty("--reply-x", chosenPosition.x);
-              node.style.setProperty("--reply-y", chosenPosition.y);
-              return;
-            }
-            const nextEntry = nextReplies[replyIndex % nextReplies.length];
-            const nextPosition = nextPositions[positionIndex % nextPositions.length] || HERO_REPLY_POSITIONS[positionIndex % HERO_REPLY_POSITIONS.length];
-            setReplyContent(node, nextEntry);
-            node.style.setProperty("--reply-x", nextPosition.x);
-            node.style.setProperty("--reply-y", nextPosition.y);
-            replyIndex += 1;
-            positionIndex += 1;
-          });
-        }, 120);
-
-        window.setTimeout(() => {
-          replies.forEach((node) => node.classList.remove("is-refreshing"));
-          reply.classList.remove("is-picked");
-          isCycling = false;
-        }, 720);
-      });
-    });
-  }
 
   function escapeHTML(value = "") {
     return String(value)
@@ -3473,6 +1733,7 @@
   }
 
   function applyHeroBackground(products = []) {
+    const heroSection = document.querySelector(".hero");
     if (!heroSection) return;
     const cmsHeroImage = products.find((product) => product.heroImage)?.heroImage;
     if (!cmsHeroImage) return;
@@ -3681,7 +1942,9 @@
     }
     grid.innerHTML = list.map((p, index) => {
       const nameHTML = typoRevealHTML(escapeHTML(p.name), 360);
-      const italicHTML = p.italic ? `<em>${typoRevealHTML(escapeHTML(p.italic), 500)}</em>` : "";
+      const originHTML = p.italic ? `<em>${typoRevealHTML(escapeHTML(p.italic), 460)}</em>` : "";
+      const headlineHTML = p.headline ? `<em>${typoRevealHTML(escapeHTML(p.headline), 500)}</em>` : "";
+      const italicHTML = `${originHTML}${headlineHTML}`;
       const priceHTML = typoRevealHTML(escapeHTML(yen.format(p.price)), 430);
       const sizeClass = `size-${p.size || "m"}`;
       const offsetClass = p.offset ? `offset-${p.offset}` : "";
@@ -4142,147 +2405,6 @@
     themeSections.forEach((section) => sectionObserver.observe(section));
   }
 
-  function setupAboutTriangles() {
-    const group = document.querySelector(".about__triangles");
-    const scrollArea = group?.closest(".about__gallery-scroll");
-    const track = group?.querySelector(".about__photo-track");
-    if (!group || !scrollArea || !track) return;
-
-    const baseTriangles = Array.from(track.querySelectorAll(".about__triangle"));
-    if (!track.dataset.looped) {
-      baseTriangles.forEach((triangle) => {
-        const clone = triangle.cloneNode(true);
-        clone.setAttribute("aria-hidden", "true");
-        track.appendChild(clone);
-      });
-      track.dataset.looped = "true";
-    }
-    const triangles = Array.from(track.querySelectorAll(".about__triangle"));
-    if (!triangles.length) return;
-
-    const photos = [
-      "assets/footer-gallery-1.png",
-      "assets/footer-gallery-2.png",
-      "assets/footer-gallery-3.png",
-      "assets/footer-gallery-4.jpg",
-      "assets/footer-gallery-5.jpg",
-      "assets/footer-gallery-1.png",
-      "assets/footer-gallery-2.png",
-      "assets/footer-gallery-3.png",
-      "assets/footer-gallery-4.jpg",
-      "assets/footer-gallery-5.jpg",
-    ];
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    triangles.forEach((triangle, index) => {
-      triangle.dataset.photoIndex = String(index % photos.length);
-      triangle.style.setProperty("--triangle-index", index);
-      triangle.style.setProperty("--triangle-photo", `url("${photos[index % photos.length]}")`);
-    });
-
-    if (prefersReduced) return;
-
-    let rafId = null;
-    let isActive = false;
-    let currentOffset = 0;
-    let targetOffset = 0;
-    let loopWidth = 1;
-
-    function measureLoopWidth() {
-      const firstTriangle = triangles[0];
-      const firstClone = track.querySelector('.about__triangle[aria-hidden="true"]');
-      loopWidth = firstClone && firstTriangle
-        ? Math.max(1, firstClone.offsetLeft - firstTriangle.offsetLeft)
-        : Math.max(1, track.scrollWidth / 2);
-    }
-
-    function updateTargetFromScroll() {
-      measureLoopWidth();
-      const sectionTop = scrollArea.getBoundingClientRect().top + window.scrollY;
-      const rawProgress = (window.scrollY - sectionTop + window.innerHeight) / window.innerHeight;
-      const progress = Math.max(0, Math.min(1, rawProgress));
-      const eased = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-      targetOffset = Math.max(targetOffset, eased * loopWidth * 0.32);
-    }
-
-    function renderParallax() {
-      rafId = null;
-      currentOffset += (targetOffset - currentOffset) * 0.052;
-      const wrappedOffset = loopWidth ? currentOffset % loopWidth : currentOffset;
-      track.style.setProperty("--gallery-x", `${(-wrappedOffset).toFixed(1)}px`);
-
-      triangles.forEach((triangle) => {
-        const tRect = triangle.getBoundingClientRect();
-        const centerProgress = ((tRect.left + tRect.width / 2) / window.innerWidth) - 0.5;
-        const parallax = Math.max(-10, Math.min(10, centerProgress * -14));
-        triangle.style.setProperty("--photo-parallax", `${parallax.toFixed(2)}%`);
-      });
-
-      if (isActive && Math.abs(targetOffset - currentOffset) > 0.18) {
-        rafId = requestAnimationFrame(renderParallax);
-      }
-    }
-
-    function requestParallax() {
-      if (rafId === null) rafId = requestAnimationFrame(renderParallax);
-    }
-
-    function handleGalleryScroll() {
-      if (!isActive) return;
-      updateTargetFromScroll();
-      requestParallax();
-    }
-
-    function isGalleryVisible() {
-      const rect = scrollArea.getBoundingClientRect();
-      return rect.top < window.innerHeight && rect.bottom > 0;
-    }
-
-    function handleGalleryWheel(event) {
-      if (!isActive || !isGalleryVisible()) return;
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-      if (delta <= 0) return;
-
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const atPageBottom = window.scrollY >= maxScroll - 2;
-      if (!atPageBottom) return;
-
-      event.preventDefault();
-      targetOffset += delta * 0.42;
-      requestParallax();
-    }
-
-    let hasStarted = false;
-    const start = () => {
-      if (hasStarted) return;
-      hasStarted = true;
-      isActive = true;
-      triangles.forEach((triangle, index) => {
-        triangle.style.animationDelay = `${(0.46 + index * 0.088).toFixed(3)}s`;
-      });
-      measureLoopWidth();
-      targetOffset = Math.max(targetOffset, loopWidth * 0.035);
-      window.addEventListener("scroll", handleGalleryScroll, { passive: true });
-      window.addEventListener("wheel", handleGalleryWheel, { passive: false });
-      window.addEventListener("resize", () => {
-        measureLoopWidth();
-        updateTargetFromScroll();
-        requestParallax();
-      });
-      requestParallax();
-    };
-
-    const triangleObserver = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        start();
-        triangleObserver.disconnect();
-      }
-    }, { threshold: 0.46, rootMargin: "0px 0px -8% 0px" });
-
-    triangleObserver.observe(group);
-  }
 
   /* ---------- Reveal on scroll ---------- */
   let observer;
@@ -4296,14 +2418,139 @@
         }
       });
     }, { threshold: 0.18, rootMargin: "0px 0px -24% 0px" });
-    document.querySelectorAll(".reveal, .about__eyebrow").forEach(el => observer.observe(el));
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  }
+
+  function setupHeroReveal() {
+    const band = document.querySelector(".hero__reveal-band");
+    const imgEl = document.querySelector(".hero__reveal-image");
+    const fillEl = document.querySelector(".hero__reveal-line-fill");
+    if (!band || !imgEl || !fillEl) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    function revealImage() {
+      imgEl.style.transition = "none";
+      imgEl.style.clipPath = "inset(0 100% 0 0)";
+      void imgEl.offsetWidth;
+      imgEl.style.transition = "clip-path 1.3s var(--ease-reveal)";
+      requestAnimationFrame(() => {
+        imgEl.style.clipPath = "inset(0 0 0 0)";
+      });
+    }
+
+    imgEl.addEventListener("timeupdate", () => {
+      if (!imgEl.duration) return;
+      fillEl.style.transition = "none";
+      fillEl.style.width = `${(imgEl.currentTime / imgEl.duration) * 100}%`;
+    });
+
+    function setupJelly() {
+      const clipPath = document.querySelector("#heroRevealClipPath");
+      if (!clipPath) return;
+
+      const STIFFNESS = 0.12;
+      const DAMPING = 0.82;
+      const MAX_OFFSET_X = 0.035;
+      const MAX_OFFSET_Y = 0.09;
+      const RADIUS_X = 0.6;
+
+      // 頂点順: 角(TL,TR,BR,BL)と各辺の中点(TM,RM,BM,LM)。
+      // 中点は隣接する角を結ぶ二次ベジエの制御点として使うので、
+      // 静止状態(offset=0)ではちょうど直線＝きれいな四角形になる。
+      const points = [
+        { hx: 0, hy: 0 }, { hx: 0.5, hy: 0 }, { hx: 1, hy: 0 }, { hx: 1, hy: 0.5 },
+        { hx: 1, hy: 1 }, { hx: 0.5, hy: 1 }, { hx: 0, hy: 1 }, { hx: 0, hy: 0.5 },
+      ].map((p) => ({ ...p, ox: 0, oy: 0, vx: 0, vy: 0, tx: 0, ty: 0 }));
+
+      let mouseX = 0.5;
+      let mouseY = 0.5;
+      let hasMouse = false;
+      let rafId = null;
+
+      function updateTargets() {
+        points.forEach((pt) => {
+          if (!hasMouse) {
+            pt.tx = 0;
+            pt.ty = 0;
+            return;
+          }
+          // 縦距離を無視し、横距離だけでfalloffを決める。
+          // これにより同じX座標にある上端・下端が「波」のように一緒に引っ張られる。
+          const dx = mouseX - pt.hx;
+          const dy = mouseY - pt.hy;
+          let falloff = Math.max(0, 1 - Math.abs(dx) / RADIUS_X);
+          falloff *= falloff;
+          pt.tx = dx * falloff * MAX_OFFSET_X;
+          pt.ty = dy * falloff * MAX_OFFSET_Y;
+        });
+      }
+
+      function buildPath() {
+        const p = points.map((pt) => ({ x: pt.hx + pt.ox, y: pt.hy + pt.oy }));
+        return (
+          `M ${p[0].x} ${p[0].y} ` +
+          `Q ${p[1].x} ${p[1].y} ${p[2].x} ${p[2].y} ` +
+          `Q ${p[3].x} ${p[3].y} ${p[4].x} ${p[4].y} ` +
+          `Q ${p[5].x} ${p[5].y} ${p[6].x} ${p[6].y} ` +
+          `Q ${p[7].x} ${p[7].y} ${p[0].x} ${p[0].y} Z`
+        );
+      }
+
+      function tick() {
+        let moving = false;
+        points.forEach((pt) => {
+          const ax = (pt.tx - pt.ox) * STIFFNESS;
+          const ay = (pt.ty - pt.oy) * STIFFNESS;
+          pt.vx = (pt.vx + ax) * DAMPING;
+          pt.vy = (pt.vy + ay) * DAMPING;
+          pt.ox += pt.vx;
+          pt.oy += pt.vy;
+          if (
+            Math.abs(pt.vx) > 0.0002 || Math.abs(pt.vy) > 0.0002 ||
+            Math.abs(pt.tx - pt.ox) > 0.0005 || Math.abs(pt.ty - pt.oy) > 0.0005
+          ) {
+            moving = true;
+          }
+        });
+        clipPath.setAttribute("d", buildPath());
+        rafId = moving ? requestAnimationFrame(tick) : null;
+      }
+
+      function ensureLoop() {
+        if (rafId === null) rafId = requestAnimationFrame(tick);
+      }
+
+      band.addEventListener("pointermove", (e) => {
+        const rect = band.getBoundingClientRect();
+        mouseX = (e.clientX - rect.left) / rect.width;
+        mouseY = (e.clientY - rect.top) / rect.height;
+        hasMouse = true;
+        updateTargets();
+        ensureLoop();
+      });
+
+      band.addEventListener("pointerleave", () => {
+        hasMouse = false;
+        updateTargets();
+        ensureLoop();
+      });
+    }
+
+    band.addEventListener("animationend", (e) => {
+      if (e.animationName !== "heroBandReveal") return;
+      revealImage();
+      imgEl.currentTime = 0;
+      imgEl.play().catch(() => {});
+      band.style.animation = "none";
+      band.style.clipPath = "url(#heroRevealClip)";
+      setupJelly();
+    }, { once: true });
   }
 
   /* ---------- Init ---------- */
   async function initPage() {
-    setupHeroScrollIntro();
-    setupHeroReplies();
-    setupAboutTriangles();
+    setupHeroReveal();
     setupStaticTypoReveals();
 
     const initialCategory = sessionStorage.getItem(FILTER_KEY) || "all";

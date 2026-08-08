@@ -168,6 +168,7 @@ function normalizeListItem(item) {
     size: item.size || "m",
     offset: item.offset || null,
     hoverLabel: item.hoverLabel || item.hoverText || "Today, this one",
+    headline: item.buyMetaText || item.buyMeta || null,
   };
 }
 

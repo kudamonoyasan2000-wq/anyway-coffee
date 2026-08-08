@@ -13,6 +13,12 @@
       document.documentElement.classList.add(`vt-${dir}`);
       sessionStorage.removeItem("hysd-nav-direction");
     }
+    if (dir === "forward") {
+      window.addEventListener("pageshow", () => {
+        const wipe = document.querySelector(".page-transition-wipe");
+        if (wipe) wipe.classList.add("is-running");
+      });
+    }
   })();
 </script>
 
@@ -43,6 +49,7 @@
 
     --ease: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-reveal: cubic-bezier(0.08, 0.9, 0.15, 1);
 
     --header-h: 64px;
     --notice-h: 38px;
@@ -136,6 +143,22 @@
   }
   body.is-leaving-back {
     overflow: hidden;
+  }
+  .page-transition-wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--c-acid);
+    pointer-events: none;
+    transform: translateX(-100%);
+  }
+  .page-transition-wipe.is-running {
+    animation: pageWipeThrough 0.9s var(--ease) both;
+  }
+  @keyframes pageWipeThrough {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
   }
   a { color: inherit; text-decoration: none; }
   button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
@@ -1532,6 +1555,8 @@
 </style>
 </head>
 <body>
+
+<div class="page-transition-wipe" aria-hidden="true"></div>
 
 <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
   <filter id="roughRectEdge" x="-20%" y="-120%" width="140%" height="340%">
