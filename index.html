@@ -720,7 +720,7 @@
   /* Shop intro (フィルター下のサブコピー) */
   .section-intro {
     padding: 26px 16px 28px;
-    max-width: 760px;
+    max-width: 1100px;
   }
   @media (min-width: 768px) {
     .section-intro {
@@ -739,7 +739,7 @@
     line-height: 1.65;
     letter-spacing: -0.01em;
     color: var(--c-ink);
-    max-width: 620px;
+    max-width: 1100px;
     text-wrap: pretty;
   }
   @media (min-width: 1024px) {
@@ -750,6 +750,14 @@
       max-width: none;
       white-space: nowrap;
     }
+  }
+  .section-intro__all-heading {
+    display: none;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(28px, 5vw, 48px);
+    letter-spacing: 0.02em;
+    color: var(--c-ink);
   }
 
   /* ---------- Filter ---------- */
@@ -1196,28 +1204,46 @@
   .card__tag.is-new { background: var(--c-acid); }
 
   .card__info {
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .card__info-row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 12px;
   }
-  .card__name {
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.3;
-  }
   .card__name-main {
     display: block;
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: 23px;
     letter-spacing: -0.025em;
   }
-  .card__name em {
+  .card__info-divider {
     display: block;
-    margin-top: 7px;
-    font-family: var(--font-serif);
-    font-style: italic;
+    height: 2px;
+    margin-top: 10px;
+    background: var(--c-acid);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.8s var(--ease-reveal);
+    transition-delay: calc(var(--reveal-index, 0) * 135ms + 420ms);
+  }
+  .card.in .card__info-divider {
+    transform: scaleX(1);
+  }
+  .card__info em {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-family: var(--font-display);
+    font-style: normal;
     font-weight: 400;
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 1.75;
+    white-space: pre-line;
   }
   .card__cat {
     font-size: 11px;
@@ -1227,7 +1253,7 @@
   }
   .card__price {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 18px;
     white-space: nowrap;
     letter-spacing: 0.02em;
   }
@@ -1235,38 +1261,38 @@
   /* ---------- About strip ---------- */
   .about {
     position: relative;
-    padding: clamp(80px, 12vw, 160px) 0 clamp(80px, 12vw, 160px);
+    width: min(1180px, calc(100% - clamp(32px, 7vw, 120px)));
+    margin-inline: auto;
+    padding: clamp(96px, 12vw, 168px) 0 clamp(96px, 12vw, 168px);
   }
   .about__entry {
     position: relative;
-    display: block;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(18px, 2.6vw, 34px);
+    align-items: center;
   }
   .about__entry.reveal {
     opacity: 1;
     transform: none;
   }
-  /* 参考レイアウトでは2枚が縦に1割ほどしか重ならないので、
-     1枚目の高さ(幅34vw ÷ 縦横比0.666 ≒ 51vw)のうち約1割ぶんだけ引き上げる。 */
   .about__entry--2 {
-    margin-top: -5vw;
+    margin-top: clamp(84px, 11vw, 156px);
   }
-  /* フレームは写真とシャドウ用の四角を束ねる箱。サイズ・位置の指定はここに集約し、
-     .about__entry-media 側は常にフレームいっぱい(100%)にする。 */
   .about__entry-frame {
     position: relative;
+    width: 100%;
   }
   .about__entry--1 .about__entry-frame {
-    width: 34%;
-    margin-left: 6%;
+    grid-column: 1 / span 4;
+    margin-bottom: 14px;
   }
-  /* 参考レイアウトと同じく、2枚目の左端が1枚目の右端に食い込むように置く
-     （1枚目の幅の2割強ぶん重なる位置）。 */
   .about__entry--2 .about__entry-frame {
-    width: 44%;
-    margin-left: 32%;
+    grid-column: 8 / span 4;
+    align-self: start;
   }
   /* 写真と同じサイズの黄色い四角を、影のように右下へずらして背面に重ねる。
-     最初は何も見えない状態にし、黄色→帯→写真の順に出てくるようにする。 */
+     最初は何も見えない状態にし、写真→少し後に黄色い影の順に出てくるようにする。 */
   .about__entry-shadow {
     position: absolute;
     inset: 0;
@@ -1277,7 +1303,7 @@
     transform-origin: center;
   }
   .about__entry.in .about__entry-shadow {
-    animation: aboutShadowIn 0.72s cubic-bezier(0.32, 0.02, 0.2, 1) forwards;
+    animation: aboutShadowIn 0.72s cubic-bezier(0.32, 0.02, 0.2, 1) 300ms forwards;
   }
   @keyframes aboutShadowIn {
     from {
@@ -1295,39 +1321,103 @@
     position: relative;
     z-index: 1;
     width: 100%;
+    aspect-ratio: 3 / 4;
     overflow: hidden;
     /* 背景を不透明にして、写真がclip-pathで開く途中でも背後の黄色いシャドウが
-       透けて見えないようにする（シャドウは写真の枠からはみ出た部分だけ見せたい）。 */
-    background: var(--c-bg);
+       透けて見えないようにする（シャドウは写真の枠からはみ出た部分だけ見せたい）。
+       グレーだと写真が出る前に無関係な空白に見えるため、シャドウと同じ黄色にする。 */
+    background: var(--c-acid);
   }
   .about__entry-photo {
     display: block;
     width: 100%;
     max-width: none;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about__entry--2 .about__entry-media {
+    aspect-ratio: 4 / 5;
+  }
+  .about__entry--2 .about__entry-photo {
+    object-position: center 62%;
+  }
+  .about__entry-inset {
+    position: absolute;
+    left: calc(100% + clamp(18px, 2.6vw, 34px));
+    bottom: 0;
+    width: min(260px, 20vw);
+    aspect-ratio: 16 / 9;
+    z-index: 2;
+  }
+  .about__entry-inset-shadow {
+    position: absolute;
+    inset: 0;
+    background: var(--c-acid);
+    transform: translate(14px, 14px) scale(0.92);
+    opacity: 0;
+    z-index: 0;
+    transform-origin: center;
+  }
+  .about__entry.in .about__entry-inset-shadow {
+    animation: aboutShadowIn 0.72s cubic-bezier(0.32, 0.02, 0.2, 1) 300ms forwards;
+  }
+  .about__entry-inset-media {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--c-acid);
+  }
+  .about__entry-inset-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about__entry:not(.in) .about__entry-inset-photo {
+    opacity: 0;
+  }
+  .about__entry.in .about__entry-inset-photo {
+    animation: cardContentSlideIn 1.34s cubic-bezier(0.18, 0.94, 0.24, 1) both;
   }
   .about__entry:not(.in) .about__entry-photo {
     opacity: 0;
   }
   .about__entry.in .about__entry-photo {
-    /* fill-modeをbothにして、355msの遅延中も最初のキーフレーム(opacity:0)を
-       保持する。forwardsだけだと遅延中は素のCSS(opacity:1)に戻ってしまい、
-       一瞬フル表示→消える→ワイプイン、という不自然な動きになる。 */
-    animation: cardContentSlideIn 1.34s cubic-bezier(0.18, 0.94, 0.24, 1) 355ms both;
+    animation: cardContentSlideIn 1.34s cubic-bezier(0.18, 0.94, 0.24, 1) both;
   }
   .about__entry-copy {
-    position: absolute;
-    width: min(420px, 42vw);
+    position: relative;
+    width: auto;
     z-index: 2;
   }
-  /* 見出しは写真の右上／左下の角に食い込ませる（参考レイアウトと同じ重ね方） */
+  .about__entry-copy-photo-tone {
+    display: none;
+    z-index: 3;
+    color: #0700de;
+    pointer-events: none;
+    clip-path: inset(
+      var(--photo-tone-top, 0)
+      var(--photo-tone-right, 100%)
+      var(--photo-tone-bottom, 100%)
+      var(--photo-tone-left, 0)
+    );
+  }
+  .about__entry-copy-photo-tone,
+  .about__entry-copy-photo-tone .about__entry-title,
+  .about__entry-copy-photo-tone .about__entry-text {
+    color: #0700de;
+  }
   .about__entry--1 .about__entry-copy {
-    top: 2%;
-    left: 34%;
+    grid-column: 8 / span 5;
+    align-self: end;
+    transform: translateY(8px);
   }
   .about__entry--2 .about__entry-copy {
-    top: 62%;
-    left: 12%;
+    grid-column: 1 / span 7;
+    grid-row: 1;
+    align-self: start;
   }
   .about__entry-title {
     font-family: var(--font-serif);
@@ -1335,8 +1425,42 @@
     font-size: clamp(40px, 5.4vw, 80px);
     line-height: 0.9;
     letter-spacing: -0.01em;
-    color: var(--c-acid);
+    color: var(--c-ink);
     margin-bottom: 0.06em;
+  }
+  .about__entry--1 .about__entry-title {
+    font-size: clamp(24px, 2.7vw, 38px);
+    line-height: 1.28;
+    white-space: nowrap;
+  }
+  .about__entry--2 .about__entry-title {
+    font-size: clamp(36px, 4.1vw, 58px);
+    line-height: 1.05;
+  }
+  .about__entry-title-line {
+    display: block;
+  }
+  .about__entry-title-line .typo-reveal,
+  .about__entry-title-line .typo-reveal__inner {
+    white-space: nowrap;
+  }
+  .about__entry-title .typo-reveal,
+  .about__entry-text-line .typo-reveal {
+    background: var(--c-acid);
+    color: var(--c-ink);
+    padding-inline: 0.08em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .about__entry-title .typo-reveal {
+    padding-block: 0.18em 0.14em;
+  }
+  .about__entry-text-line .typo-reveal {
+    padding-block: 0.04em 0.08em;
+  }
+  .about__entry-copy-photo-tone .typo-reveal,
+  .about__entry-copy-photo-tone .typo-reveal__inner {
+    color: #0700de;
   }
   .about__entry-text {
     font-family: var(--font-display);
@@ -1348,16 +1472,35 @@
     display: block;
   }
   @media (max-width: 767px) {
+    .about {
+      width: calc(100% - 32px);
+    }
+    .about__entry {
+      display: block;
+    }
     .about__entry--1 .about__entry-frame {
       width: 72%;
     }
     .about__entry--2 .about__entry-frame {
-      width: 88%;
+      width: 78%;
+      margin-left: auto;
     }
     .about__entry-copy {
       position: static;
       width: auto;
       padding: 18px 16px 0;
+    }
+    .about__entry--2 .about__entry-copy {
+      width: auto;
+    }
+    .about__entry--1 .about__entry-title {
+      white-space: normal;
+    }
+    .about__entry-copy-photo-tone {
+      display: none;
+    }
+    .about__entry-inset {
+      display: none;
     }
     .about__entry--2 {
       margin-top: 48px;
@@ -1595,7 +1738,7 @@
       </clipPath>
     </defs>
   </svg>
-  <span class="hero__reveal-label">ANYWAY<span class="hero__reveal-label-dot">.</span></span>
+  <span class="hero__reveal-label">ANYWAY<span class="hero__reveal-label-dot">.</span> COFFEE</span>
   <div class="hero__reveal-band">
     <video class="hero__reveal-image" src="assets/hero-preview.mp4" muted loop playsinline aria-hidden="true"></video>
   </div>
@@ -1616,6 +1759,7 @@
     <p class="section-intro__text reveal typo-block" id="shopIntroText" data-typo-reveal data-typo-delay="80">
       毎日に寄り添う一杯。気分に合わせて、選んでください。
     </p>
+    <p class="section-intro__all-heading" id="shopAllHeading">ALL ITEMS</p>
   </div>
 
   <div class="grid" id="grid" role="list"></div>
@@ -1627,15 +1771,22 @@
     <div class="about__entry-frame">
       <span class="about__entry-shadow" aria-hidden="true"></span>
       <div class="about__entry-media">
-        <img class="about__entry-photo" src="assets/about-street.jpg" alt="" aria-hidden="true">
+        <img class="about__entry-photo" src="assets/about-outdoor.jpg" alt="" aria-hidden="true">
+      </div>
+      <div class="about__entry-inset" aria-hidden="true">
+        <span class="about__entry-inset-shadow"></span>
+        <div class="about__entry-inset-media">
+          <img class="about__entry-inset-photo" src="assets/about-book.jpg" alt="">
+        </div>
       </div>
     </div>
     <div class="about__entry-copy">
-      <h2 class="about__entry-title"><span data-typo-reveal data-typo-delay="420">SOME DAYS</span></h2>
+      <h2 class="about__entry-title"><span data-typo-reveal data-typo-delay="420">ANYWAY.</span></h2>
       <p class="about__entry-text">
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">よく晴れた日も、なんだか気が乗らない日も、</span>
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">同じ道を歩いて、同じ一日がはじまる。</span>
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="760">機嫌のいい日ばかりじゃないから、人生はおもしろい。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">まずはお湯を沸かして、コーヒーを。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">話は、それからでもいいでしょう？</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="820">ANYWAYは、少し気持ちが明るくなるかもしれない</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="920">カジュアルで、スペシャルな、自家焙煎コーヒーです。</span>
       </p>
     </div>
   </article>
@@ -1644,15 +1795,17 @@
     <div class="about__entry-frame">
       <span class="about__entry-shadow" aria-hidden="true"></span>
       <div class="about__entry-media">
-        <img class="about__entry-photo" src="assets/about-book.jpg" alt="" aria-hidden="true">
+        <img class="about__entry-photo" src="assets/about-pourover.jpg" alt="" aria-hidden="true">
       </div>
     </div>
     <div class="about__entry-copy">
-      <h2 class="about__entry-title"><span data-typo-reveal data-typo-delay="420">ANYWAY,</span></h2>
+      <h2 class="about__entry-title">
+        <span class="about__entry-title-line" data-typo-reveal data-typo-delay="420">いつもの朝も、</span>
+        <span class="about__entry-title-line" data-typo-reveal data-typo-delay="520">少し考えたい午後も。</span>
+      </h2>
       <p class="about__entry-text">
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">答えが出なくても、気分が晴れなくてもいい。</span>
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">とりあえず、一杯淹れてみる。それだけで、</span>
-        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="760">今日がすこし、ちょうどよくなる気がするから。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="560">何かを変えるほどじゃない。</span>
+        <span class="about__entry-text-line" data-typo-reveal data-typo-delay="660">でも、ふと気分をほどきたい時に。</span>
       </p>
     </div>
   </article>
@@ -1680,6 +1833,7 @@
   const grid = document.getElementById("grid");
   const filterButtons = document.querySelectorAll(".filter button");
   const shopIntroText = document.getElementById("shopIntroText");
+  const shopAllHeading = document.getElementById("shopAllHeading");
   const bagButton = document.querySelector(".bag-btn");
   const bagCount = document.querySelector(".bag-btn .count");
   const bagDrawer = document.getElementById("bagDrawer");
@@ -1940,6 +2094,9 @@
       prepareTypoRevealElement(shopIntroText, { force: true });
       shopIntroText.style.display = category === "all" ? "none" : "";
     }
+    if (shopAllHeading) {
+      shopAllHeading.style.display = category === "all" ? "block" : "none";
+    }
     grid.innerHTML = list.map((p, index) => {
       const nameHTML = typoRevealHTML(escapeHTML(p.name), 360);
       const originHTML = p.italic ? `<em>${typoRevealHTML(escapeHTML(p.italic), 460)}</em>` : "";
@@ -1960,10 +2117,12 @@
             <div class="card__cursor"><span class="label">${hoverLabel}</span><span class="brace">}</span></div>
           </div>
           <div class="card__info">
-            <div>
-              <div class="card__name"><span class="card__name-main">${nameHTML}</span>${italicHTML}</div>
+            <div class="card__info-row">
+              <span class="card__name-main">${nameHTML}</span>
+              <span class="card__price">${priceHTML}</span>
             </div>
-            <div class="card__price">${priceHTML}</div>
+            <span class="card__info-divider" aria-hidden="true"></span>
+            ${italicHTML}
           </div>
         </article>
       `;
@@ -2252,6 +2411,24 @@
         lineWarp?.onLeave();
       });
     });
+
+    document.querySelectorAll(".about__entry-media").forEach((media) => {
+      if (media.dataset.hoverLineReady === "1") return;
+      media.dataset.hoverLineReady = "1";
+
+      media.addEventListener("mouseenter", (e) => {
+        moveHoverLine(e, true);
+        lineWarp?.onEnter(e);
+      });
+      media.addEventListener("mousemove", (e) => {
+        moveHoverLine(e);
+        lineWarp?.onMove(e);
+      });
+      media.addEventListener("mouseleave", () => {
+        hideHoverLine();
+        lineWarp?.onLeave();
+      });
+    });
   }
 
   function setupCardLinks() {
@@ -2405,6 +2582,52 @@
     themeSections.forEach((section) => sectionObserver.observe(section));
   }
 
+  function setupAboutPhotoTextTone() {
+    const entries = Array.from(document.querySelectorAll(".about__entry"));
+    if (!entries.length) return;
+
+    const pairs = entries.map((entry) => {
+      const copy = entry.querySelector(".about__entry-copy:not(.about__entry-copy-photo-tone)");
+      const frame = entry.querySelector(".about__entry-frame");
+      if (!copy || !frame) return null;
+
+      let toneCopy = entry.querySelector(".about__entry-copy-photo-tone");
+      if (!toneCopy) {
+        toneCopy = copy.cloneNode(true);
+        toneCopy.classList.add("about__entry-copy-photo-tone");
+        toneCopy.setAttribute("aria-hidden", "true");
+        entry.appendChild(toneCopy);
+      }
+      return { entry, copy: toneCopy, frame };
+    }).filter(Boolean);
+
+    function sync() {
+      pairs.forEach(({ entry, copy, frame }) => {
+        const copyRect = copy.getBoundingClientRect();
+        const frameRect = frame.getBoundingClientRect();
+        const left = Math.max(0, frameRect.left - copyRect.left);
+        const top = Math.max(0, frameRect.top - copyRect.top);
+        const right = Math.max(0, copyRect.right - frameRect.right);
+        const bottom = Math.max(0, copyRect.bottom - frameRect.bottom);
+        copy.style.setProperty("--photo-tone-left", `${left.toFixed(1)}px`);
+        copy.style.setProperty("--photo-tone-top", `${top.toFixed(1)}px`);
+        copy.style.setProperty("--photo-tone-right", `${right.toFixed(1)}px`);
+        copy.style.setProperty("--photo-tone-bottom", `${bottom.toFixed(1)}px`);
+      });
+    }
+
+    const requestSync = () => requestAnimationFrame(sync);
+    sync();
+    window.addEventListener("resize", requestSync);
+    window.addEventListener("load", requestSync);
+    document.fonts?.ready?.then(requestSync).catch(() => {});
+    pairs.forEach(({ frame }) => {
+      frame.querySelectorAll("img").forEach((img) => {
+        if (!img.complete) img.addEventListener("load", requestSync, { once: true });
+      });
+    });
+  }
+
 
   /* ---------- Reveal on scroll ---------- */
   let observer;
@@ -2552,6 +2775,7 @@
   async function initPage() {
     setupHeroReveal();
     setupStaticTypoReveals();
+    setupAboutPhotoTextTone();
 
     const initialCategory = sessionStorage.getItem(FILTER_KEY) || "all";
     const initialButton = document.querySelector(`.filter button[data-cat="${initialCategory}"]`);
