@@ -657,11 +657,13 @@
   .hero__reveal-image {
     position: absolute;
     top: 0;
-    left: -8%;
+    left: 50%;
     width: 108%;
     max-width: none;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
+    transform: translateX(-50%);
     display: block;
     clip-path: inset(0 100% 0 0);
     transition: clip-path 1.3s var(--ease-reveal);
@@ -1222,21 +1224,45 @@
     letter-spacing: -0.025em;
   }
   .card__info-divider {
-    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
     height: 2px;
-    margin-top: 10px;
     background: var(--c-acid);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 0.8s var(--ease-reveal);
     transition-delay: calc(var(--reveal-index, 0) * 135ms + 420ms);
   }
+  .card__info-divider-wrap {
+    position: relative;
+    display: block;
+    min-height: 34px;
+    margin-top: 12px;
+  }
   .card.in .card__info-divider {
     transform: scaleX(1);
   }
+  .card__origin-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    display: inline-block;
+    min-width: 0;
+    padding: 5px 12px;
+    background: var(--c-acid);
+    color: var(--c-ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
   .card__info em {
     display: block;
-    margin-top: 14px;
+    margin-top: 12px;
     margin-bottom: 4px;
     font-family: var(--font-display);
     font-style: normal;
@@ -1253,7 +1279,7 @@
   }
   .card__price {
     font-family: var(--font-mono);
-    font-size: 18px;
+    font-size: 15px;
     white-space: nowrap;
     letter-spacing: 0.02em;
   }
@@ -2099,9 +2125,9 @@
     }
     grid.innerHTML = list.map((p, index) => {
       const nameHTML = typoRevealHTML(escapeHTML(p.name), 360);
-      const originHTML = p.italic ? `<em>${typoRevealHTML(escapeHTML(p.italic), 460)}</em>` : "";
+      const originHTML = p.italic ? `<span class="card__origin-label">${typoRevealHTML(escapeHTML(p.italic), 460)}</span>` : "";
       const headlineHTML = p.headline ? `<em>${typoRevealHTML(escapeHTML(p.headline), 500)}</em>` : "";
-      const italicHTML = `${originHTML}${headlineHTML}`;
+      const italicHTML = headlineHTML;
       const priceHTML = typoRevealHTML(escapeHTML(yen.format(p.price)), 430);
       const sizeClass = `size-${p.size || "m"}`;
       const offsetClass = p.offset ? `offset-${p.offset}` : "";
@@ -2121,7 +2147,10 @@
               <span class="card__name-main">${nameHTML}</span>
               <span class="card__price">${priceHTML}</span>
             </div>
-            <span class="card__info-divider" aria-hidden="true"></span>
+            <span class="card__info-divider-wrap">
+              <span class="card__info-divider" aria-hidden="true"></span>
+              ${originHTML}
+            </span>
             ${italicHTML}
           </div>
         </article>

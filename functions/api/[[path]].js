@@ -1,68 +1,23 @@
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
-const { URL } = require("url");
-
-const ROOT = __dirname;
-const MIME_TYPES = {
-  ".html": "text/html; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".svg": "image/svg+xml",
-  ".png": "image/png",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".webp": "image/webp",
-  ".json": "application/json; charset=utf-8",
-};
-
-function loadEnv(filepath) {
-  const env = {};
-  if (!fs.existsSync(filepath)) return env;
-  const lines = fs.readFileSync(filepath, "utf8").split(/\r?\n/);
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const idx = trimmed.indexOf("=");
-    if (idx === -1) continue;
-    const key = trimmed.slice(0, idx).trim();
-    const value = trimmed.slice(idx + 1).trim().replace(/^['"]|['"]$/g, "");
-    env[key] = value;
-  }
-  return env;
-}
-
-const fileEnv = loadEnv(path.join(ROOT, ".env"));
-const config = {
-  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || fileEnv.MICROCMS_SERVICE_DOMAIN || "",
-  apiKey: process.env.MICROCMS_API_KEY || fileEnv.MICROCMS_API_KEY || "",
-  endpoint: process.env.MICROCMS_PRODUCTS_ENDPOINT || fileEnv.MICROCMS_PRODUCTS_ENDPOINT || "products",
-  siteUrl: process.env.SITE_URL || fileEnv.SITE_URL || "",
-  stripeSuccessUrl: process.env.STRIPE_SUCCESS_URL || fileEnv.STRIPE_SUCCESS_URL || "",
-  stripeCancelUrl: process.env.STRIPE_CANCEL_URL || fileEnv.STRIPE_CANCEL_URL || "",
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY || fileEnv.STRIPE_SECRET_KEY || "",
-  stripeShippingRateId:
-    process.env.STRIPE_SHIPPING_RATE_ID ||
-    fileEnv.STRIPE_SHIPPING_RATE_ID ||
-    "shr_1TWAJcCCeEnxr8H5Bpkv2Yjr",
-  port: Number(process.env.PORT || fileEnv.PORT || 8000),
-};
-
-function sendJson(res, status, payload) {
-  res.writeHead(status, {
-    "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": "no-store",
+function json(payload, status = 200) {
+  return Response.json(payload, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+    },
   });
-  res.end(JSON.stringify(payload));
 }
 
-function escapeHtml(value = "") {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+function getConfig(env = {}) {
+  return {
+    serviceDomain: env.MICROCMS_SERVICE_DOMAIN || "",
+    apiKey: env.MICROCMS_API_KEY || "",
+    endpoint: env.MICROCMS_PRODUCTS_ENDPOINT || "products",
+    siteUrl: env.SITE_URL || "",
+    stripeSuccessUrl: env.STRIPE_SUCCESS_URL || "",
+    stripeCancelUrl: env.STRIPE_CANCEL_URL || "",
+    stripeSecretKey: env.STRIPE_SECRET_KEY || "",
+    stripeShippingRateId: env.STRIPE_SHIPPING_RATE_ID || "shr_1TWAJcCCeEnxr8H5Bpkv2Yjr",
+  };
 }
 
 function toCategory(value) {
@@ -77,11 +32,7 @@ function normalizeImage(image) {
 
 function optimizeImage(url, options = {}) {
   if (!url) return null;
-  const {
-    width,
-    quality = 82,
-    format = "webp",
-  } = options;
+  const { width, quality = 82, format = "webp" } = options;
 
   try {
     const parsed = new URL(url);
@@ -141,10 +92,7 @@ function normalizeRepeatEntries(entries = [], fieldOrder = []) {
     }
   }
 
-  if (Object.keys(current).length) {
-    items.push(current);
-  }
-
+  if (Object.keys(current).length) items.push(current);
   return items;
 }
 
@@ -324,28 +272,28 @@ function normalizeGrindValue(value = "") {
   return normalized;
 }
 
-function isLiveStripeMode() {
+function isLiveStripeMode(config) {
   return /^sk_live_/.test(config.stripeSecretKey);
 }
 
-function resolveVariantPriceId(variant) {
-  if (isLiveStripeMode()) {
+function resolveVariantPriceId(config, variant) {
+  if (isLiveStripeMode(config)) {
     return variant.priceIdLive || variant.priceId || "";
   }
   return variant.priceIdTest || variant.priceId || "";
 }
 
-function resolveDefaultPriceId(item) {
-  if (isLiveStripeMode()) {
+function resolveDefaultPriceId(config, item) {
+  if (isLiveStripeMode(config)) {
     return item.defaultPriceIdLive || item.liveDefaultPriceId || item.defaultPriceId || "";
   }
   return item.defaultPriceIdTest || item.testDefaultPriceId || item.defaultPriceId || "";
 }
 
-function resolvePriceId(item, lineItem = {}) {
+function resolvePriceId(config, item, lineItem = {}) {
   const category = toCategory(item.category);
   if (category === "goods") {
-    return resolveDefaultPriceId(item) || resolveVariantPriceId(normalizeVariants(item)[0] || {}) || "";
+    return resolveDefaultPriceId(config, item) || resolveVariantPriceId(config, normalizeVariants(item)[0] || {}) || "";
   }
 
   const size = String(lineItem.size || "");
@@ -358,35 +306,14 @@ function resolvePriceId(item, lineItem = {}) {
     variant.available !== false
   );
 
-  return matched ? resolveVariantPriceId(matched) : "";
-}
-
-function readJsonBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk;
-      if (body.length > 1_000_000) {
-        reject(new Error("Payload too large"));
-        req.destroy();
-      }
-    });
-    req.on("end", () => {
-      try {
-        resolve(body ? JSON.parse(body) : {});
-      } catch {
-        reject(new Error("Invalid JSON body"));
-      }
-    });
-    req.on("error", reject);
-  });
+  return matched ? resolveVariantPriceId(config, matched) : "";
 }
 
 function normalizeBaseUrl(value = "") {
   return String(value).trim().replace(/\/+$/, "");
 }
 
-function resolveCheckoutReturnUrls(origin) {
+function resolveCheckoutReturnUrls(config, origin) {
   const baseUrl = normalizeBaseUrl(config.siteUrl || origin);
   return {
     successUrl: config.stripeSuccessUrl || `${baseUrl}/index.html?checkout=success`,
@@ -394,12 +321,12 @@ function resolveCheckoutReturnUrls(origin) {
   };
 }
 
-async function createCheckoutSession({ items = [], origin }) {
+async function createCheckoutSession(config, { items = [], origin }) {
   if (!config.stripeSecretKey) {
     throw new Error("Missing STRIPE_SECRET_KEY");
   }
 
-  const { successUrl, cancelUrl } = resolveCheckoutReturnUrls(origin);
+  const { successUrl, cancelUrl } = resolveCheckoutReturnUrls(config, origin);
   const params = new URLSearchParams();
   params.set("mode", "payment");
   params.set("success_url", successUrl);
@@ -434,10 +361,11 @@ async function createCheckoutSession({ items = [], origin }) {
   return data;
 }
 
-async function fetchMicroCMS(resourcePath, search = "") {
+async function fetchMicroCMS(config, resourcePath, search = "") {
   if (!config.serviceDomain || !config.apiKey) {
     throw new Error("Missing microCMS credentials");
   }
+
   const url = `https://${config.serviceDomain}.microcms.io/api/v1/${config.endpoint}${resourcePath}${search}`;
   const res = await fetch(url, {
     headers: {
@@ -451,18 +379,23 @@ async function fetchMicroCMS(resourcePath, search = "") {
   return res.json();
 }
 
-async function handleApi(req, res, pathname) {
+export async function onRequest(context) {
+  const { request, env } = context;
+  const config = getConfig(env);
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+
   try {
     if (pathname === "/api/health") {
-      return sendJson(res, 200, {
+      return json({
         ok: true,
         configured: Boolean(config.serviceDomain && config.apiKey),
       });
     }
 
     if (pathname === "/api/products") {
-      const data = await fetchMicroCMS("", "?limit=100&depth=2");
-      return sendJson(res, 200, {
+      const data = await fetchMicroCMS(config, "", "?limit=100&depth=2");
+      return json({
         contents: (data.contents || []).map(normalizeListItem),
       });
     }
@@ -470,21 +403,23 @@ async function handleApi(req, res, pathname) {
     const detailMatch = pathname.match(/^\/api\/products\/([^/]+)$/);
     if (detailMatch) {
       const id = decodeURIComponent(detailMatch[1]);
-      const data = await fetchMicroCMS(`/${id}`, "?depth=3");
-      return sendJson(res, 200, normalizeDetail(data));
+      const data = await fetchMicroCMS(config, `/${encodeURIComponent(id)}`, "?depth=3");
+      return json(normalizeDetail(data));
     }
 
-    if (pathname === "/api/checkout/session" && req.method === "POST") {
-      const payload = await readJsonBody(req);
+    if (pathname === "/api/checkout/session" && request.method === "POST") {
+      const payload = await request.json().catch(() => {
+        throw new Error("Invalid JSON body");
+      });
       const requestItems = Array.isArray(payload.items) ? payload.items : [];
 
       if (!requestItems.length) {
-        return sendJson(res, 400, { message: "Cart is empty" });
+        return json({ message: "Cart is empty" }, 400);
       }
 
       const ids = [...new Set(requestItems.map((item) => item.id).filter(Boolean))];
       const products = await Promise.all(
-        ids.map((id) => fetchMicroCMS(`/${encodeURIComponent(id)}`, "?depth=3"))
+        ids.map((id) => fetchMicroCMS(config, `/${encodeURIComponent(id)}`, "?depth=3"))
       );
       const productMap = new Map(products.map((product) => [product.id, product]));
 
@@ -494,7 +429,7 @@ async function handleApi(req, res, pathname) {
           throw new Error(`Product not found: ${item.id}`);
         }
 
-        const priceId = resolvePriceId(product, item);
+        const priceId = resolvePriceId(config, product, item);
         if (!priceId) {
           throw new Error(`No Stripe price configured for ${product.name}`);
         }
@@ -505,49 +440,13 @@ async function handleApi(req, res, pathname) {
         };
       });
 
-      const origin = `${req.headers["x-forwarded-proto"] || "http"}://${req.headers.host || `127.0.0.1:${config.port}`}`;
-      const session = await createCheckoutSession({ items: lineItems, origin });
-      return sendJson(res, 200, { url: session.url, id: session.id });
+      const origin = url.origin;
+      const session = await createCheckoutSession(config, { items: lineItems, origin });
+      return json({ url: session.url, id: session.id });
     }
 
-    return sendJson(res, 404, { message: "Not found" });
+    return json({ message: "Not found" }, 404);
   } catch (error) {
-    return sendJson(res, 500, {
-      message: error.message,
-    });
+    return json({ message: error.message }, 500);
   }
 }
-
-function serveStatic(req, res, pathname) {
-  const safePath = pathname === "/" ? "/index.html" : pathname;
-  const fullPath = path.join(ROOT, safePath);
-  if (!fullPath.startsWith(ROOT)) {
-    res.writeHead(403);
-    res.end("Forbidden");
-    return;
-  }
-  fs.readFile(fullPath, (err, file) => {
-    if (err) {
-      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Not found");
-      return;
-    }
-    const ext = path.extname(fullPath).toLowerCase();
-    res.writeHead(200, {
-      "Content-Type": MIME_TYPES[ext] || "application/octet-stream",
-    });
-    res.end(file);
-  });
-}
-
-const server = http.createServer(async (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host || "127.0.0.1"}`);
-  if (url.pathname.startsWith("/api/")) {
-    return handleApi(req, res, url.pathname);
-  }
-  return serveStatic(req, res, url.pathname);
-});
-
-server.listen(config.port, () => {
-  console.log(`hysd server running at http://127.0.0.1:${config.port}`);
-});
