@@ -106,6 +106,18 @@ addBtn.addEventListener("click", () => {
 
 商品ごとに Stripe で4パターン（200g whole / 200g medium / 500g whole / 500g medium）の Price を作成して、`state` から priceId を解決する形が定石。
 
+### 本番用 Stripe Checkout URL
+
+Stripe Checkout の `success_url` / `cancel_url` は、`.env` の `SITE_URL` を基準に生成される。未設定の場合はリクエスト元の URL を使う。
+
+```bash
+SITE_URL=https://example.com
+STRIPE_SECRET_KEY=sk_live_your_secret_key
+STRIPE_SHIPPING_RATE_ID=shr_your_live_shipping_rate_id
+```
+
+個別に戻り先を指定したい場合は、`STRIPE_SUCCESS_URL` / `STRIPE_CANCEL_URL` を設定すると `SITE_URL` より優先される。
+
 ## レスポンシブ対応
 
 - モバイル: ~768px
@@ -116,3 +128,23 @@ addBtn.addEventListener("click", () => {
 
 モダンブラウザ（Chrome / Safari / Firefox / Edge の最新版）対象。
 `prefers-reduced-motion` 対応でアニメーション抑制も実装済み。
+
+## Cloudflare Pages + Functions
+
+Cloudflare Pages では、静的ファイルをそのまま配信し、`/api/*` だけを Pages Functions で処理する。
+
+### ローカル確認
+
+```bash
+cp .dev.vars.example .dev.vars
+# .dev.vars に microCMS / Stripe の値を記入
+npm run cf:dev
+```
+
+### デプロイ
+
+```bash
+npm run cf:deploy
+```
+
+Cloudflare Dashboard から GitHub 連携で公開する場合は、Build command は `exit 0`、Build output directory はリポジトリルートを指定する。環境変数は Pages の Settings > Variables and Secrets で設定する。

@@ -5,6 +5,8 @@
   "description": "Safe microCMS proxy for how's your day prototype",
   "scripts": {
     "start": "node server.js",
-    "preview": "PORT=8001 node server.js"
+    "preview": "PORT=8001 node server.js",
+    "cf:dev": "npx wrangler pages dev . --compatibility-date=2026-08-15",
+    "cf:deploy": "npx wrangler pages deploy . --project-name anyway-coffee"
   }
 }
